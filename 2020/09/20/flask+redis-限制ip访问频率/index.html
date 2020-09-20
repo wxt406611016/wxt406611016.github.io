@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    
+    <title>flask+redis限制ip访问速率 | Welcome To Wangxt&#39;s Blog</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content>
+    <meta name="description" content="上篇介绍了利用font-face进行反爬虫，这篇介绍另一种常见方法–验证码校验，对频繁访问的ip进行限制，强制要求验证码验证，验证成功方可继续访问。 1.限制逻辑/策略： 利用request.remote_addr获取客户端ip； 客户端访问时，服务器判断redis中是否有客户端ip； 若不存在，将客户端ip存入redis中，对应值设为1；若存在，客户端ip对应值+1； 若redis中客户端ip对">
+<meta property="og:type" content="article">
+<meta property="og:title" content="flask+redis限制ip访问速率">
+<meta property="og:url" content="https://wxt406611016.github.io/2020/09/20/flask+redis-限制ip访问频率/index.html">
+<meta property="og:site_name" content="Welcome To Wangxt&#39;s Blog">
+<meta property="og:description" content="上篇介绍了利用font-face进行反爬虫，这篇介绍另一种常见方法–验证码校验，对频繁访问的ip进行限制，强制要求验证码验证，验证成功方可继续访问。 1.限制逻辑/策略： 利用request.remote_addr获取客户端ip； 客户端访问时，服务器判断redis中是否有客户端ip； 若不存在，将客户端ip存入redis中，对应值设为1；若存在，客户端ip对应值+1； 若redis中客户端ip对">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="https://imgconvert.csdnimg.cn/aHR0cHM6Ly9zMS5heDF4LmNvbS8yMDIwLzA1LzA3L1ltMGtMUS5wbmc?x-oss-process=image/format,png">
+<meta property="og:image" content="https://imgconvert.csdnimg.cn/aHR0cHM6Ly9zMS5heDF4LmNvbS8yMDIwLzA1LzA3L1ltMEZzZy5wbmc?x-oss-process=image/format,png">
+<meta property="og:updated_time" content="2020-04-10T16:00:00.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="flask+redis限制ip访问速率">
+<meta name="twitter:description" content="上篇介绍了利用font-face进行反爬虫，这篇介绍另一种常见方法–验证码校验，对频繁访问的ip进行限制，强制要求验证码验证，验证成功方可继续访问。 1.限制逻辑/策略： 利用request.remote_addr获取客户端ip； 客户端访问时，服务器判断redis中是否有客户端ip； 若不存在，将客户端ip存入redis中，对应值设为1；若存在，客户端ip对应值+1； 若redis中客户端ip对">
+<meta name="twitter:image" content="https://imgconvert.csdnimg.cn/aHR0cHM6Ly9zMS5heDF4LmNvbS8yMDIwLzA1LzA3L1ltMGtMUS5wbmc?x-oss-process=image/format,png">
+    
+        <link rel="alternate" type="application/atom+xml" title="Welcome To Wangxt&#39;s Blog" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/img/favicon.ico">
+    <link rel="stylesheet" href="//unpkg.com/hexo-theme-material-indigo@latest/css/style.css">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/host.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">WangXT</h5>
+          <a href="mailto:wxt406611016@gmail.com" title="wxt406611016@gmail.com" class="mail">wxt406611016@gmail.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                Home
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                Archives
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="http://cs.cumt.edu.cn/" target="_blank" >
+                <i class="icon icon-lg icon-tags"></i>
+                CUMT
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/wxt406611016" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://weibo.com/6327552090" target="_blank" >
+                <i class="icon icon-lg icon-weibo"></i>
+                Weibo
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">flask+redis限制ip访问速率</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="Search">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">flask+redis限制ip访问速率</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2020-09-20T07:26:27.383Z" itemprop="datePublished" class="page-time">
+  2020-09-20
+</time>
+
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#1-限制逻辑-策略："><span class="post-toc-number">1.</span> <span class="post-toc-text">1.限制逻辑/策略：</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#2-代码实现限制逻辑："><span class="post-toc-number">2.</span> <span class="post-toc-text">2.代码实现限制逻辑：</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#3-效果展示："><span class="post-toc-number">3.</span> <span class="post-toc-text">3.效果展示：</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#PS-若设置反向代理需注意！！！"><span class="post-toc-number">4.</span> <span class="post-toc-text">PS:若设置反向代理需注意！！！</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#如有错误或建议，请在评论处指出！"><span class="post-toc-number">4.0.1.</span> <span class="post-toc-text">如有错误或建议，请在评论处指出！</span></a></li></ol></li></ol></li></ol>
+        </nav>
+    </aside>
+
+
+<article id="post-flask+redis-限制ip访问频率"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">flask+redis限制ip访问速率</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2020-09-20 15:26:27" datetime="2020-09-20T07:26:27.383Z"  itemprop="datePublished">2020-09-20</time>
+
+            
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <p><strong>上篇介绍了利用font-face进行反爬虫，这篇介绍另一种常见方法–验证码校验，对频繁访问的ip进行限制，强制要求验证码验证，验证成功方可继续访问。</strong></p>
+<h2 id="1-限制逻辑-策略："><a href="#1-限制逻辑-策略：" class="headerlink" title="1.限制逻辑/策略："></a>1.限制逻辑/策略：</h2><ol>
+<li>利用request.remote_addr获取客户端ip；</li>
+<li>客户端访问时，服务器判断redis中是否有客户端ip；</li>
+<li>若不存在，将客户端ip存入redis中，对应值设为1；若存在，客户端ip对应值+1；</li>
+<li>若redis中客户端ip对应值在5分钟内&gt;5，即5分钟内访问页面超过5次，则视为恶意ip，跳转至验证码校验页面；</li>
+<li>验证成功后，向后端请求过渡函数B，进行redis操作，B函数的功能为将验证成功的ip从redis中删除，删除后再重定向至开始页面；</li>
+</ol>
+<h2 id="2-代码实现限制逻辑："><a href="#2-代码实现限制逻辑：" class="headerlink" title="2.代码实现限制逻辑："></a>2.代码实现限制逻辑：</h2><p>后端代码如下，index()方法用于判断redis中是否存在客户端ip，以及ip对应值是否大于5：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">@app.route(&apos;/&apos;, methods=[&apos;GET&apos;])</span><br><span class="line">def index():</span><br><span class="line">    ip=request.remote_addr</span><br><span class="line">    if(rs.exists(ip)):                                         #rs可操作redis</span><br><span class="line">        rs.setrange(ip,0,int(rs.get(ip))+1)</span><br><span class="line">    else:</span><br><span class="line">        rs.set(ip,1,ex=300)                               #5分钟5次</span><br><span class="line">    if (int(rs.get(ip))&lt;6):</span><br><span class="line">        return render_template(&apos;index.html&apos;)           #正常返回</span><br><span class="line">    else:</span><br><span class="line">        return render_template(&quot;antibot.html&quot;,ip=ip,secret=secret)    #返回验证码校验页面</span><br></pre></td></tr></table></figure></p>
+<p>如果跳转至antibot.html(验证码校验页面)后，前端通过js对参数a进行base64加密，并带参数访问/mid页面，之所以要带参数，是为了在后端验证参数是否有效(即判断是否是通过验证码校验后跳转而来)：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&lt;script&gt;</span><br><span class="line">......</span><br><span class="line">onSuccess: function() &#123;</span><br><span class="line">      document.getElementById(&apos;msg&apos;).innerHTML = &apos;登录成功！&apos;</span><br><span class="line">      var a=&quot;&#123;&#123;ip&#125;&#125;&quot;+&quot;&#123;&#123;secret&#125;&#125;&quot;                   //secret是从后端传来的随机密钥</span><br><span class="line">      a=window.btoa(a)                                 //对变量a进行base64加密</span><br><span class="line">      window.location.href=&quot;/mid?id=&quot;+a</span><br><span class="line">    &#125;,</span><br><span class="line">......</span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></table></figure></p>
+<p>mid()方法用于通过验证码校验后，将ip从redis中删除，并重定向至开始页面：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">@app.route(&apos;/mid&apos;, methods=[&apos;GET&apos;])</span><br><span class="line">def mid():</span><br><span class="line">    cmp=request.args.get(&apos;id&apos;,&apos;0&apos;)</span><br><span class="line">    ip=request.remote_addr</span><br><span class="line">    sec=ip+secret                                                 #secret作为随机密钥进行加密</span><br><span class="line">    result=base64.b64encode(sec.encode())</span><br><span class="line">    result=str(result)[2:-1]</span><br><span class="line">    if(cmp==result):                                            #判断前端js传来的参数是否有效</span><br><span class="line">        rs.delete(ip)</span><br><span class="line">    response =  redirect(url_for(&apos;index&apos;))</span><br><span class="line">    return response</span><br></pre></td></tr></table></figure></p>
+<h2 id="3-效果展示："><a href="#3-效果展示：" class="headerlink" title="3.效果展示："></a>3.效果展示：</h2><p>打开flask项目，可以正常访问：<br><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://imgconvert.csdnimg.cn/aHR0cHM6Ly9zMS5heDF4LmNvbS8yMDIwLzA1LzA3L1ltMGtMUS5wbmc?x-oss-process=image/format,png" alt="正常访问" title>
+                </div>
+                <div class="image-caption">正常访问</div>
+            </figure><br>刷新5次后，触发了限制ip策略，返回验证码校验界面：<br><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://imgconvert.csdnimg.cn/aHR0cHM6Ly9zMS5heDF4LmNvbS8yMDIwLzA1LzA3L1ltMEZzZy5wbmc?x-oss-process=image/format,png" alt="返回验证码校验" title>
+                </div>
+                <div class="image-caption">返回验证码校验</div>
+            </figure><br>验证成功后，成功返回开始页面。从而实现了flask上用redis进行限制ip访问频率。</p>
+<h2 id="PS-若设置反向代理需注意！！！"><a href="#PS-若设置反向代理需注意！！！" class="headerlink" title="PS:若设置反向代理需注意！！！"></a>PS:若设置反向代理需注意！！！</h2><p>如果设置了反向代理的话，request.remote_addr则不会返回客户端的真实ip。以nginx反向代理为例，客户想要访问服务器，实际请求路线是client-&gt;nginx-&gt;server，而request.remote_addr表示的是上一级ip，而server的上一级ip是nginx服务器的ip.</p>
+<p>解决办法：以nginx为例，在配置文件中使用X-Forwarded-For，然后后端获取ip方式由 <code>ip=request.remote_addr</code>更改为<code>ip = request.headers.getlist(&quot;X-Forwarded-For&quot;)[0]</code> 即可。</p>
+<p><a href="http://wxt123.top" target="_blank" rel="noopener">访问上图中我的web项目，点击链接即可，</a></p>
+<h4 id="如有错误或建议，请在评论处指出！"><a href="#如有错误或建议，请在评论处指出！" class="headerlink" title="如有错误或建议，请在评论处指出！"></a>如有错误或建议，请在评论处指出！</h4><p>2020年 04月 11日 星期六 00:00:00 CST</p>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    
+    <div class="content">
+        
+
+        
+        <a href="/2020/09/20/flask+redis-限制ip访问频率/" target="_blank" rel="external">https://wxt406611016.github.io/2020/09/20/flask+redis-限制ip访问频率/</a>
+        
+    </div>
+    
+    <footer>
+        <a href="https://wxt406611016.github.io">
+            <img src="/img/host.jpg" alt="WangXT">
+            WangXT
+        </a>
+    </footer>
+</blockquote>
+
+        
+
+
+        <div class="post-footer">
+            
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://wxt406611016.github.io/2020/09/20/flask+redis-限制ip访问频率/&title=《flask+redis限制ip访问速率》 — Welcome To Wangxt's Blog&pic=https://wxt406611016.github.io/img/host.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://wxt406611016.github.io/2020/09/20/flask+redis-限制ip访问频率/&title=《flask+redis限制ip访问速率》 — Welcome To Wangxt's Blog&source=" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://wxt406611016.github.io/2020/09/20/flask+redis-限制ip访问频率/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《flask+redis限制ip访问速率》 — Welcome To Wangxt's Blog&url=https://wxt406611016.github.io/2020/09/20/flask+redis-限制ip访问频率/&via=https://wxt406611016.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://wxt406611016.github.io/2020/09/20/flask+redis-限制ip访问频率/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/2020/09/20/网络安全实验室--上传关/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">网络安全实验室--上传关</h4>
+      </a>
+    </div>
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2020/09/20/github+hexo个人博客搭建/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">ubuntu下 github+hexo个人博客搭建</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+    <!-- Valine Comments -->
+    <div class="comments vcomment" id="comments"></div>
+    <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+    <script src="//unpkg.com/valine@latest/dist/Valine.min.js"></script>
+    <!-- Valine Comments script -->
+    <script>
+        var GUEST_INFO = ['nick','mail','link'];
+        var guest_info = 'nick'.split(',').filter(function(item){
+          return GUEST_INFO.indexOf(item) > -1
+        });
+        new Valine({
+            el: '#comments',
+            notify: 'false' == 'true',
+            verify: 'false' == 'true',
+            appId: "ds54farWshFsUraKxWRVVf4G-gzGzoHsz",
+            appKey: "q4rgias5HDeq09ugweytekJQ",
+            avatar: "mm",
+            placeholder: "说点什么吧!(别忘了先填写上面的昵称哦)",
+            guest_info: guest_info.length == 0 ? GUEST_INFO : guest_info,
+            pageSize: "10"
+        })
+    </script>
+    <!-- Valine Comments end -->
+
+
+
+
+
+
+
+
+
+
+</article>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        站点总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        站点总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>This blog is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.</span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>WangXT &copy; 2018 - 2020</span>
+            <span>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://wxt406611016.github.io/2020/09/20/flask+redis-限制ip访问频率/&title=《flask+redis限制ip访问速率》 — Welcome To Wangxt's Blog&pic=https://wxt406611016.github.io/img/host.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://wxt406611016.github.io/2020/09/20/flask+redis-限制ip访问频率/&title=《flask+redis限制ip访问速率》 — Welcome To Wangxt's Blog&source=" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://wxt406611016.github.io/2020/09/20/flask+redis-限制ip访问频率/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《flask+redis限制ip访问速率》 — Welcome To Wangxt's Blog&url=https://wxt406611016.github.io/2020/09/20/flask+redis-限制ip访问频率/&via=https://wxt406611016.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://wxt406611016.github.io/2020/09/20/flask+redis-限制ip访问频率/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAN4AAADeCAAAAAB3DOFrAAACtElEQVR42u3a0U6EQAwF0P3/n9ZXE1e4tzOjxByeNgjDHExo0/b1io+PL8fXM8nv/K/Xd32/ctuBh4eHt7D178eMd72h/N72yjdPxMPDwzvGm20iuev6g76y8vU1eHh4eE/jXa+QpL8ra+Lh4eH9V16eoOfr4OHh4T2HNysEzMq4s/WP11rw8PDwYl7eRXrO7yP9PTw8PLzlrnqSEJ84ZsHgzTp4eHh4B3htyXUFnKTUs5bb9cAWHh4e3l5eu936zY1KuruKIHh4eHgneMnmVgat8sZVW5yt/wF4eHh4v8Lb1YjKg0o7blUg8fDw8Lby2tZ+PhSVhIF2IDUatMLDw8M7xksws03nCfosFEVhCQ8PD+8Ab/2TnX/625bY7JW9ZpEEDw8PL+a1BdP8fJ6I5y+iDkV4eHh4B3jJRzxfqG1W5YCVsi8eHh7eXt5KIjscfiobWrNn4eHh4f0tb9YAWx9NmBV5X0mkwsPDw9vKy9tLSZ7ell/bQYSbXeHh4eEd4O2aTZoNSOUJfd7Ni2rVeHh4eAu8WeG1TbJnxYU87f7xPB4eHt4f8dbT5fWUPS92RLEFDw8PbxOvbXS1wwHtR78dFLgJDHh4eHibeL/Z0GpLt+3AQTGrhYeHh7fMyx+fh4S2PDFrpCXBBg8PD+80b7ZQUmJom1vtwEHdc8PDw8PbylsfMM0fn6fg+fjCTWDAw8PDO8CbpdErhYzZNcVMGR4eHt4m3kd5rCDz3/mowU0ijoeHh3eAtxJPZqlzmy63L2h44OHh4Y3qnLPPej32VPb080//TTECDw8P7wBv1jnK783HEWZB68czeHh4eA/grT+4HSzI0/c35/Hw8PAewJulwvkraEsVxdAVHh4e3lZeUoxYGRFYH71qy754eHh453iz5HgWEnYNZh3p7+Hh4eHd8z4BU3gYPH+2BdUAAAAASUVORK5CYII=" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: false };
+
+
+</script>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/main.min.js"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/search.min.js" async></script>
+
+
+
+
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+</body>
+</html>

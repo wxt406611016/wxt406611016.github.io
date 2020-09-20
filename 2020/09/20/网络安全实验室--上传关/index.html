@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    
+    <title>网络安全实验室--上传关 | Welcome To Wangxt&#39;s Blog</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content>
+    <meta name="description" content="基础关题目地址网络安全实验室之上传关，题目略少，也很基础，如有错误，欢迎在评论中指出。 1.请上传一张jpg格式的图片只能上传jpg格式的图片哦～！（过关地址）解：上传一张jpg图片，被嘲讽了没有得到flag，想到实际应上传php文件，应该想到上传jpg文件然后修改请求报文里的相关内容，先bp抓包，发送到repeater，修改filename后的后缀名，将jpg改为php，点击go，得到flag。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="网络安全实验室--上传关">
+<meta property="og:url" content="https://wxt406611016.github.io/2020/09/20/网络安全实验室--上传关/index.html">
+<meta property="og:site_name" content="Welcome To Wangxt&#39;s Blog">
+<meta property="og:description" content="基础关题目地址网络安全实验室之上传关，题目略少，也很基础，如有错误，欢迎在评论中指出。 1.请上传一张jpg格式的图片只能上传jpg格式的图片哦～！（过关地址）解：上传一张jpg图片，被嘲讽了没有得到flag，想到实际应上传php文件，应该想到上传jpg文件然后修改请求报文里的相关内容，先bp抓包，发送到repeater，修改filename后的后缀名，将jpg改为php，点击go，得到flag。">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="https://s2.ax1x.com/2019/02/20/k2h8MQ.png">
+<meta property="og:image" content="https://s2.ax1x.com/2019/02/20/kRidBj.png">
+<meta property="og:image" content="https://s2.ax1x.com/2019/02/20/kRCxLd.png">
+<meta property="og:updated_time" content="2019-02-20T14:57:34.817Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="网络安全实验室--上传关">
+<meta name="twitter:description" content="基础关题目地址网络安全实验室之上传关，题目略少，也很基础，如有错误，欢迎在评论中指出。 1.请上传一张jpg格式的图片只能上传jpg格式的图片哦～！（过关地址）解：上传一张jpg图片，被嘲讽了没有得到flag，想到实际应上传php文件，应该想到上传jpg文件然后修改请求报文里的相关内容，先bp抓包，发送到repeater，修改filename后的后缀名，将jpg改为php，点击go，得到flag。">
+<meta name="twitter:image" content="https://s2.ax1x.com/2019/02/20/k2h8MQ.png">
+    
+        <link rel="alternate" type="application/atom+xml" title="Welcome To Wangxt&#39;s Blog" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/img/favicon.ico">
+    <link rel="stylesheet" href="//unpkg.com/hexo-theme-material-indigo@latest/css/style.css">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/host.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">WangXT</h5>
+          <a href="mailto:wxt406611016@gmail.com" title="wxt406611016@gmail.com" class="mail">wxt406611016@gmail.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                Home
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                Archives
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="http://cs.cumt.edu.cn/" target="_blank" >
+                <i class="icon icon-lg icon-tags"></i>
+                CUMT
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/wxt406611016" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://weibo.com/6327552090" target="_blank" >
+                <i class="icon icon-lg icon-weibo"></i>
+                Weibo
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">网络安全实验室--上传关</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="Search">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">网络安全实验室--上传关</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2020-09-20T07:26:27.387Z" itemprop="datePublished" class="page-time">
+  2020-09-20
+</time>
+
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#1-请上传一张jpg格式的图片"><span class="post-toc-number">1.</span> <span class="post-toc-text">1.请上传一张jpg格式的图片</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#2-请上传一张jpg格式的图片"><span class="post-toc-number">2.</span> <span class="post-toc-text">2.请上传一张jpg格式的图片</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#3-请上传一张jpg格式的图片"><span class="post-toc-number">3.</span> <span class="post-toc-text">3.请上传一张jpg格式的图片</span></a></li></ol>
+        </nav>
+    </aside>
+
+
+<article id="post-网络安全实验室--上传关"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">网络安全实验室--上传关</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2020-09-20 15:26:27" datetime="2020-09-20T07:26:27.387Z"  itemprop="datePublished">2020-09-20</time>
+
+            
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <p><a href="http://hackinglab.cn/index.php" target="_blank" rel="noopener">基础关题目地址</a><br><strong>网络安全实验室之上传关，题目略少，也很基础，如有错误，欢迎在评论中指出。</strong></p>
+<h2 id="1-请上传一张jpg格式的图片"><a href="#1-请上传一张jpg格式的图片" class="headerlink" title="1.请上传一张jpg格式的图片"></a>1.请上传一张jpg格式的图片</h2><p><strong>只能上传jpg格式的图片哦～！</strong><br><a href="http://lab1.xseclab.com/upload1_a4daf6890f1166fd88f386f098b182af/" target="_blank" rel="noopener">（过关地址）</a><br>解：上传一张jpg图片，被嘲讽了没有得到flag，想到实际应上传php文件，应该想到上传jpg文件然后修改请求报文里的相关内容，先bp抓包，发送到repeater，修改filename后的后缀名，将jpg改为php，点击go，得到flag。<br>ps:还有一种方法，通过查看页面源代码，发现是前端JS控制的，直接利用NoScript插件禁用JS功能，然后上传php文件，得到flag。<br><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://s2.ax1x.com/2019/02/20/k2h8MQ.png" alt="修改filename后缀" title>
+                </div>
+                <div class="image-caption">修改filename后缀</div>
+            </figure><br><em>key is IKHJL9786#$%^&amp;</em></p>
+<h2 id="2-请上传一张jpg格式的图片"><a href="#2-请上传一张jpg格式的图片" class="headerlink" title="2.请上传一张jpg格式的图片"></a>2.请上传一张jpg格式的图片</h2><p><strong>只能是jpg哦！</strong><br><a href="http://lab1.xseclab.com/upload2_31cc2e024f91058a742d8bed95c7ca4f/" target="_blank" rel="noopener">（过关地址）</a><br>解：上传一张jpg文件，提示信息和上道题类似，解决方法也相同，先上传一张jpg文件然后bp抓包发送到repeater，修改filename里的后缀，将jpg改为php，得到flag。<br><em>key is 76tyuhjsdvytig#$%^&amp;</em></p>
+<h2 id="3-请上传一张jpg格式的图片"><a href="#3-请上传一张jpg格式的图片" class="headerlink" title="3.请上传一张jpg格式的图片"></a>3.请上传一张jpg格式的图片</h2><p><strong>只能是jpg哦！</strong><br><a href="http://lab1.xseclab.com/upload3_67275a14c1f2dbe0addedfd75e2da8c1/" target="_blank" rel="noopener">（过关地址）</a><br>解：上传一张jpg文件，依然是相似提示，但是按照前两题的解题做法依然得不到flag，查看页面源代码，发现要求文件名第一个”.”后面为jpg就可以，试一下更改filename的后缀名，将jpg改称jpg.php，得到flag。<br><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://s2.ax1x.com/2019/02/20/kRidBj.png" alt="页面源代码" title>
+                </div>
+                <div class="image-caption">页面源代码</div>
+            </figure><br><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://s2.ax1x.com/2019/02/20/kRCxLd.png" alt="修改filename后缀" title>
+                </div>
+                <div class="image-caption">修改filename后缀</div>
+            </figure><br><em>key is jkljdkl232jkljkdl2389</em></p>
+<p><strong>欢迎一起讨论！</strong></p>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    
+    <div class="content">
+        
+
+        
+        <a href="/2020/09/20/网络安全实验室--上传关/" target="_blank" rel="external">https://wxt406611016.github.io/2020/09/20/网络安全实验室--上传关/</a>
+        
+    </div>
+    
+    <footer>
+        <a href="https://wxt406611016.github.io">
+            <img src="/img/host.jpg" alt="WangXT">
+            WangXT
+        </a>
+    </footer>
+</blockquote>
+
+        
+
+
+        <div class="post-footer">
+            
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://wxt406611016.github.io/2020/09/20/网络安全实验室--上传关/&title=《网络安全实验室--上传关》 — Welcome To Wangxt's Blog&pic=https://wxt406611016.github.io/img/host.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://wxt406611016.github.io/2020/09/20/网络安全实验室--上传关/&title=《网络安全实验室--上传关》 — Welcome To Wangxt's Blog&source=" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://wxt406611016.github.io/2020/09/20/网络安全实验室--上传关/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《网络安全实验室--上传关》 — Welcome To Wangxt's Blog&url=https://wxt406611016.github.io/2020/09/20/网络安全实验室--上传关/&via=https://wxt406611016.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://wxt406611016.github.io/2020/09/20/网络安全实验室--上传关/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/2020/09/20/反爬虫策略之font-face/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">反爬虫策略之font-face</h4>
+      </a>
+    </div>
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2020/09/20/flask+redis-限制ip访问频率/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">flask+redis限制ip访问速率</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+    <!-- Valine Comments -->
+    <div class="comments vcomment" id="comments"></div>
+    <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+    <script src="//unpkg.com/valine@latest/dist/Valine.min.js"></script>
+    <!-- Valine Comments script -->
+    <script>
+        var GUEST_INFO = ['nick','mail','link'];
+        var guest_info = 'nick'.split(',').filter(function(item){
+          return GUEST_INFO.indexOf(item) > -1
+        });
+        new Valine({
+            el: '#comments',
+            notify: 'false' == 'true',
+            verify: 'false' == 'true',
+            appId: "ds54farWshFsUraKxWRVVf4G-gzGzoHsz",
+            appKey: "q4rgias5HDeq09ugweytekJQ",
+            avatar: "mm",
+            placeholder: "说点什么吧!(别忘了先填写上面的昵称哦)",
+            guest_info: guest_info.length == 0 ? GUEST_INFO : guest_info,
+            pageSize: "10"
+        })
+    </script>
+    <!-- Valine Comments end -->
+
+
+
+
+
+
+
+
+
+
+</article>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        站点总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        站点总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>This blog is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.</span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>WangXT &copy; 2018 - 2020</span>
+            <span>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://wxt406611016.github.io/2020/09/20/网络安全实验室--上传关/&title=《网络安全实验室--上传关》 — Welcome To Wangxt's Blog&pic=https://wxt406611016.github.io/img/host.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://wxt406611016.github.io/2020/09/20/网络安全实验室--上传关/&title=《网络安全实验室--上传关》 — Welcome To Wangxt's Blog&source=" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://wxt406611016.github.io/2020/09/20/网络安全实验室--上传关/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《网络安全实验室--上传关》 — Welcome To Wangxt's Blog&url=https://wxt406611016.github.io/2020/09/20/网络安全实验室--上传关/&via=https://wxt406611016.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://wxt406611016.github.io/2020/09/20/网络安全实验室--上传关/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAN4AAADeCAAAAAB3DOFrAAACtElEQVR42u3aUU7tMAwFQPa/ad4vEhTOsZMLT5p+oapNMrlSbey8vcXX+4fr852n+x/vPP2djPz5mcMXHh4e3mLp7aK/x3w/49PzycjFFuDh4eFd4+WLyCdOwMnz+Zh4eHh4f5n3NHGb687YeHh4eP8XLxm0TdA36TUeHh7eb/GSBe3DRl5EODUOHh4e3g1em/7+hb+v9Pfw8PDw1l315MN945oFgy/GwcPDw7vAa5v9yVLaJzfFi6T4i4eHh3eWN5smKU+0W5OXbouiMx4eHt4F3g8Ro2zzzzDtdiQbkQVEPDw8vDO85NhT24iakdpV/TAXHh4e3lHefomz8kG+cQd6d3h4eHiHeHnamqfdszE3YeBxLjw8PLxrvFOHrpIn84MI7TofT0bg4eHhXeO1bac2aW5DyOo0RL67eHh4eGte2+5qy8F52j0rmnxxMgIPDw/vGi9fXJvmbgJGW5LAw8PDew1vFh5mAWNzEKHeaDw8PLzLvFkqnLev8vLusVCEh4eHd4HXLiIJJ20jLUmv24Zc9Bvi4eHhrXltm6p9a9Zsa999jH54eHh4R3mzIkXSxNpsyoFDV3h4eHiXecnQmzJEcqyqbZgV4+Dh4eEd4rUf4rxQ25Yb2m0d9vfw8PDw1rw8Pc2bZO2hgX3jLd9QPDw8vFO8pHg6a0G1Taz83eFvhYeHh3eUl7f222XtyxbfvxudLMPDw8O7zNunyLMCRNv0imbHw8PDO8p7L6+8qJqHhyRszEoYeHh4eDd4s55R2/hPEvS8YNFuCh4eHt4NXltQGJ7qKt+aHVPAw8PDeyUv/ygnqXN7Z1+MiMq4eHh4eL/Ky8sHbburTd9/WCceHh7eH+C1dY7NwalZmRgPDw/vNbx906s+s7AIGHVgwMPDwzvKm/3DXxcFys/6FQYeHh7elvcPUUhpzjSENBUAAAAASUVORK5CYII=" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: false };
+
+
+</script>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/main.min.js"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/search.min.js" async></script>
+
+
+
+
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+</body>
+</html>
