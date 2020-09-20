@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    
+    <title>反爬虫策略之font-face | Welcome To Wangxt&#39;s Blog</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content>
+    <meta name="description" content="在互联网快速发展的时代里，爬虫可以说是无处不在。各类热搜以及热点新闻，时时刻刻都在被爬虫获取。如果开发者并不想让内容大范围传播呢？如何应对爬虫呢？常见的方法有验证码验证，以及对频繁登陆ip进行屏蔽，除此之外，还有一种通过font-face自定义字体的方式，可以让爬取到的内容和网页显示的内容完全不一样，从而产生一种是否爬错内容了的感觉。 1.font-face介绍：谈到font-face，也许很多人">
+<meta property="og:type" content="article">
+<meta property="og:title" content="反爬虫策略之font-face">
+<meta property="og:url" content="https://wxt406611016.github.io/2020/03/02/反爬虫策略之font-face/index.html">
+<meta property="og:site_name" content="Welcome To Wangxt&#39;s Blog">
+<meta property="og:description" content="在互联网快速发展的时代里，爬虫可以说是无处不在。各类热搜以及热点新闻，时时刻刻都在被爬虫获取。如果开发者并不想让内容大范围传播呢？如何应对爬虫呢？常见的方法有验证码验证，以及对频繁登陆ip进行屏蔽，除此之外，还有一种通过font-face自定义字体的方式，可以让爬取到的内容和网页显示的内容完全不一样，从而产生一种是否爬错内容了的感觉。 1.font-face介绍：谈到font-face，也许很多人">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="https://imgconvert.csdnimg.cn/aHR0cHM6Ly9zMS5heDF4LmNvbS8yMDIwLzA1LzA3L1llWkV3Ui5wbmc?x-oss-process=image/format,png">
+<meta property="og:image" content="https://imgconvert.csdnimg.cn/aHR0cHM6Ly9zMS5heDF4LmNvbS8yMDIwLzA1LzA3L1llbVl6OC5wbmc?x-oss-process=image/format,png">
+<meta property="og:image" content="https://imgconvert.csdnimg.cn/aHR0cHM6Ly9zMS5heDF4LmNvbS8yMDIwLzA1LzA3L1lld0Z3bi5wbmc?x-oss-process=image/format,png">
+<meta property="og:image" content="https://imgconvert.csdnimg.cn/aHR0cHM6Ly9zMS5heDF4LmNvbS8yMDIwLzA1LzA3L1llRHJrUi5wbmc?x-oss-process=image/format,png">
+<meta property="og:image" content="https://imgconvert.csdnimg.cn/aHR0cHM6Ly9zMS5heDF4LmNvbS8yMDIwLzA1LzA3L1llUmxpNC5qcGc?x-oss-process=image/format,png">
+<meta property="og:image" content="https://imgconvert.csdnimg.cn/aHR0cHM6Ly9zMS5heDF4LmNvbS8yMDIwLzA1LzA3L1llb3Q5VS5wbmc?x-oss-process=image/format,png">
+<meta property="og:image" content="https://imgconvert.csdnimg.cn/aHR0cHM6Ly9zMS5heDF4LmNvbS8yMDIwLzA1LzA3L1llb0poVC5wbmc?x-oss-process=image/format,png">
+<meta property="og:updated_time" content="2020-09-20T08:37:09.404Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="反爬虫策略之font-face">
+<meta name="twitter:description" content="在互联网快速发展的时代里，爬虫可以说是无处不在。各类热搜以及热点新闻，时时刻刻都在被爬虫获取。如果开发者并不想让内容大范围传播呢？如何应对爬虫呢？常见的方法有验证码验证，以及对频繁登陆ip进行屏蔽，除此之外，还有一种通过font-face自定义字体的方式，可以让爬取到的内容和网页显示的内容完全不一样，从而产生一种是否爬错内容了的感觉。 1.font-face介绍：谈到font-face，也许很多人">
+<meta name="twitter:image" content="https://imgconvert.csdnimg.cn/aHR0cHM6Ly9zMS5heDF4LmNvbS8yMDIwLzA1LzA3L1llWkV3Ui5wbmc?x-oss-process=image/format,png">
+    
+        <link rel="alternate" type="application/atom+xml" title="Welcome To Wangxt&#39;s Blog" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/img/favicon.ico">
+    <link rel="stylesheet" href="//unpkg.com/hexo-theme-material-indigo@latest/css/style.css">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/kobe.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">WangXT</h5>
+          <a href="mailto:wxt406611016@gmail.com" title="wxt406611016@gmail.com" class="mail">wxt406611016@gmail.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                Home
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                Archives
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/wxt406611016" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://www.ucas.ac.cn/" target="_blank" >
+                <i class="icon icon-lg icon-tags"></i>
+                UCAS
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="http://www.iie.ac.cn/" target="_blank" >
+                <i class="icon icon-lg icon-institution"></i>
+                IIE
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">反爬虫策略之font-face</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="Search">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">反爬虫策略之font-face</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2020-03-01T16:00:00.000Z" itemprop="datePublished" class="page-time">
+  2020-03-02
+</time>
+
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#1-font-face介绍："><span class="post-toc-number">1.</span> <span class="post-toc-text">1.font-face介绍：</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#2-font-face原理："><span class="post-toc-number">2.</span> <span class="post-toc-text">2.font-face原理：</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#3-实现font-face："><span class="post-toc-number">3.</span> <span class="post-toc-text">3.实现font-face：</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#如有错误或建议，请在评论处指出！"><span class="post-toc-number">3.0.1.</span> <span class="post-toc-text">如有错误或建议，请在评论处指出！</span></a></li></ol></li></ol></li></ol>
+        </nav>
+    </aside>
+
+
+<article id="post-反爬虫策略之font-face"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">反爬虫策略之font-face</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2020-03-02 00:00:00" datetime="2020-03-01T16:00:00.000Z"  itemprop="datePublished">2020-03-02</time>
+
+            
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <p><strong>在互联网快速发展的时代里，爬虫可以说是无处不在。各类热搜以及热点新闻，时时刻刻都在被爬虫获取。如果开发者并不想让内容大范围传播呢？如何应对爬虫呢？常见的方法有验证码验证，以及对频繁登陆ip进行屏蔽，除此之外，还有一种通过font-face自定义字体的方式，可以让爬取到的内容和网页显示的内容完全不一样，从而产生一种是否爬错内容了的感觉。</strong></p>
+<h2 id="1-font-face介绍："><a href="#1-font-face介绍：" class="headerlink" title="1.font-face介绍："></a>1.font-face介绍：</h2><p>谈到font-face，也许很多人并不熟悉，但是说到应用此技术的公司，大家肯定都很熟悉了，58同城，猫眼电影等，都采用了font-face策略来应对爬虫。以<a href="https://su.58.com/zufang/pn2/?PGTID=0d300008-0000-5965-8ce1-1873463f7758&amp;ClickID=1" target="_blank" rel="noopener">58同城</a>为例，打开审查元素，发现页面内的3室2厅1卫 和120㎡中的数字均变成了乱码 —-“驋室麣厅龒卫”,”龒麣龤㎡”。所以即便爬虫找到了正确位置，也依然无法获得正确信息。<br><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://imgconvert.csdnimg.cn/aHR0cHM6Ly9zMS5heDF4LmNvbS8yMDIwLzA1LzA3L1llWkV3Ui5wbmc?x-oss-process=image/format,png" alt="58同城页面信息" title>
+                </div>
+                <div class="image-caption">58同城页面信息</div>
+            </figure></p>
+<h2 id="2-font-face原理："><a href="#2-font-face原理：" class="headerlink" title="2.font-face原理："></a>2.font-face原理：</h2><p>仔细观察审查元素信息，在styles栏里发现了font-family，这就是自定义字体，可以把乱码显示成正常的数字。<br><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://imgconvert.csdnimg.cn/aHR0cHM6Ly9zMS5heDF4LmNvbS8yMDIwLzA1LzA3L1llbVl6OC5wbmc?x-oss-process=image/format,png" alt="审查元素" title>
+                </div>
+                <div class="image-caption">审查元素</div>
+            </figure><br>于是我们要找到font-family字样，右键点击网页源代码，搜索font-family，找到@font-face等关键字，通过分析data:application/font-ttf，可以猜测后面长串字符串应该是对某个ttf字体进行了base64编码。<br><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://imgconvert.csdnimg.cn/aHR0cHM6Ly9zMS5heDF4LmNvbS8yMDIwLzA1LzA3L1lld0Z3bi5wbmc?x-oss-process=image/format,png" alt="查看网页源代码" title>
+                </div>
+                <div class="image-caption">查看网页源代码</div>
+            </figure><br>上python，解码生成ttf字体文件。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">from fontTools.ttLib import TTFont</span><br><span class="line">import base64</span><br><span class="line">import io</span><br><span class="line"></span><br><span class="line">key=&apos;&apos;&apos;</span><br><span class="line">AAEAAAALAIAAAwAwR1NVQiCLJXoAAAE.......AAAA    #key值为源代码中的长串字符串</span><br><span class="line">&apos;&apos;&apos;</span><br><span class="line">data = base64.b64decode(key) #base64解码</span><br><span class="line">fonts = TTFont(io.BytesIO(data)) #生成二进制字节</span><br><span class="line">fonts.save(&apos;font-face.ttf&apos;)</span><br></pre></td></tr></table></figure>
+<p>将生成的font-face.ttf通过<a href="http://fontstore.baidu.com/static/editor/index.html" target="_blank" rel="noopener">百度字体编辑器</a>打开，可以看到对所有数字进行了重新编码。<br><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://imgconvert.csdnimg.cn/aHR0cHM6Ly9zMS5heDF4LmNvbS8yMDIwLzA1LzA3L1llRHJrUi5wbmc?x-oss-process=image/format,png" alt="自定义字体" title>
+                </div>
+                <div class="image-caption">自定义字体</div>
+            </figure><br>是不是有点儿疑惑？怎么对数字重新编码？？？其实也可以理解为是对编码对应的图形进行了改变，比如同样是编码(0x9a4b)，在常规字体中是”驋”的模样可能在B字体中就是”2”的模样，在自己设计的字体里，可以任性的把(0x9a4b)编码对应的图形设计成”2”的形状，举个例子:<br><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://imgconvert.csdnimg.cn/aHR0cHM6Ly9zMS5heDF4LmNvbS8yMDIwLzA1LzA3L1llUmxpNC5qcGc?x-oss-process=image/format,png" alt="自定义字体有不一样的形状" title>
+                </div>
+                <div class="image-caption">自定义字体有不一样的形状</div>
+            </figure><br>同样是(0x9a4b)编码，在字体A中，你认为是2，在字体B中，即便和字体A中形状不一样，你一样认为是2，但在自定义字体中，你会认为是w。同样的道理，我们可以把常规字体中的乱码，设计成数字的形状。<br>所以在自定义字体的基础上，我们可以变相认为对字体进行了加密，从而起到保护重要数据的作用。</p>
+<h2 id="3-实现font-face："><a href="#3-实现font-face：" class="headerlink" title="3.实现font-face："></a>3.实现font-face：</h2><p>理解了font-face的原理后，我们可以将font-face策略应用到自己的web项目中。为了简便操作，我直接用了第二步中在58同城网站下载的字体hhh(自行设计字体也很cool，想怎么画怎么画)。在前端html文件中加入以下内容:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&lt;style&gt;</span><br><span class="line">@font-face&#123;font-family:&apos;secret&apos;;src:url(&apos;data:application/font-ttf;</span><br><span class="line">charset=utf-8;base64,AAEAAAALAIAAAwAwR1NVQiCLJXoA.......AAAAAAAAA&apos;)</span><br><span class="line">format(&apos;truetype&apos;)&#125;.strongbox&#123;font-family:&apos;fangchan-secret&apos;,&apos;Hiragino Sans GB&apos;,</span><br><span class="line">&apos;Microsoft yahei&apos;,Arial,sans-serif,&apos;宋体&apos;!important&#125;</span><br><span class="line">&lt;/style&gt;</span><br><span class="line">&lt;style&gt;</span><br><span class="line">.font&#123;font-family:&apos;secret&apos;,&apos;Hiragino Sans GB&apos;,&apos;Microsoft yahei&apos;,Arial,sans-serif,&apos;\5B8B\4F53&apos; !important&#125;</span><br><span class="line">&lt;/style&gt;</span><br></pre></td></tr></table></figure></p>
+<p>上面一段的作用为引入名叫”secret”的自定义字体,然后通过style设计.font，使所有class为”font”的标签应用此自定义字体。换言之，当你想用自定义字体时，在相应的标签中加入class=”font”，如下html源码和前端显示结果:<br><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://imgconvert.csdnimg.cn/aHR0cHM6Ly9zMS5heDF4LmNvbS8yMDIwLzA1LzA3L1llb3Q5VS5wbmc?x-oss-process=image/format,png" alt="html源码" title>
+                </div>
+                <div class="image-caption">html源码</div>
+            </figure><br><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://imgconvert.csdnimg.cn/aHR0cHM6Ly9zMS5heDF4LmNvbS8yMDIwLzA1LzA3L1llb0poVC5wbmc?x-oss-process=image/format,png" alt="前端显示结果" title>
+                </div>
+                <div class="image-caption">前端显示结果</div>
+            </figure><br>可见2020 04-27日期字样在源码中显示为乱码。<br><a href="http://wxt123.top/news" target="_blank" rel="noopener">访问上图中我的web项目，点击链接即可，</a>(暂时只对页面右侧一栏中的日期做了font-face加密。)</p>
+<h4 id="如有错误或建议，请在评论处指出！"><a href="#如有错误或建议，请在评论处指出！" class="headerlink" title="如有错误或建议，请在评论处指出！"></a>如有错误或建议，请在评论处指出！</h4>
+        </div>
+
+        <blockquote class="post-copyright">
+    
+    <div class="content">
+        
+
+        
+        <a href="/2020/03/02/反爬虫策略之font-face/" target="_blank" rel="external">https://wxt406611016.github.io/2020/03/02/反爬虫策略之font-face/</a>
+        
+    </div>
+    
+    <footer>
+        <a href="https://wxt406611016.github.io">
+            <img src="/img/kobe.jpg" alt="WangXT">
+            WangXT
+        </a>
+    </footer>
+</blockquote>
+
+        
+
+
+        <div class="post-footer">
+            
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://wxt406611016.github.io/2020/03/02/反爬虫策略之font-face/&title=《反爬虫策略之font-face》 — Welcome To Wangxt's Blog&pic=https://wxt406611016.github.io/img/kobe.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://wxt406611016.github.io/2020/03/02/反爬虫策略之font-face/&title=《反爬虫策略之font-face》 — Welcome To Wangxt's Blog&source=" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://wxt406611016.github.io/2020/03/02/反爬虫策略之font-face/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《反爬虫策略之font-face》 — Welcome To Wangxt's Blog&url=https://wxt406611016.github.io/2020/03/02/反爬虫策略之font-face/&via=https://wxt406611016.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://wxt406611016.github.io/2020/03/02/反爬虫策略之font-face/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/2020/04/11/flask+redis-限制ip访问频率/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">flask+redis限制ip访问速率</h4>
+      </a>
+    </div>
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2020/02/08/python实现微信调用腾讯智能闲聊/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">python+微信+腾讯智能闲聊</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+    <!-- Valine Comments -->
+    <div class="comments vcomment" id="comments"></div>
+    <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+    <script src="//unpkg.com/valine@latest/dist/Valine.min.js"></script>
+    <!-- Valine Comments script -->
+    <script>
+        var GUEST_INFO = ['nick','mail','link'];
+        var guest_info = 'nick'.split(',').filter(function(item){
+          return GUEST_INFO.indexOf(item) > -1
+        });
+        new Valine({
+            el: '#comments',
+            notify: 'false' == 'true',
+            verify: 'false' == 'true',
+            appId: "ds54farWshFsUraKxWRVVf4G-gzGzoHsz",
+            appKey: "q4rgias5HDeq09ugweytekJQ",
+            avatar: "mm",
+            placeholder: "说点什么吧!(别忘了先填写上面的昵称哦)",
+            guest_info: guest_info.length == 0 ? GUEST_INFO : guest_info,
+            pageSize: "10"
+        })
+    </script>
+    <!-- Valine Comments end -->
+
+
+
+
+
+
+
+
+
+
+</article>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        站点总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        站点总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>This blog is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.</span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>WangXT &copy; 2018 - 2020</span>
+            <span>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://wxt406611016.github.io/2020/03/02/反爬虫策略之font-face/&title=《反爬虫策略之font-face》 — Welcome To Wangxt's Blog&pic=https://wxt406611016.github.io/img/kobe.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://wxt406611016.github.io/2020/03/02/反爬虫策略之font-face/&title=《反爬虫策略之font-face》 — Welcome To Wangxt's Blog&source=" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://wxt406611016.github.io/2020/03/02/反爬虫策略之font-face/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《反爬虫策略之font-face》 — Welcome To Wangxt's Blog&url=https://wxt406611016.github.io/2020/03/02/反爬虫策略之font-face/&via=https://wxt406611016.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://wxt406611016.github.io/2020/03/02/反爬虫策略之font-face/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAN4AAADeCAAAAAB3DOFrAAACtElEQVR42u3a0U4jMQwF0P7/T7OvrBbae+2ksNKZJzRDmZwgxa7txyO+Pj5dn+/kv/n8yj/7uHHh4eHhLZaevPg7ZLKIf59+lFe+Zjw8PLzbvOdLacPA87+T3NmsBw8PD++38dpg0P7NfJvw8PDw/i9enmRvFpe8BQ8PD++neO2i29LDqWLuxVoLHh4eXsw7lQq/8+cr/T08PDy8dVe9TZrbFDm/P1wtHh4e3gVefuBuktpNyt4Wi/Hw8PDez2sHrdowMDv68+DxxR08PDy8o7z2aE7Y9e4uysQvwgYeHh7eNV6eLp86yuuFxsHmi4iHh4eHd4GXv2DW4G8HC4518/Dw8PAu8PJCbV7MTdLivJ22CUt4eHh47+G1r2lT6nx0oA0SL5B4eHh4h3jJkTp7mpczZqEi2ho8PDy8C7w8MMyKCO3T/NBvtwAPDw/vLG8zCpC3+TfttFnijoeHh3ePlxde27GqtgR8qrRRl2Lw8PDwFrz9iEDOyMvBedJfN8Dw8PDwSt7sUM4T4raQEf0fglD0bZUaDw8Pb82bpbbtSEG+EbNE/MVm4eHh4V3j5aWKvNl/qhmWJ9PfBgY8PDy8Q7y2ZVU07OONa5tkxVgYHh4e3gXeWWqbdm9Gr1YNMDw8PLzLvFlTfwObBaFhDMTDw8Mb8fIW1OaVM/Ys2Dw2y8LDw8Nb8NoXz1LevOTRFnPx8PDwbvNOJc1tufZUCfjR7h8eHh7eBVjb+noeQtrBrE1Y+mt0AA8PD+8ob3OUt2XZTYrcfhYPDw/vNq8NBrOn++JFEhjw8PDw3smbHcr5t/48/MxqDi8CAx4eHt6P8toSQFvmSAJGkZrj4eHh/QJeGySSQ7wdrjo8U4aHh4c34rWjA5vG1SbMDAMDHh4e3lFe+4U/We6+wZ+HhGNzZ3h4eHiveX8ABORBBetISSoAAAAASUVORK5CYII=" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: false };
+
+
+</script>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/main.min.js"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/search.min.js" async></script>
+
+
+
+
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+</body>
+</html>

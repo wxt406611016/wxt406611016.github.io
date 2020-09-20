@@ -14,7 +14,7 @@
     
     
     
-    <title>lajljdlsjflsjflsfjlskdfjp访问速率 | Welcome To Wangxt&#39;s Blog</title>
+    <title>flask+redis限制ip访问速率 | Welcome To Wangxt&#39;s Blog</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     
     <meta name="theme-color" content="#3F51B5">
@@ -23,16 +23,16 @@
     <meta name="keywords" content>
     <meta name="description" content="上篇介绍了利用font-face进行反爬虫，这篇介绍另一种常见方法–验证码校验，对频繁访问的ip进行限制，强制要求验证码验证，验证成功方可继续访问。 1.限制逻辑/策略： 利用request.remote_addr获取客户端ip； 客户端访问时，服务器判断redis中是否有客户端ip； 若不存在，将客户端ip存入redis中，对应值设为1；若存在，客户端ip对应值+1； 若redis中客户端ip对">
 <meta property="og:type" content="article">
-<meta property="og:title" content="lajljdlsjflsjflsfjlskdfjp访问速率">
-<meta property="og:url" content="https://wxt406611016.github.io/2020/09/20/test/index.html">
+<meta property="og:title" content="flask+redis限制ip访问速率">
+<meta property="og:url" content="https://wxt406611016.github.io/2020/04/11/flask+redis-限制ip访问频率/index.html">
 <meta property="og:site_name" content="Welcome To Wangxt&#39;s Blog">
 <meta property="og:description" content="上篇介绍了利用font-face进行反爬虫，这篇介绍另一种常见方法–验证码校验，对频繁访问的ip进行限制，强制要求验证码验证，验证成功方可继续访问。 1.限制逻辑/策略： 利用request.remote_addr获取客户端ip； 客户端访问时，服务器判断redis中是否有客户端ip； 若不存在，将客户端ip存入redis中，对应值设为1；若存在，客户端ip对应值+1； 若redis中客户端ip对">
 <meta property="og:locale" content="default">
 <meta property="og:image" content="https://imgconvert.csdnimg.cn/aHR0cHM6Ly9zMS5heDF4LmNvbS8yMDIwLzA1LzA3L1ltMGtMUS5wbmc?x-oss-process=image/format,png">
 <meta property="og:image" content="https://imgconvert.csdnimg.cn/aHR0cHM6Ly9zMS5heDF4LmNvbS8yMDIwLzA1LzA3L1ltMEZzZy5wbmc?x-oss-process=image/format,png">
-<meta property="og:updated_time" content="2020-09-20T07:54:51.788Z">
+<meta property="og:updated_time" content="2020-09-20T08:36:21.915Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="lajljdlsjflsjflsfjlskdfjp访问速率">
+<meta name="twitter:title" content="flask+redis限制ip访问速率">
 <meta name="twitter:description" content="上篇介绍了利用font-face进行反爬虫，这篇介绍另一种常见方法–验证码校验，对频繁访问的ip进行限制，强制要求验证码验证，验证成功方可继续访问。 1.限制逻辑/策略： 利用request.remote_addr获取客户端ip； 客户端访问时，服务器判断redis中是否有客户端ip； 若不存在，将客户端ip存入redis中，对应值设为1；若存在，客户端ip对应值+1； 若redis中客户端ip对">
 <meta name="twitter:image" content="https://imgconvert.csdnimg.cn/aHR0cHM6Ly9zMS5heDF4LmNvbS8yMDIwLzA1LzA3L1ltMGtMUS5wbmc?x-oss-process=image/format,png">
     
@@ -58,7 +58,7 @@
     <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
       <div class="brand">
         <a href="/" class="avatar waves-effect waves-circle waves-light">
-          <img src="/img/host.jpg">
+          <img src="/img/kobe.jpg">
         </a>
         <hgroup class="introduce">
           <h5 class="nickname">WangXT</h5>
@@ -84,13 +84,6 @@
             </li>
         
             <li class="waves-block waves-effect">
-              <a href="http://cs.cumt.edu.cn/" target="_blank" >
-                <i class="icon icon-lg icon-tags"></i>
-                CUMT
-              </a>
-            </li>
-        
-            <li class="waves-block waves-effect">
               <a href="https://github.com/wxt406611016" target="_blank" >
                 <i class="icon icon-lg icon-github"></i>
                 Github
@@ -98,9 +91,16 @@
             </li>
         
             <li class="waves-block waves-effect">
-              <a href="https://weibo.com/6327552090" target="_blank" >
-                <i class="icon icon-lg icon-weibo"></i>
-                Weibo
+              <a href="https://www.ucas.ac.cn/" target="_blank" >
+                <i class="icon icon-lg icon-tags"></i>
+                UCAS
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="http://www.iie.ac.cn/" target="_blank" >
+                <i class="icon icon-lg icon-institution"></i>
+                IIE
               </a>
             </li>
         
@@ -115,7 +115,7 @@
         <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
           <i class="icon icon-lg icon-navicon"></i>
         </a>
-        <div class="flex-col header-title ellipsis">lajljdlsjflsjflsfjlskdfjp访问速率</div>
+        <div class="flex-col header-title ellipsis">flask+redis限制ip访问速率</div>
         
         <div class="search-wrap" id="search-wrap">
             <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
@@ -137,11 +137,11 @@
 <header class="content-header post-header">
 
     <div class="container fade-scale">
-        <h1 class="title">lajljdlsjflsjflsfjlskdfjp访问速率</h1>
+        <h1 class="title">flask+redis限制ip访问速率</h1>
         <h5 class="subtitle">
             
-                <time datetime="2020-09-20T07:54:51.784Z" itemprop="datePublished" class="page-time">
-  2020-09-20
+                <time datetime="2020-04-10T16:00:00.000Z" itemprop="datePublished" class="page-time">
+  2020-04-11
 </time>
 
 
@@ -165,13 +165,13 @@
     </aside>
 
 
-<article id="post-test"
+<article id="post-flask+redis-限制ip访问频率"
   class="post-article article-type-post fade" itemprop="blogPost">
 
     <div class="post-card">
-        <h1 class="post-card-title">lajljdlsjflsjflsfjlskdfjp访问速率</h1>
+        <h1 class="post-card-title">flask+redis限制ip访问速率</h1>
         <div class="post-meta">
-            <time class="post-time" title="2020-09-20 15:54:51" datetime="2020-09-20T07:54:51.784Z"  itemprop="datePublished">2020-09-20</time>
+            <time class="post-time" title="2020-04-11 00:00:00" datetime="2020-04-10T16:00:00.000Z"  itemprop="datePublished">2020-04-11</time>
 
             
 
@@ -211,27 +211,22 @@
 <h2 id="PS-若设置反向代理需注意！！！"><a href="#PS-若设置反向代理需注意！！！" class="headerlink" title="PS:若设置反向代理需注意！！！"></a>PS:若设置反向代理需注意！！！</h2><p>如果设置了反向代理的话，request.remote_addr则不会返回客户端的真实ip。以nginx反向代理为例，客户想要访问服务器，实际请求路线是client-&gt;nginx-&gt;server，而request.remote_addr表示的是上一级ip，而server的上一级ip是nginx服务器的ip.</p>
 <p>解决办法：以nginx为例，在配置文件中使用X-Forwarded-For，然后后端获取ip方式由 <code>ip=request.remote_addr</code>更改为<code>ip = request.headers.getlist(&quot;X-Forwarded-For&quot;)[0]</code> 即可。</p>
 <p><a href="http://wxt123.top" target="_blank" rel="noopener">访问上图中我的web项目，点击链接即可，</a></p>
-<h4 id="如有错误或建议，请在评论处指出！"><a href="#如有错误或建议，请在评论处指出！" class="headerlink" title="如有错误或建议，请在评论处指出！"></a>如有错误或建议，请在评论处指出！</h4><p>2020年 04月 11日 星期六 00:00:00 CST</p>
-
+<h4 id="如有错误或建议，请在评论处指出！"><a href="#如有错误或建议，请在评论处指出！" class="headerlink" title="如有错误或建议，请在评论处指出！"></a>如有错误或建议，请在评论处指出！</h4>
         </div>
 
         <blockquote class="post-copyright">
     
     <div class="content">
         
-<span class="post-time">
-    Last updated: <time datetime="2020-09-20T07:54:51.788Z" itemprop="dateUpdated">2020-09-20 15:54:51</time>
-</span><br>
-
 
         
-        <a href="/2020/09/20/test/" target="_blank" rel="external">https://wxt406611016.github.io/2020/09/20/test/</a>
+        <a href="/2020/04/11/flask+redis-限制ip访问频率/" target="_blank" rel="external">https://wxt406611016.github.io/2020/04/11/flask+redis-限制ip访问频率/</a>
         
     </div>
     
     <footer>
         <a href="https://wxt406611016.github.io">
-            <img src="/img/host.jpg" alt="WangXT">
+            <img src="/img/kobe.jpg" alt="WangXT">
             WangXT
         </a>
     </footer>
@@ -250,7 +245,7 @@
 <div class="page-share" id="pageShare">
     <ul class="reset share-icons">
       <li>
-        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://wxt406611016.github.io/2020/09/20/test/&title=《lajljdlsjflsjflsfjlskdfjp访问速率》 — Welcome To Wangxt's Blog&pic=https://wxt406611016.github.io/img/host.jpg" data-title="微博">
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://wxt406611016.github.io/2020/04/11/flask+redis-限制ip访问频率/&title=《flask+redis限制ip访问速率》 — Welcome To Wangxt's Blog&pic=https://wxt406611016.github.io/img/kobe.jpg" data-title="微博">
           <i class="icon icon-weibo"></i>
         </a>
       </li>
@@ -260,22 +255,22 @@
         </a>
       </li>
       <li>
-        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://wxt406611016.github.io/2020/09/20/test/&title=《lajljdlsjflsjflsfjlskdfjp访问速率》 — Welcome To Wangxt's Blog&source=" data-title=" QQ">
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://wxt406611016.github.io/2020/04/11/flask+redis-限制ip访问频率/&title=《flask+redis限制ip访问速率》 — Welcome To Wangxt's Blog&source=" data-title=" QQ">
           <i class="icon icon-qq"></i>
         </a>
       </li>
       <li>
-        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://wxt406611016.github.io/2020/09/20/test/" data-title=" Facebook">
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://wxt406611016.github.io/2020/04/11/flask+redis-限制ip访问频率/" data-title=" Facebook">
           <i class="icon icon-facebook"></i>
         </a>
       </li>
       <li>
-        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《lajljdlsjflsjflsfjlskdfjp访问速率》 — Welcome To Wangxt's Blog&url=https://wxt406611016.github.io/2020/09/20/test/&via=https://wxt406611016.github.io" data-title=" Twitter">
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《flask+redis限制ip访问速率》 — Welcome To Wangxt's Blog&url=https://wxt406611016.github.io/2020/04/11/flask+redis-限制ip访问频率/&via=https://wxt406611016.github.io" data-title=" Twitter">
           <i class="icon icon-twitter"></i>
         </a>
       </li>
       <li>
-        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://wxt406611016.github.io/2020/09/20/test/" data-title=" Google+">
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://wxt406611016.github.io/2020/04/11/flask+redis-限制ip访问频率/" data-title=" Google+">
           <i class="icon icon-google-plus"></i>
         </a>
       </li>
@@ -300,9 +295,9 @@
 
   
     <div class="waves-block waves-effect next">
-      <a href="/2020/09/20/网络安全实验室--基础关/" id="post-next" class="post-nav-link">
+      <a href="/2020/03/02/反爬虫策略之font-face/" id="post-next" class="post-nav-link">
         <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
-        <h4 class="title">网络安全实验室--基础关</h4>
+        <h4 class="title">反爬虫策略之font-face</h4>
       </a>
     </div>
   
@@ -400,7 +395,7 @@
 <div class="global-share" id="globalShare">
     <ul class="reset share-icons">
       <li>
-        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://wxt406611016.github.io/2020/09/20/test/&title=《lajljdlsjflsjflsfjlskdfjp访问速率》 — Welcome To Wangxt's Blog&pic=https://wxt406611016.github.io/img/host.jpg" data-title="微博">
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://wxt406611016.github.io/2020/04/11/flask+redis-限制ip访问频率/&title=《flask+redis限制ip访问速率》 — Welcome To Wangxt's Blog&pic=https://wxt406611016.github.io/img/kobe.jpg" data-title="微博">
           <i class="icon icon-weibo"></i>
         </a>
       </li>
@@ -410,22 +405,22 @@
         </a>
       </li>
       <li>
-        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://wxt406611016.github.io/2020/09/20/test/&title=《lajljdlsjflsjflsfjlskdfjp访问速率》 — Welcome To Wangxt's Blog&source=" data-title=" QQ">
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://wxt406611016.github.io/2020/04/11/flask+redis-限制ip访问频率/&title=《flask+redis限制ip访问速率》 — Welcome To Wangxt's Blog&source=" data-title=" QQ">
           <i class="icon icon-qq"></i>
         </a>
       </li>
       <li>
-        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://wxt406611016.github.io/2020/09/20/test/" data-title=" Facebook">
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://wxt406611016.github.io/2020/04/11/flask+redis-限制ip访问频率/" data-title=" Facebook">
           <i class="icon icon-facebook"></i>
         </a>
       </li>
       <li>
-        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《lajljdlsjflsjflsfjlskdfjp访问速率》 — Welcome To Wangxt's Blog&url=https://wxt406611016.github.io/2020/09/20/test/&via=https://wxt406611016.github.io" data-title=" Twitter">
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《flask+redis限制ip访问速率》 — Welcome To Wangxt's Blog&url=https://wxt406611016.github.io/2020/04/11/flask+redis-限制ip访问频率/&via=https://wxt406611016.github.io" data-title=" Twitter">
           <i class="icon icon-twitter"></i>
         </a>
       </li>
       <li>
-        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://wxt406611016.github.io/2020/09/20/test/" data-title=" Google+">
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://wxt406611016.github.io/2020/04/11/flask+redis-限制ip访问频率/" data-title=" Google+">
           <i class="icon icon-google-plus"></i>
         </a>
       </li>
@@ -436,7 +431,7 @@
 <div class="page-modal wx-share" id="wxShare">
     <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
-    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACI0lEQVR42u3aQY6EMAwFUe5/aUaaLQLVt8OMcCqrFt0NfiwsO85x4HX+ruuV6/Xn/56XRZ61bMmQIeOzjPNxkcc/X3kO6+5ZPDYZMmTsw6glSh5umo55bDJkyJCRkkhSTn8pQ4YMGSmjlpSfr/xDwpUhQ8YHGaSJ5YmYfPscw4u9uAwZMj7IqLWaf/P5xfmGDBkyPsI4w9XZOHsxKhkyZIxm8E3/tJTksNrLQhWuDBkyRjD4hhd5fC0p87R7G6cMGTI2YJBjXp2CL92S469VhgwZ+zB4EIS0dis/6MVlyJAxlMHTXGdbvz/aJK9VhgwZUxnk1vwIV1pEpkcrbvEyZMgYzaiFxUMn7StJ1kHZKkOGjHGMWrLrHK1Yu2EnQ4aMHRjFrhcc0eADAFICBkNQGTJkjGPU/paG3jn4VTxsIUOGjA0YvAPuHNToJGsZMmTsw+iPBPggs7PFhhK3DBkyhjJ4yuNHvng52Ckc41moDBkyPstYVfx1hperhhMyZMiYyug3sbXU2UmswWBAhgwZ4xi8HU0LvrStbVW4MmTIGMdIV63prfFWNb0yZMj4OuMMF0+v/aIwaIxlyJAxmpGm2jcSdKcwlSFDxj6MdDDJ3wpP4unY4EgfJkOGjBEMPsjkoadXaq2sDBkyZPBQ0gq0tgF3+0sZMmTIwO0ov0OtJb69mwwZMjZgpE1semyCp1ceiQwZMvZhLEh2APNeSyxDhozRjB+Bax3z7biGrgAAAABJRU5ErkJggg==" alt="微信分享二维码">
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAN4AAADeCAAAAAB3DOFrAAACsElEQVR42u3awW4iQQwE0P3/n85eV8oyVLnbEZHenBAw0K8j0U7Zf/7E19eL69Wr35//95lXrz7f9f2d1y48PDy8S0tPALMFJeB8a57XhoeHh7fHyxfx/Av8zE6+5WQ9eHh4eL+Ll3xm/vnPz+Dh4eH9Lt5sKXkM8Vzu4+Hh4X0O7yQISIKJfLl5HHw5a8HDw8OLeW2J/AmPV/p7eHh4eMdd9XYg4NZ161vw8PDwNnht5LqxxJPxrOd14uHh4W3zZsNPyaDAbAvykOJN8Y2Hh4d3ldeS2pZYvjVtOFvk03h4eHgLvLb1lbfBNgaw8j8JHh4e3h4vL4uP4tRgQGrW7nr5Tjw8PLxl3nkEkBwYszC3PRhehhF4eHh4x7w8im0bUTNSux3R8YCHh4d3lZfErEmQ2pbF7c/9bOPw8PDwNnhJ3JB/UNusOj9mklADDw8Pb4N3NzLID4b8SDh5jIeHh/czvJPmfR5zJNvUhrx1nw0PDw9vxMuHCU4A+SGRM+oCHQ8PD+8qb3tcII888leLu/Dw8PAu8fKitm1lJcVxu3H1CAIeHh7eMi8h5cuaBRltSV0MXeHh4eEt8Irb4jigHTVot/XNGvDw8PAWeCeJ793lzoKM5A+Ah4eHt8GbtbXyTZkFHPn415sqGg8PD2+ZlweveRkdLaJspw0PBjw8PLxlXv5q/gmzYYL2W6KDAQ8PD+8SLw8Rzlti5++J7sLDw8O7yvsqr3bsoB20akv5N4U4Hh4e3gLv5DyZlc5tudxu0PDCw8PDG+Wcd3/Wkx09H66K7sXDw8Nb47VDTifh7LDwHW0THh4e3ifw2q85HyzIy/f/PI+Hh4f3AbxbMcTs3mSD8PDw8H6Glw+htoFCe6jkw6xRCIKHh4e3wGv/4W/b+bMGf36cXOvv4eHh4b3n/QWq8vk+Xa0DagAAAABJRU5ErkJggg==" alt="微信分享二维码">
 </div>
 
 
