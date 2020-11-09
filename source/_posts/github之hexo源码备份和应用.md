@@ -12,5 +12,14 @@ date: 2020-11-09
 将源码clone到本地还不够，还需要配置hexo所需环境，如nodejs，npm。。。这里我们使用nvm来安装，具体操作也在第二步的文档中，[跳转！](https://zhuxiaoxia.blog.csdn.net/article/details/88855256?utm_medium=distribute.pc_relevant.none-task-blog-BlogCommendFromMachineLearnPai2-5.compare&depth_1-utm_source=distribute.pc_relevant.none-task-blog-BlogCommendFromMachineLearnPai2-5.compare)中从第2节开始看。
 # 5.Deploy和Push
 到这一步基本都配置好了，需要测试使得
-1. hexo d操作能部署博客到github博客仓库的显示分支
-2. git push操作能将博客源码更新到github博客仓库的源码分支
+1. hexo d操作能部署博客到github博客仓库的显示分支，_config.yml中默认将hexo d部署到master分支，所以不用修改，直接hexo g，hexo d一顿操作就完事儿了，如果想在本地先调试，就在hexo g后跟一个hexo s。
+2. git push操作能将博客源码更新到github博客仓库的源码分支，
+   1. (可选)如果你是从github上clone下来的源代码，则不需要本步骤。否则的话先本地关联远程仓库：
+
+       `git remote add origin git@github.com:yourblog/yourblog.github.io.git`
+   1. 接着git三部曲就完事儿了:
+       ```
+       git add .    #添加所有文件到暂存区
+       git commit -m "date"     #提交，标记我此处用了date字符串
+       git push origin source     #推送到源码分支source
+       ```
