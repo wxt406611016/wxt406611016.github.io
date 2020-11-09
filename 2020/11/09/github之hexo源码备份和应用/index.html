@@ -14,7 +14,7 @@
     
     
     
-    <title>github之hexo源码备份和应用 | Welcome To Wangxt&#39;s Blog</title>
+    <title>github之hexo源码备份和应用 | 心是看客心，人是戏中人</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     
     <meta name="theme-color" content="#3F51B5">
@@ -25,15 +25,15 @@
 <meta property="og:type" content="article">
 <meta property="og:title" content="github之hexo源码备份和应用">
 <meta property="og:url" content="https://wxt406611016.github.io/2020/11/09/github之hexo源码备份和应用/index.html">
-<meta property="og:site_name" content="Welcome To Wangxt&#39;s Blog">
+<meta property="og:site_name" content="心是看客心，人是戏中人">
 <meta property="og:description" content="1.使用git分支保存hexo博客源码具体操作请跳转到页面。 2.为新电脑添加SSH keys当你需要在一台新设备上继续写博客上，可以通过github的源码来快速搭建原环境，为了能够使用git clone、push等操作，需要在新电脑上设置github环境，并将SSH keys存储到github中，具体操作请跳转到我之前的一篇博客中4，5，6节部分。 3.将hexo源码clone到本地新设备空空如">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2020-11-09T15:24:39.184Z">
+<meta property="og:updated_time" content="2020-11-09T15:49:03.967Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="github之hexo源码备份和应用">
 <meta name="twitter:description" content="1.使用git分支保存hexo博客源码具体操作请跳转到页面。 2.为新电脑添加SSH keys当你需要在一台新设备上继续写博客上，可以通过github的源码来快速搭建原环境，为了能够使用git clone、push等操作，需要在新电脑上设置github环境，并将SSH keys存储到github中，具体操作请跳转到我之前的一篇博客中4，5，6节部分。 3.将hexo源码clone到本地新设备空空如">
     
-        <link rel="alternate" type="application/atom+xml" title="Welcome To Wangxt&#39;s Blog" href="/atom.xml">
+        <link rel="alternate" type="application/atom+xml" title="心是看客心，人是戏中人" href="/atom.xml">
     
     <link rel="shortcut icon" href="/img/favicon.ico">
     <link rel="stylesheet" href="//unpkg.com/hexo-theme-material-indigo@latest/css/style.css">
@@ -58,7 +58,7 @@
           <img src="/img/kobe.jpg">
         </a>
         <hgroup class="introduce">
-          <h5 class="nickname">WangXT</h5>
+          <h5 class="nickname">Supervampire</h5>
           <a href="mailto:wxt406611016@gmail.com" title="wxt406611016@gmail.com" class="mail">wxt406611016@gmail.com</a>
         </hgroup>
       </div>
@@ -187,8 +187,15 @@
 <h1 id="4-配置hexo所需环境"><a href="#4-配置hexo所需环境" class="headerlink" title="4.配置hexo所需环境"></a>4.配置hexo所需环境</h1><p>将源码clone到本地还不够，还需要配置hexo所需环境，如nodejs，npm。。。这里我们使用nvm来安装，具体操作也在第二步的文档中，<a href="https://zhuxiaoxia.blog.csdn.net/article/details/88855256?utm_medium=distribute.pc_relevant.none-task-blog-BlogCommendFromMachineLearnPai2-5.compare&amp;depth_1-utm_source=distribute.pc_relevant.none-task-blog-BlogCommendFromMachineLearnPai2-5.compare" target="_blank" rel="noopener">跳转！</a>中从第2节开始看。</p>
 <h1 id="5-Deploy和Push"><a href="#5-Deploy和Push" class="headerlink" title="5.Deploy和Push"></a>5.Deploy和Push</h1><p>到这一步基本都配置好了，需要测试使得</p>
 <ol>
-<li>hexo d操作能部署博客到github博客仓库的显示分支</li>
-<li>git push操作能将博客源码更新到github博客仓库的源码分支</li>
+<li>hexo d操作能部署博客到github博客仓库的显示分支，_config.yml中默认将hexo d部署到master分支，所以不用修改，直接hexo g，hexo d一顿操作就完事儿了，如果想在本地先调试，就在hexo g后跟一个hexo s。</li>
+<li><p>git push操作能将博客源码更新到github博客仓库的源码分支，</p>
+<ol>
+<li><p>(可选)如果你是从github上clone下来的源代码，则不需要本步骤。否则的话先本地关联远程仓库：</p>
+<p> <code>git remote add origin git@github.com:yourblog/yourblog.github.io.git</code></p>
+</li>
+<li>接着git三部曲就完事儿了: <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git add .    #添加所有文件到暂存区</span><br><span class="line">git commit -m &quot;date&quot;     #提交，标记我此处用了date字符串</span><br><span class="line">git push origin source     #推送到源码分支source</span><br></pre></td></tr></table></figure></li>
+</ol>
+</li>
 </ol>
 
         </div>
@@ -205,8 +212,8 @@
     
     <footer>
         <a href="https://wxt406611016.github.io">
-            <img src="/img/kobe.jpg" alt="WangXT">
-            WangXT
+            <img src="/img/kobe.jpg" alt="Supervampire">
+            Supervampire
         </a>
     </footer>
 </blockquote>
@@ -224,7 +231,7 @@
 <div class="page-share" id="pageShare">
     <ul class="reset share-icons">
       <li>
-        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://wxt406611016.github.io/2020/11/09/github之hexo源码备份和应用/&title=《github之hexo源码备份和应用》 — Welcome To Wangxt's Blog&pic=https://wxt406611016.github.io/img/kobe.jpg" data-title="微博">
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://wxt406611016.github.io/2020/11/09/github之hexo源码备份和应用/&title=《github之hexo源码备份和应用》 — 心是看客心，人是戏中人&pic=https://wxt406611016.github.io/img/kobe.jpg" data-title="微博">
           <i class="icon icon-weibo"></i>
         </a>
       </li>
@@ -234,7 +241,7 @@
         </a>
       </li>
       <li>
-        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://wxt406611016.github.io/2020/11/09/github之hexo源码备份和应用/&title=《github之hexo源码备份和应用》 — Welcome To Wangxt's Blog&source=" data-title=" QQ">
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://wxt406611016.github.io/2020/11/09/github之hexo源码备份和应用/&title=《github之hexo源码备份和应用》 — 心是看客心，人是戏中人&source=" data-title=" QQ">
           <i class="icon icon-qq"></i>
         </a>
       </li>
@@ -244,7 +251,7 @@
         </a>
       </li>
       <li>
-        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《github之hexo源码备份和应用》 — Welcome To Wangxt's Blog&url=https://wxt406611016.github.io/2020/11/09/github之hexo源码备份和应用/&via=https://wxt406611016.github.io" data-title=" Twitter">
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《github之hexo源码备份和应用》 — 心是看客心，人是戏中人&url=https://wxt406611016.github.io/2020/11/09/github之hexo源码备份和应用/&via=https://wxt406611016.github.io" data-title=" Twitter">
           <i class="icon icon-twitter"></i>
         </a>
       </li>
@@ -356,7 +363,7 @@
         </p>
     </div>
     <div class="bottom">
-        <p><span>WangXT &copy; 2018 - 2020</span>
+        <p><span>Supervampire &copy; 2018 - 2020</span>
             <span>
                 
                 Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
@@ -374,7 +381,7 @@
 <div class="global-share" id="globalShare">
     <ul class="reset share-icons">
       <li>
-        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://wxt406611016.github.io/2020/11/09/github之hexo源码备份和应用/&title=《github之hexo源码备份和应用》 — Welcome To Wangxt's Blog&pic=https://wxt406611016.github.io/img/kobe.jpg" data-title="微博">
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://wxt406611016.github.io/2020/11/09/github之hexo源码备份和应用/&title=《github之hexo源码备份和应用》 — 心是看客心，人是戏中人&pic=https://wxt406611016.github.io/img/kobe.jpg" data-title="微博">
           <i class="icon icon-weibo"></i>
         </a>
       </li>
@@ -384,7 +391,7 @@
         </a>
       </li>
       <li>
-        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://wxt406611016.github.io/2020/11/09/github之hexo源码备份和应用/&title=《github之hexo源码备份和应用》 — Welcome To Wangxt's Blog&source=" data-title=" QQ">
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://wxt406611016.github.io/2020/11/09/github之hexo源码备份和应用/&title=《github之hexo源码备份和应用》 — 心是看客心，人是戏中人&source=" data-title=" QQ">
           <i class="icon icon-qq"></i>
         </a>
       </li>
@@ -394,7 +401,7 @@
         </a>
       </li>
       <li>
-        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《github之hexo源码备份和应用》 — Welcome To Wangxt's Blog&url=https://wxt406611016.github.io/2020/11/09/github之hexo源码备份和应用/&via=https://wxt406611016.github.io" data-title=" Twitter">
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《github之hexo源码备份和应用》 — 心是看客心，人是戏中人&url=https://wxt406611016.github.io/2020/11/09/github之hexo源码备份和应用/&via=https://wxt406611016.github.io" data-title=" Twitter">
           <i class="icon icon-twitter"></i>
         </a>
       </li>
@@ -453,6 +460,23 @@ var BLOG = { ROOT: '/', SHARE: true, REWARD: false };
 <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 
 
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = '客官去哪儿了，快回来呜呜呜';
+            clearTimeout(titleTime);
+        } else {
+            document.title = 'Welcome To My Blog';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
 
 
 

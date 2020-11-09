@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
-  <title>Welcome To Wangxt&#39;s Blog</title>
+  <title>心是看客心，人是戏中人</title>
   
   
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://wxt406611016.github.io/"/>
-  <updated>2020-11-09T15:24:39.184Z</updated>
+  <updated>2020-11-09T15:49:03.967Z</updated>
   <id>https://wxt406611016.github.io/</id>
   
   <author>
-    <name>WangXT</name>
+    <name>Supervampire</name>
     
   </author>
   
@@ -21,9 +21,9 @@
     <link href="https://wxt406611016.github.io/2020/11/09/github%E4%B9%8Bhexo%E6%BA%90%E7%A0%81%E5%A4%87%E4%BB%BD%E5%92%8C%E5%BA%94%E7%94%A8/"/>
     <id>https://wxt406611016.github.io/2020/11/09/github之hexo源码备份和应用/</id>
     <published>2020-11-08T16:00:00.000Z</published>
-    <updated>2020-11-09T15:24:39.184Z</updated>
+    <updated>2020-11-09T15:49:03.967Z</updated>
     
-    <content type="html"><![CDATA[<h1 id="1-使用git分支保存hexo博客源码"><a href="#1-使用git分支保存hexo博客源码" class="headerlink" title="1.使用git分支保存hexo博客源码"></a>1.使用git分支保存hexo博客源码</h1><p>具体操作请<a href="https://zhuanlan.zhihu.com/p/133860750" target="_blank" rel="noopener">跳转到页面。</a></p><h1 id="2-为新电脑添加SSH-keys"><a href="#2-为新电脑添加SSH-keys" class="headerlink" title="2.为新电脑添加SSH keys"></a>2.为新电脑添加SSH keys</h1><p>当你需要在一台新设备上继续写博客上，可以通过github的源码来快速搭建原环境，为了能够使用git clone、push等操作，需要在新电脑上设置github环境，并将SSH keys存储到github中，具体操作请跳转到<a href="https://wxt406611016.github.io/2019/02/07/github+hexo%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/">我之前的一篇博客</a>中4，5，6节部分。</p><h1 id="3-将hexo源码clone到本地"><a href="#3-将hexo源码clone到本地" class="headerlink" title="3.将hexo源码clone到本地"></a>3.将hexo源码clone到本地</h1><p>新设备空空如也，需要将hexo源码克隆到本地，具体操作也在第一步的文档中，<a href="https://zhuanlan.zhihu.com/p/133860750" target="_blank" rel="noopener">跳转！</a></p><h1 id="4-配置hexo所需环境"><a href="#4-配置hexo所需环境" class="headerlink" title="4.配置hexo所需环境"></a>4.配置hexo所需环境</h1><p>将源码clone到本地还不够，还需要配置hexo所需环境，如nodejs，npm。。。这里我们使用nvm来安装，具体操作也在第二步的文档中，<a href="https://zhuxiaoxia.blog.csdn.net/article/details/88855256?utm_medium=distribute.pc_relevant.none-task-blog-BlogCommendFromMachineLearnPai2-5.compare&amp;depth_1-utm_source=distribute.pc_relevant.none-task-blog-BlogCommendFromMachineLearnPai2-5.compare" target="_blank" rel="noopener">跳转！</a>中从第2节开始看。</p><h1 id="5-Deploy和Push"><a href="#5-Deploy和Push" class="headerlink" title="5.Deploy和Push"></a>5.Deploy和Push</h1><p>到这一步基本都配置好了，需要测试使得</p><ol><li>hexo d操作能部署博客到github博客仓库的显示分支</li><li>git push操作能将博客源码更新到github博客仓库的源码分支</li></ol>]]></content>
+    <content type="html"><![CDATA[<h1 id="1-使用git分支保存hexo博客源码"><a href="#1-使用git分支保存hexo博客源码" class="headerlink" title="1.使用git分支保存hexo博客源码"></a>1.使用git分支保存hexo博客源码</h1><p>具体操作请<a href="https://zhuanlan.zhihu.com/p/133860750" target="_blank" rel="noopener">跳转到页面。</a></p><h1 id="2-为新电脑添加SSH-keys"><a href="#2-为新电脑添加SSH-keys" class="headerlink" title="2.为新电脑添加SSH keys"></a>2.为新电脑添加SSH keys</h1><p>当你需要在一台新设备上继续写博客上，可以通过github的源码来快速搭建原环境，为了能够使用git clone、push等操作，需要在新电脑上设置github环境，并将SSH keys存储到github中，具体操作请跳转到<a href="https://wxt406611016.github.io/2019/02/07/github+hexo%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/">我之前的一篇博客</a>中4，5，6节部分。</p><h1 id="3-将hexo源码clone到本地"><a href="#3-将hexo源码clone到本地" class="headerlink" title="3.将hexo源码clone到本地"></a>3.将hexo源码clone到本地</h1><p>新设备空空如也，需要将hexo源码克隆到本地，具体操作也在第一步的文档中，<a href="https://zhuanlan.zhihu.com/p/133860750" target="_blank" rel="noopener">跳转！</a></p><h1 id="4-配置hexo所需环境"><a href="#4-配置hexo所需环境" class="headerlink" title="4.配置hexo所需环境"></a>4.配置hexo所需环境</h1><p>将源码clone到本地还不够，还需要配置hexo所需环境，如nodejs，npm。。。这里我们使用nvm来安装，具体操作也在第二步的文档中，<a href="https://zhuxiaoxia.blog.csdn.net/article/details/88855256?utm_medium=distribute.pc_relevant.none-task-blog-BlogCommendFromMachineLearnPai2-5.compare&amp;depth_1-utm_source=distribute.pc_relevant.none-task-blog-BlogCommendFromMachineLearnPai2-5.compare" target="_blank" rel="noopener">跳转！</a>中从第2节开始看。</p><h1 id="5-Deploy和Push"><a href="#5-Deploy和Push" class="headerlink" title="5.Deploy和Push"></a>5.Deploy和Push</h1><p>到这一步基本都配置好了，需要测试使得</p><ol><li>hexo d操作能部署博客到github博客仓库的显示分支，_config.yml中默认将hexo d部署到master分支，所以不用修改，直接hexo g，hexo d一顿操作就完事儿了，如果想在本地先调试，就在hexo g后跟一个hexo s。</li><li><p>git push操作能将博客源码更新到github博客仓库的源码分支，</p><ol><li><p>(可选)如果你是从github上clone下来的源代码，则不需要本步骤。否则的话先本地关联远程仓库：</p><p> <code>git remote add origin git@github.com:yourblog/yourblog.github.io.git</code></p></li><li>接着git三部曲就完事儿了: <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git add .    #添加所有文件到暂存区</span><br><span class="line">git commit -m &quot;date&quot;     #提交，标记我此处用了date字符串</span><br><span class="line">git push origin source     #推送到源码分支source</span><br></pre></td></tr></table></figure></li></ol></li></ol>]]></content>
     
     <summary type="html">
     
