@@ -11,18 +11,14 @@ menu:
   home:
 #   text: 主页
     url: /
-  archives:
-    url: /archives
   github:
     url: https://github.com/wxt406611016
     target: _blank
+  archives:
+    url: /archives
   tags:
-     text: UCAS
-     url: https://www.ucas.ac.cn/
-     target: _blank
-  institution:
-     text: IIE
-     url: http://www.iie.ac.cn/
+     text: Resource
+     url: https://wxt123.top/downloads/
      target: _blank
 # 你的头像url
 avatar: /img/kobe.jpg
@@ -167,4 +163,4 @@ cdn: true
 lightbox: true
 
 # icp备案号  ICP_license: 京ICP备1234556号-1
-ICP_license: false
+ICP_license: 苏ICP备20008565号-1
