@@ -9,7 +9,7 @@
     
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
   <title>
-    Archives: 2020/1 |  の
+    about |  の
   </title>
   <meta name="generator" content="hexo-theme-ayer">
   
@@ -47,52 +47,165 @@
       
     <main class="content on">
       <section class="outer">
-  
-  
-  <article class="articles">
+  <article
+  id="page-"
+  class="article article-type-page"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
     
-    
-    <h1 class="page-type-title">2020/1</h1>
-    
-    
-  
-  
-  
-  
-  
-  
-  <div class="archives-wrap">
-    <div class="archive-year-wrap">
-      <a href="/archives/2020" class="archive-year">2020</a>
-    </div>
-    <div class="archives">
-      
-      <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2020/01/12/python%E5%AE%9E%E7%8E%B0%E5%BE%AE%E4%BF%A1%E8%87%AA%E5%8A%A8%E5%9B%9E%E5%A4%8D+%E5%9B%BE%E7%81%B5%E6%9C%BA%E5%99%A8%E4%BA%BA/" class="archive-article-date">
-  <time datetime="2020-01-11T16:00:00.000Z" itemprop="datePublished">01/12</time>
-</a>
+    <header class="article-header">
        
-<h2 itemprop="name">
-  <a class="archive-article-title" href="/2020/01/12/python%E5%AE%9E%E7%8E%B0%E5%BE%AE%E4%BF%A1%E8%87%AA%E5%8A%A8%E5%9B%9E%E5%A4%8D+%E5%9B%BE%E7%81%B5%E6%9C%BA%E5%99%A8%E4%BA%BA/"
-    >python实现微信自动回复+图灵机器人</a> 
-</h2>
+<h1 class="article-title sea-center" style="border-left:0" itemprop="name">
+  about
+</h1>
  
 
     </header>
-    
-    
-  </div>
-</article>
+       
+    <div class="article-entry" itemprop="articleBody">
+       
+  <p><strong>在互联网快速发展的时代里，爬虫可以说是无处不在。各类热搜以及热点新闻，时时刻刻都在被爬虫获取。如果开发者并不想让内容大范围传播呢？如何应对爬虫呢？常见的方法有验证码验证，以及对频繁登陆ip进行屏蔽，除此之外，还有一种通过font-face自定义字体的方式，可以让爬取到的内容和网页显示的内容完全不一样，从而产生一种是否爬错内容了的感觉。</strong></p>
+<h2 id="1-font-face介绍："><a href="#1-font-face介绍：" class="headerlink" title="1.font-face介绍："></a>1.font-face介绍：</h2><p>谈到font-face，也许很多人并不熟悉，但是说到应用此技术的公司，大家肯定都很熟悉了，58同城，猫眼电影等，都采用了font-face策略来应对爬虫。以<a target="_blank" rel="noopener" href="https://su.58.com/zufang/pn2/?PGTID=0d300008-0000-5965-8ce1-1873463f7758&ClickID=1">58同城</a>为例，打开审查元素，发现页面内的3室2厅1卫 和120㎡中的数字均变成了乱码 —-“驋室麣厅龒卫”,”龒麣龤㎡”。所以即便爬虫找到了正确位置，也依然无法获得正确信息。<br><img src="https://imgconvert.csdnimg.cn/aHR0cHM6Ly9zMS5heDF4LmNvbS8yMDIwLzA1LzA3L1llWkV3Ui5wbmc?x-oss-process=image/format,png" alt="58同城页面信息"></p>
+<h2 id="2-font-face原理："><a href="#2-font-face原理：" class="headerlink" title="2.font-face原理："></a>2.font-face原理：</h2><p>仔细观察审查元素信息，在styles栏里发现了font-family，这就是自定义字体，可以把乱码显示成正常的数字。<br><img src="https://imgconvert.csdnimg.cn/aHR0cHM6Ly9zMS5heDF4LmNvbS8yMDIwLzA1LzA3L1llbVl6OC5wbmc?x-oss-process=image/format,png" alt="审查元素"><br>于是我们要找到font-family字样，右键点击网页源代码，搜索font-family，找到@font-face等关键字，通过分析data:application/font-ttf，可以猜测后面长串字符串应该是对某个ttf字体进行了base64编码。<br><img src="https://imgconvert.csdnimg.cn/aHR0cHM6Ly9zMS5heDF4LmNvbS8yMDIwLzA1LzA3L1lld0Z3bi5wbmc?x-oss-process=image/format,png" alt="查看网页源代码"><br>上python，解码生成ttf字体文件。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">from fontTools.ttLib import TTFont</span><br><span class="line">import base64</span><br><span class="line">import io</span><br><span class="line"></span><br><span class="line">key&#x3D;&#39;&#39;&#39;</span><br><span class="line">AAEAAAALAIAAAwAwR1NVQiCLJXoAAAE.......AAAA    #key值为源代码中的长串字符串</span><br><span class="line">&#39;&#39;&#39;</span><br><span class="line">data &#x3D; base64.b64decode(key) #base64解码</span><br><span class="line">fonts &#x3D; TTFont(io.BytesIO(data)) #生成二进制字节</span><br><span class="line">fonts.save(&#39;font-face.ttf&#39;)</span><br></pre></td></tr></table></figure>
+<p>将生成的font-face.ttf通过<a target="_blank" rel="noopener" href="http://fontstore.baidu.com/static/editor/index.html">百度字体编辑器</a>打开，可以看到对所有数字进行了重新编码。<br><img src="https://imgconvert.csdnimg.cn/aHR0cHM6Ly9zMS5heDF4LmNvbS8yMDIwLzA1LzA3L1llRHJrUi5wbmc?x-oss-process=image/format,png" alt="自定义字体"><br>是不是有点儿疑惑？怎么对数字重新编码？？？其实也可以理解为是对编码对应的图形进行了改变，比如同样是编码(0x9a4b)，在常规字体中是”驋”的模样可能在B字体中就是”2”的模样，在自己设计的字体里，可以任性的把(0x9a4b)编码对应的图形设计成”2”的形状，举个例子:<br><img src="https://imgconvert.csdnimg.cn/aHR0cHM6Ly9zMS5heDF4LmNvbS8yMDIwLzA1LzA3L1llUmxpNC5qcGc?x-oss-process=image/format,png" alt="自定义字体有不一样的形状"><br>同样是(0x9a4b)编码，在字体A中，你认为是2，在字体B中，即便和字体A中形状不一样，你一样认为是2，但在自定义字体中，你会认为是w。同样的道理，我们可以把常规字体中的乱码，设计成数字的形状。<br>所以在自定义字体的基础上，我们可以变相认为对字体进行了加密，从而起到保护重要数据的作用。</p>
+<h2 id="3-实现font-face："><a href="#3-实现font-face：" class="headerlink" title="3.实现font-face："></a>3.实现font-face：</h2><p>理解了font-face的原理后，我们可以将font-face策略应用到自己的web项目中。为了简便操作，我直接用了第二步中在58同城网站下载的字体hhh(自行设计字体也很cool，想怎么画怎么画)。在前端html文件中加入以下内容:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&lt;style&gt;</span><br><span class="line">@font-face&#123;font-family:&#39;secret&#39;;src:url(&#39;data:application&#x2F;font-ttf;</span><br><span class="line">charset&#x3D;utf-8;base64,AAEAAAALAIAAAwAwR1NVQiCLJXoA.......AAAAAAAAA&#39;)</span><br><span class="line">format(&#39;truetype&#39;)&#125;.strongbox&#123;font-family:&#39;fangchan-secret&#39;,&#39;Hiragino Sans GB&#39;,</span><br><span class="line">&#39;Microsoft yahei&#39;,Arial,sans-serif,&#39;宋体&#39;!important&#125;</span><br><span class="line">&lt;&#x2F;style&gt;</span><br><span class="line">&lt;style&gt;</span><br><span class="line">.font&#123;font-family:&#39;secret&#39;,&#39;Hiragino Sans GB&#39;,&#39;Microsoft yahei&#39;,Arial,sans-serif,&#39;\5B8B\4F53&#39; !important&#125;</span><br><span class="line">&lt;&#x2F;style&gt;</span><br></pre></td></tr></table></figure>
+<p>上面一段的作用为引入名叫”secret”的自定义字体,然后通过style设计.font，使所有class为”font”的标签应用此自定义字体。换言之，当你想用自定义字体时，在相应的标签中加入class=”font”，如下html源码和前端显示结果:<br><img src="https://imgconvert.csdnimg.cn/aHR0cHM6Ly9zMS5heDF4LmNvbS8yMDIwLzA1LzA3L1llb3Q5VS5wbmc?x-oss-process=image/format,png" alt="html源码"><br><img src="https://imgconvert.csdnimg.cn/aHR0cHM6Ly9zMS5heDF4LmNvbS8yMDIwLzA1LzA3L1llb0poVC5wbmc?x-oss-process=image/format,png" alt="前端显示结果"><br>可见2020 04-27日期字样在源码中显示为乱码。<br><a target="_blank" rel="noopener" href="http://wxt123.top/news">访问上图中我的web项目，点击链接即可，</a>(暂时只对页面右侧一栏中的日期做了font-face加密。)</p>
+<h4 id="如有错误或建议，请在评论处指出！"><a href="#如有错误或建议，请在评论处指出！" class="headerlink" title="如有错误或建议，请在评论处指出！"></a>如有错误或建议，请在评论处指出！</h4> 
+      <!-- reward -->
       
+      <div id="reword-out">
+        <div id="reward-btn">
+          Donate
+        </div>
+      </div>
       
     </div>
-  </div>
-  
-  
+    
 
-  
+    <!-- copyright -->
+    
+    <div class="declare">
+      <ul class="post-copyright">
+        <li>
+          <i class="ri-copyright-line"></i>
+          <strong>Copyright： </strong>
+          
+          Copyright is owned by the author. For commercial reprints, please contact the author for authorization. For non-commercial reprints, please indicate the source.
+          
+        </li>
+      </ul>
+    </div>
+    
+    <footer class="article-footer">
+       
+<div class="share-btn">
+      <span class="share-sns share-outer">
+        <i class="ri-share-forward-line"></i>
+        分享
+      </span>
+      <div class="share-wrap">
+        <i class="arrow"></i>
+        <div class="share-icons">
+          
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="ri-weibo-fill"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="ri-wechat-fill"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="ri-qq-fill"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="ri-douban-line"></i>
+          </a>
+          <!-- <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a> -->
+          
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="ri-facebook-circle-fill"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="ri-twitter-fill"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="ri-google-fill"></i>
+          </a>
+        </div>
+      </div>
+</div>
+
+<div class="wx-share-modal">
+    <a class="modal-close" href="javascript:;"><i class="ri-close-circle-line"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAK4AAACuCAAAAACKZ2kyAAABv0lEQVR42u3ay2oDMQwF0Pz/T6fQVaHEvbI8yqQcr8KQeI6zEHr48YjX83vln9dPfq7HFQsXF7fNfS7X7+8kT9aszm9xcXEnuUnwWoeeJJAlwfGPHXBxcW/GTQ5TDXa4uLj/g1tIR4opFC4u7t24e9utd1inR5fXari4uN1oc7hhutdgfVt/FxcXNw5heUDpDFoKb8fFxR3h9lsV1YQmD16FjAwXF/coN78wsXewqM2R74CLi3sDbtK2yI/Raa3i4uLOc/uIPPXJE5pCZxcXF/cot5ro7I1X965rvKTj4uKOc/N2xl5DpFX84OLijnCTEHZ2fpv8NS+f4OLijnA7w4+87MnDXzTWxcXFvZhbBe01PY8VP7i4uCPc/DX582paUx3H4uLiXs3tDDyqjZIkFEatUlxc3EHuXqjqH7VQdOHi4o5w9xqj1aFsp7Ua5WW4uLhHuc/iyi9n5IVQIYDi4uKOcDvD0SS56adHuLi47+LmwevUmKQVyHBxcQe5pwLN+hgHrnDh4uLejFtNdJLDlC954OLifgh3L/XJL3vh4uK+i5sXP3s79MczuLi4k9xOwzRPcarlU6dwwsXFbXC/AAGemnlfsNxVAAAAAElFTkSuQmCC" alt="微信分享二维码">
+    </div>
+</div>
+
+<div id="share-mask"></div>  
+    </footer>
+  </div>
+
+   
+   
+<!-- valine评论 -->
+<div id="vcomments-box">
+  <div id="vcomments"></div>
+</div>
+<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/valine@1.4.14/dist/Valine.min.js"></script>
+<script>
+  new Valine({
+    el: "#vcomments",
+    app_id: "ds54farWshFsUraKxWRVVf4G-gzGzoHsz",
+    app_key: "q4rgias5HDeq09ugweytekJQ",
+    path: window.location.pathname,
+    avatar: "monsterid",
+    placeholder: "",
+    recordIP: true,
+  });
+  const infoEle = document.querySelector("#vcomments .info");
+  if (infoEle && infoEle.childNodes && infoEle.childNodes.length > 0) {
+    infoEle.childNodes.forEach(function (item) {
+      item.parentNode.removeChild(item);
+    });
+  }
+</script>
+<style>
+  #vcomments-box {
+    padding: 5px 30px;
+  }
+
+  @media screen and (max-width: 800px) {
+    #vcomments-box {
+      padding: 5px 0px;
+    }
+  }
+
+  #vcomments-box #vcomments {
+    background-color: #fff;
+  }
+
+  .v .vlist .vcard .vh {
+    padding-right: 20px;
+  }
+
+  .v .vlist .vcard {
+    padding-left: 10px;
+  }
+</style>
+
+ 
+    
+</article>
+
 </section>
       <footer class="footer">
   <div class="outer">

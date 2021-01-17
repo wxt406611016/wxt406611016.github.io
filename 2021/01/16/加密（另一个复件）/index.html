@@ -9,7 +9,7 @@
     
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
   <title>
-    flask+redis限制ip访问速率 |  の
+    test 2 |  の
   </title>
   <meta name="generator" content="hexo-theme-ayer">
   
@@ -48,7 +48,7 @@
     <main class="content on">
       <section class="outer">
   <article
-  id="post-flask+redis-限制ip访问频率"
+  id="post-加密（另一个复件）"
   class="article article-type-post"
   itemscope
   itemprop="blogPost"
@@ -59,22 +59,26 @@
     <header class="article-header">
        
 <h1 class="article-title sea-center" style="border-left:0" itemprop="name">
-  flask+redis限制ip访问速率
+  test 2
 </h1>
  
 
     </header>
      
     <div class="article-meta">
-      <a href="/2020/04/11/flask+redis-%E9%99%90%E5%88%B6ip%E8%AE%BF%E9%97%AE%E9%A2%91%E7%8E%87/" class="article-date">
-  <time datetime="2020-04-10T16:00:00.000Z" itemprop="datePublished">2020-04-11</time>
-</a>   
+      <a href="/2021/01/16/%E5%8A%A0%E5%AF%86%EF%BC%88%E5%8F%A6%E4%B8%80%E4%B8%AA%E5%A4%8D%E4%BB%B6%EF%BC%89/" class="article-date">
+  <time datetime="2021-01-15T16:00:00.000Z" itemprop="datePublished">2021-01-16</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Emotion/">Emotion</a>
+  </div>
+  
 <div class="word_count">
     <span class="post-time">
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> Word count:</span>
-            <span class="post-count">842</span>
+            <span class="post-count">1k</span>
         </span>
     </span>
 
@@ -83,7 +87,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-book-open-line"></i>
             <span class="post-meta-item-text"> Reading time≈</span>
-            <span class="post-count">3 min</span>
+            <span class="post-count">4 min</span>
         </span>
     </span>
 </div>
@@ -98,24 +102,14 @@
   
     <div class="article-entry" itemprop="articleBody">
        
-  <p><strong>上篇介绍了利用font-face进行反爬虫，这篇介绍另一种常见方法–验证码校验，对频繁访问的ip进行限制，强制要求验证码验证，验证成功方可继续访问。</strong></p>
-<h2 id="1-限制逻辑-策略："><a href="#1-限制逻辑-策略：" class="headerlink" title="1.限制逻辑/策略："></a>1.限制逻辑/策略：</h2><ol>
-<li>利用request.remote_addr获取客户端ip；</li>
-<li>客户端访问时，服务器判断redis中是否有客户端ip；</li>
-<li>若不存在，将客户端ip存入redis中，对应值设为1；若存在，客户端ip对应值+1；</li>
-<li>若redis中客户端ip对应值在5分钟内&gt;5，即5分钟内访问页面超过5次，则视为恶意ip，跳转至验证码校验页面；</li>
-<li>验证成功后，向后端请求过渡函数B，进行redis操作，B函数的功能为将验证成功的ip从redis中删除，删除后再重定向至开始页面；</li>
-</ol>
-<h2 id="2-代码实现限制逻辑："><a href="#2-代码实现限制逻辑：" class="headerlink" title="2.代码实现限制逻辑："></a>2.代码实现限制逻辑：</h2><p>后端代码如下，index()方法用于判断redis中是否存在客户端ip，以及ip对应值是否大于5：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">@app.route(&#39;&#x2F;&#39;, methods&#x3D;[&#39;GET&#39;])</span><br><span class="line">def index():</span><br><span class="line">    ip&#x3D;request.remote_addr</span><br><span class="line">    if(rs.exists(ip)):                                         #rs可操作redis</span><br><span class="line">        rs.setrange(ip,0,int(rs.get(ip))+1)</span><br><span class="line">    else:</span><br><span class="line">        rs.set(ip,1,ex&#x3D;300)                               #5分钟5次</span><br><span class="line">    if (int(rs.get(ip))&lt;6):</span><br><span class="line">        return render_template(&#39;index.html&#39;)           #正常返回</span><br><span class="line">    else:</span><br><span class="line">        return render_template(&quot;antibot.html&quot;,ip&#x3D;ip,secret&#x3D;secret)    #返回验证码校验页面</span><br></pre></td></tr></table></figure>
-<p>如果跳转至antibot.html(验证码校验页面)后，前端通过js对参数a进行base64加密，并带参数访问/mid页面，之所以要带参数，是为了在后端验证参数是否有效(即判断是否是通过验证码校验后跳转而来)：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&lt;script&gt;</span><br><span class="line">......</span><br><span class="line">onSuccess: function() &#123;</span><br><span class="line">      document.getElementById(&#39;msg&#39;).innerHTML &#x3D; &#39;登录成功！&#39;</span><br><span class="line">      var a&#x3D;&quot;&#123;&#123;ip&#125;&#125;&quot;+&quot;&#123;&#123;secret&#125;&#125;&quot;                   &#x2F;&#x2F;secret是从后端传来的随机密钥</span><br><span class="line">      a&#x3D;window.btoa(a)                                 &#x2F;&#x2F;对变量a进行base64加密</span><br><span class="line">      window.location.href&#x3D;&quot;&#x2F;mid?id&#x3D;&quot;+a</span><br><span class="line">    &#125;,</span><br><span class="line">......</span><br><span class="line">&lt;&#x2F;script&gt;</span><br></pre></td></tr></table></figure>
-<p>mid()方法用于通过验证码校验后，将ip从redis中删除，并重定向至开始页面：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">@app.route(&#39;&#x2F;mid&#39;, methods&#x3D;[&#39;GET&#39;])</span><br><span class="line">def mid():</span><br><span class="line">    cmp&#x3D;request.args.get(&#39;id&#39;,&#39;0&#39;)</span><br><span class="line">    ip&#x3D;request.remote_addr</span><br><span class="line">    sec&#x3D;ip+secret                                                 #secret作为随机密钥进行加密</span><br><span class="line">    result&#x3D;base64.b64encode(sec.encode())</span><br><span class="line">    result&#x3D;str(result)[2:-1]</span><br><span class="line">    if(cmp&#x3D;&#x3D;result):                                            #判断前端js传来的参数是否有效</span><br><span class="line">        rs.delete(ip)</span><br><span class="line">    response &#x3D;  redirect(url_for(&#39;index&#39;))</span><br><span class="line">    return response    </span><br></pre></td></tr></table></figure>
-<h2 id="3-效果展示："><a href="#3-效果展示：" class="headerlink" title="3.效果展示："></a>3.效果展示：</h2><p>打开flask项目，可以正常访问：<br><img src="https://imgconvert.csdnimg.cn/aHR0cHM6Ly9zMS5heDF4LmNvbS8yMDIwLzA1LzA3L1ltMGtMUS5wbmc?x-oss-process=image/format,png" alt="正常访问"><br>刷新5次后，触发了限制ip策略，返回验证码校验界面：<br><img src="https://imgconvert.csdnimg.cn/aHR0cHM6Ly9zMS5heDF4LmNvbS8yMDIwLzA1LzA3L1ltMEZzZy5wbmc?x-oss-process=image/format,png" alt="返回验证码校验"><br>验证成功后，成功返回开始页面。从而实现了flask上用redis进行限制ip访问频率。</p>
-<h2 id="PS-若设置反向代理需注意！！！"><a href="#PS-若设置反向代理需注意！！！" class="headerlink" title="PS:若设置反向代理需注意！！！"></a>PS:若设置反向代理需注意！！！</h2><p>如果设置了反向代理的话，request.remote_addr则不会返回客户端的真实ip。以nginx反向代理为例，客户想要访问服务器，实际请求路线是client-&gt;nginx-&gt;server，而request.remote_addr表示的是上一级ip，而server的上一级ip是nginx服务器的ip.</p>
-<p>解决办法：以nginx为例，在配置文件中使用X-Forwarded-For，然后后端获取ip方式由 <code>ip=request.remote_addr</code>更改为<code>ip = request.headers.getlist(&quot;X-Forwarded-For&quot;)[0]</code> 即可。</p>
-<p><a target="_blank" rel="noopener" href="http://wxt123.top/">访问上图中我的web项目，点击链接即可，</a></p>
+  <p><strong>在互联网快速发展的时代里，爬虫可以说是无处不在。各类热搜以及热点新闻，时时刻刻都在被爬虫获取。如果开发者并不想让内容大范围传播呢？如何应对爬虫呢？常见的方法有验证码验证，以及对频繁登陆ip进行屏蔽，除此之外，还有一种通过font-face自定义字体的方式，可以让爬取到的内容和网页显示的内容完全不一样，从而产生一种是否爬错内容了的感觉。</strong></p>
+<h2 id="1-font-face介绍："><a href="#1-font-face介绍：" class="headerlink" title="1.font-face介绍："></a>1.font-face介绍：</h2><p>谈到font-face，也许很多人并不熟悉，但是说到应用此技术的公司，大家肯定都很熟悉了，58同城，猫眼电影等，都采用了font-face策略来应对爬虫。以<a target="_blank" rel="noopener" href="https://su.58.com/zufang/pn2/?PGTID=0d300008-0000-5965-8ce1-1873463f7758&ClickID=1">58同城</a>为例，打开审查元素，发现页面内的3室2厅1卫 和120㎡中的数字均变成了乱码 —-“驋室麣厅龒卫”,”龒麣龤㎡”。所以即便爬虫找到了正确位置，也依然无法获得正确信息。<br><img src="https://imgconvert.csdnimg.cn/aHR0cHM6Ly9zMS5heDF4LmNvbS8yMDIwLzA1LzA3L1llWkV3Ui5wbmc?x-oss-process=image/format,png" alt="58同城页面信息"></p>
+<h2 id="2-font-face原理："><a href="#2-font-face原理：" class="headerlink" title="2.font-face原理："></a>2.font-face原理：</h2><p>仔细观察审查元素信息，在styles栏里发现了font-family，这就是自定义字体，可以把乱码显示成正常的数字。<br><img src="https://imgconvert.csdnimg.cn/aHR0cHM6Ly9zMS5heDF4LmNvbS8yMDIwLzA1LzA3L1llbVl6OC5wbmc?x-oss-process=image/format,png" alt="审查元素"><br>于是我们要找到font-family字样，右键点击网页源代码，搜索font-family，找到@font-face等关键字，通过分析data:application/font-ttf，可以猜测后面长串字符串应该是对某个ttf字体进行了base64编码。<br><img src="https://imgconvert.csdnimg.cn/aHR0cHM6Ly9zMS5heDF4LmNvbS8yMDIwLzA1LzA3L1lld0Z3bi5wbmc?x-oss-process=image/format,png" alt="查看网页源代码"><br>上python，解码生成ttf字体文件。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">from fontTools.ttLib import TTFont</span><br><span class="line">import base64</span><br><span class="line">import io</span><br><span class="line"></span><br><span class="line">key&#x3D;&#39;&#39;&#39;</span><br><span class="line">AAEAAAALAIAAAwAwR1NVQiCLJXoAAAE.......AAAA    #key值为源代码中的长串字符串</span><br><span class="line">&#39;&#39;&#39;</span><br><span class="line">data &#x3D; base64.b64decode(key) #base64解码</span><br><span class="line">fonts &#x3D; TTFont(io.BytesIO(data)) #生成二进制字节</span><br><span class="line">fonts.save(&#39;font-face.ttf&#39;)</span><br></pre></td></tr></table></figure>
+<p>将生成的font-face.ttf通过<a target="_blank" rel="noopener" href="http://fontstore.baidu.com/static/editor/index.html">百度字体编辑器</a>打开，可以看到对所有数字进行了重新编码。<br><img src="https://imgconvert.csdnimg.cn/aHR0cHM6Ly9zMS5heDF4LmNvbS8yMDIwLzA1LzA3L1llRHJrUi5wbmc?x-oss-process=image/format,png" alt="自定义字体"><br>是不是有点儿疑惑？怎么对数字重新编码？？？其实也可以理解为是对编码对应的图形进行了改变，比如同样是编码(0x9a4b)，在常规字体中是”驋”的模样可能在B字体中就是”2”的模样，在自己设计的字体里，可以任性的把(0x9a4b)编码对应的图形设计成”2”的形状，举个例子:<br><img src="https://imgconvert.csdnimg.cn/aHR0cHM6Ly9zMS5heDF4LmNvbS8yMDIwLzA1LzA3L1llUmxpNC5qcGc?x-oss-process=image/format,png" alt="自定义字体有不一样的形状"><br>同样是(0x9a4b)编码，在字体A中，你认为是2，在字体B中，即便和字体A中形状不一样，你一样认为是2，但在自定义字体中，你会认为是w。同样的道理，我们可以把常规字体中的乱码，设计成数字的形状。<br>所以在自定义字体的基础上，我们可以变相认为对字体进行了加密，从而起到保护重要数据的作用。</p>
+<h2 id="3-实现font-face："><a href="#3-实现font-face：" class="headerlink" title="3.实现font-face："></a>3.实现font-face：</h2><p>理解了font-face的原理后，我们可以将font-face策略应用到自己的web项目中。为了简便操作，我直接用了第二步中在58同城网站下载的字体hhh(自行设计字体也很cool，想怎么画怎么画)。在前端html文件中加入以下内容:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&lt;style&gt;</span><br><span class="line">@font-face&#123;font-family:&#39;secret&#39;;src:url(&#39;data:application&#x2F;font-ttf;</span><br><span class="line">charset&#x3D;utf-8;base64,AAEAAAALAIAAAwAwR1NVQiCLJXoA.......AAAAAAAAA&#39;)</span><br><span class="line">format(&#39;truetype&#39;)&#125;.strongbox&#123;font-family:&#39;fangchan-secret&#39;,&#39;Hiragino Sans GB&#39;,</span><br><span class="line">&#39;Microsoft yahei&#39;,Arial,sans-serif,&#39;宋体&#39;!important&#125;</span><br><span class="line">&lt;&#x2F;style&gt;</span><br><span class="line">&lt;style&gt;</span><br><span class="line">.font&#123;font-family:&#39;secret&#39;,&#39;Hiragino Sans GB&#39;,&#39;Microsoft yahei&#39;,Arial,sans-serif,&#39;\5B8B\4F53&#39; !important&#125;</span><br><span class="line">&lt;&#x2F;style&gt;</span><br></pre></td></tr></table></figure>
+<p>上面一段的作用为引入名叫”secret”的自定义字体,然后通过style设计.font，使所有class为”font”的标签应用此自定义字体。换言之，当你想用自定义字体时，在相应的标签中加入class=”font”，如下html源码和前端显示结果:<br><img src="https://imgconvert.csdnimg.cn/aHR0cHM6Ly9zMS5heDF4LmNvbS8yMDIwLzA1LzA3L1llb3Q5VS5wbmc?x-oss-process=image/format,png" alt="html源码"><br><img src="https://imgconvert.csdnimg.cn/aHR0cHM6Ly9zMS5heDF4LmNvbS8yMDIwLzA1LzA3L1llb0poVC5wbmc?x-oss-process=image/format,png" alt="前端显示结果"><br>可见2020 04-27日期字样在源码中显示为乱码。<br><a target="_blank" rel="noopener" href="http://wxt123.top/news">访问上图中我的web项目，点击链接即可，</a>(暂时只对页面右侧一栏中的日期做了font-face加密。)</p>
 <h4 id="如有错误或建议，请在评论处指出！"><a href="#如有错误或建议，请在评论处指出！" class="headerlink" title="如有错误或建议，请在评论处指出！"></a>如有错误或建议，请在评论处指出！</h4> 
       <!-- reward -->
       
@@ -186,7 +180,7 @@
     <a class="modal-close" href="javascript:;"><i class="ri-close-circle-line"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAQ4AAAEOCAAAAABd2qZ5AAAD6ElEQVR42u3ay07kQAwFUP7/p5ntLEhzr+2GGelkheh0peoEyfjx8RFfn39dr+9JVnh9vb7/6VnJPWcXDhw4cOCIj5ps7jXE0wqvn5jsJ39WjvvFDnHgwIEDxxFHcsg2cO7hku+2n35zdhw4cODA8eMcV0dKftPi5p/iwIEDB45/hyNJn/KS4qwoOQvqOHDgwIHjJznaktwsnWtLe3mZctbEwoEDBw4c7+DIA97/+/Nb5jtw4MCBA0cwWLAJSMm38sJiOxLRBtcvvoUDBw4cONYceUC6Gllrg3pS2tsEWhw4cODAccsxG2VoC3OzFDEP2+2nj3vDgQMHDhxv45h9ukmlEu79wMQ3QDhw4MCB45SjDaJXwwGbEYrZy3s8NQ4cOHDgWHPkadjrJdpy3oZmf38UpHHgwIEDx4gjHxrIydrm0ww9eUqdNOLAgQMHjjXHJnRdleTy5C0pHbYDEFEjCgcOHDhwLDja1K7NF3Po/UjEVWERBw4cOHC0HLMy3P5gbeDcvJji3wgcOHDgwLHgaCHykDZrU80KkS1iHatx4MCBA0fJMQuiOWs+xDBrbrWh+vH3OHDgwIFjzdGG0vwAm1Jj2xxq9xMVB3HgwIEDx4ijTnIC3VnTaDMGsWlTPf5d4MCBAweOEUfbamq3vmkC5S8mCdj1BAcOHDhw4BhxXJX82p9nnyap5qolhgMHDhw41hybQJjc3zaQkldye3/xV4ADBw4cOLbVuWH61zaTZmu2IxdtvoYDBw4cODYcSehKHpyX+TZlxLz5lLPiwIEDB45bjra4djWgMOPLRxna9XHgwIEDx55jVs6bBeO8bLcf12vTy0IdBw4cOHAEFbk21ckbSElQzBtI+etsByZw4MCBA8cVR7LRNhDm5bmcuF05eYVfrIMDBw4cONYcbeHvNuAlCdWmZDlrROHAgQMHjj1Hu9ysRNi2jjbPbbNYHDhw4MDxDo42WLaNpdmm98N2B/MdOHDgwIGjnA1LEq1ZWTA/TEv5eXRFdU0cOHDgwFFyJME1T/NymtnwQXtn8WJw4MCBA8cRR3LUfNQgb1C1ja58P/lZHlM4HDhw4MAx4pi1bdpe1hXBrH1VDzrgwIEDB44Fx6qUNhoUyAuIm9LkbH0cOHDgwLHnyK/ZgEJ7ZzvEMKNs0z8cOHDgwNE+Kx8gKPLC8thtupi3vur3jwMHDhw4jjhmgSoPhMMIP9rhZk0cOHDgwPG7HLOxtv0IQrt+8Wpx4MCBA8evcrRDCfnYRJ4utijRfAcOHDhw4FhzJMXB/TBcO/RWH2ZU9MSBAwcOHLcct+W55JGzUbzb1tSmsIgDBw4cOB52/geu3HIUb8xIogAAAABJRU5ErkJggg==" alt="微信分享二维码">
+      <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAASYAAAEmCAAAAADqr2IGAAAEkklEQVR42u3aW66jMBAFwOx/0xnp/o4I57SJhEnxdZVJwC5G6of79Yqv99919Pn///o+uD7fIbmOVpWs4fNeLrgwYcKECdMtmZJl5YuYfT//VU6WPCW/PyZMmDBh2p2pvV0SknOgJL1IOPIXnO8dEyZMmDD9DlMbwpNPVjbWJhl5GYwJEyZMmH6TabbhNoFoU4p8DZgwYcKE6ZeZ2g23IbY9/lwJ7QnWF3vhmDBhwoTpZkzt4M6T/v7ifBMmTJgwYboB07u8Vg4IZ+3afCV5mV3vGhMmTJgwbcuUbDsvdGcEs6QkOUxdx60fjwkTJkyYbsbUtlZnrLN2apJ2JGlK0qo+SVkwYcKECdO2TLMBmnwRLVNOOSuVZy8DEyZMmDDty/R5EW15mZwDtoG5bTHn55IJWTRthAkTJkyYbs/UNnDbNmv7YvIN5OXxStqBCRMmTJiewbQyiJME+zbJWDmwnBXqh59jwoQJE6ZtmXKg2THk7Ljx2lSgrWSHxTAmTJgwYbolU3tYmBex7bjPLLQn0PlqD9eACRMmTJi2ZcqPA9uw3TZbi7IzTinewVUUvZgwYcKE6RFMSbjNF5eP+7RbasnawaOTjjgmTJgwYdqQKS8p8w2vtI/zbbcpSNuMxoQJEyZMz2ZaSQ6S8nhWiLZJQ1Jyn6wKEyZMmDA9jqk9pFxJDlYOQdu27zA5wIQJEyZM2zJdNWbaMq0kE+1LWmkWY8KECROmfZkKudEmV5q260eV7VMOd4cJEyZMmDZnajnaI8n8MLKlXx/KSZ6FCRMmTJj2ZWoLy9l38jCcFLRtWTtr+75W6m9MmDBhwnRLpnw0JwqfoyW2Ifyq9CX5T4MJEyZMmHZkmoXwpDWcH22utF9n40Tt/TFhwoQJ0zOY2nZqG25nC23L9QQ0Gfcp6ntMmDBhwnR7pnZxbQBui+d22LTd/PDUFxMmTJgwbcuUH1jOSuK2aTv7vE1rilYvJkyYMGHalumqEZw23OYHn0kq8O2CHBMmTJgw7cv0jq/88fnGZo3XJLTnKUX0XEyYMGHCtDlTkhbMHvC5cdyG/2vJihEfTJgwYcK0LVPeir222Tob4llv766kMpgwYcKEaUema0dn2sfnpfI62SyyY8KECROm3ZmSkZ2Vsra9Q0uQr6Etd6OMCRMmTJgw3Z4pb4DODiPbbbQceaN5aVwJEyZMmDA9gilv5rYZRx7+k5XMjjDzhOYwY8KECRMmTNsyzX4823b+Sk5arqMxo1lDGRMmTJgwPYMpD7FFKC03nBSrs+HUWWsYEyZMmDDtzjT7Ur6Z9gCyfWHtuOpl68SECRMmTJswvcsrP4ac3WFWAH87+cCECRMmTPsy5Vd7NLgO3baekyRm5VmYMGHChGlfpnbwZTYk2qYRbbBvG8R1CY0JEyZMmDZnmhG0RfWs1ds2c2cZ0MkKMWHChAnTDzDlfyejNi1r+6v2BZ98ExMmTJgw/QxT/qv1Hmm+7faTujDGhAkTJkybM11VrObbblu6ebHatoOTl4EJEyZMmPZlWmmA5iH8qs20Qb0N/MPJJkyYMGHCdEemf6A+yovP7wKQAAAAAElFTkSuQmCC" alt="微信分享二维码">
     </div>
 </div>
 
@@ -197,19 +191,19 @@
    
   <nav class="article-nav">
     
-      <a href="/2020/11/09/github%E4%B9%8Bhexo%E6%BA%90%E7%A0%81%E5%A4%87%E4%BB%BD%E5%92%8C%E5%BA%94%E7%94%A8/" class="article-nav-link">
+      <a href="/2021/01/16/%E5%8A%A0%E5%AF%86/" class="article-nav-link">
         <strong class="article-nav-caption">上一篇</strong>
         <div class="article-nav-title">
           
-            github之hexo源码备份和应用
+            加密
           
         </div>
       </a>
     
     
-      <a href="/2020/03/02/%E5%8F%8D%E7%88%AC%E8%99%AB%E7%AD%96%E7%95%A5%E4%B9%8Bfont-face/" class="article-nav-link">
+      <a href="/2021/01/16/%E5%8A%A0%E5%AF%86%EF%BC%88%E5%A4%8D%E4%BB%B6%EF%BC%89/" class="article-nav-link">
         <strong class="article-nav-caption">下一篇</strong>
-        <div class="article-nav-title">反爬虫策略之font-face</div>
+        <div class="article-nav-title">test 1</div>
       </a>
     
   </nav>

