@@ -15,16 +15,25 @@
   
   <link rel="shortcut icon" href="/favicon.ico" />
   
-  <link rel="stylesheet" href="/dist/main.css">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Shen-Yu/cdn/css/remixicon.min.css">
-  <link rel="stylesheet" href="/css/custom.css">
   
-  <script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
+<link rel="stylesheet" href="/dist/main.css">
+
+  
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Shen-Yu/cdn/css/remixicon.min.css">
+
+  
+<link rel="stylesheet" href="/css/custom.css">
+
+  
+  
+<script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
+
   
   
 
   
 
+<link rel="alternate" href="/atom.xml" title="心是看客心，人是戏中人" type="application/atom+xml">
 </head>
 
 </html>
@@ -65,7 +74,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> Word count:</span>
-            <span class="post-count">1.7k</span>
+            <span class="post-count">1.8k</span>
         </span>
     </span>
 
@@ -74,7 +83,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-book-open-line"></i>
             <span class="post-meta-item-text"> Reading time≈</span>
-            <span class="post-count">8 min</span>
+            <span class="post-count">9 min</span>
         </span>
     </span>
 </div>
@@ -89,28 +98,36 @@
   
     <div class="article-entry" itemprop="articleBody">
        
-  <p><a href="http://test.xss.tv" title="xss闯关入口" target="_blank" rel="noopener">xss闯关入口</a></p>
+  <p><a target="_blank" rel="noopener" href="http://test.xss.tv/" title="xss闯关入口">xss闯关入口</a></p>
 <h2 id="less-1"><a href="#less-1" class="headerlink" title="less-1"></a>less-1</h2><p>查看源代码，</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$str = $_GET[&quot;name&quot;];</span><br><span class="line">echo &quot;&lt;h2 align=center&gt;欢迎用户&quot;.$str.&quot;&lt;/h2&gt;&quot;;</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$str &#x3D; $_GET[&quot;name&quot;];</span><br><span class="line">echo &quot;&lt;h2 align&#x3D;center&gt;欢迎用户&quot;.$str.&quot;&lt;&#x2F;h2&gt;&quot;;</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
 <p>并没有过滤，<br>payload:<code>name=&lt;script&gt;alert(1)&lt;/script&gt;</code></p>
-<h2 id="less-2"><a href="#less-2" class="headerlink" title="less-2"></a>less-2</h2><p>查看源代码，<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$str = $_GET[&quot;keyword&quot;];</span><br><span class="line">echo &quot;&lt;h2 align=center&gt;没有找到和&quot;.htmlspecialchars($str).&quot;相关的结果.&lt;/h2&gt;&quot;.&apos;&lt;center&gt;</span><br><span class="line">&lt;form action=level2.php method=GET&gt;</span><br><span class="line">&lt;input name=keyword  value=&quot;&apos;.$str.&apos;&quot;&gt;</span><br><span class="line">&lt;input type=submit name=submit value=&quot;搜索&quot;/&gt;</span><br></pre></td></tr></table></figure></p>
+<h2 id="less-2"><a href="#less-2" class="headerlink" title="less-2"></a>less-2</h2><p>查看源代码，</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$str &#x3D; $_GET[&quot;keyword&quot;];</span><br><span class="line">echo &quot;&lt;h2 align&#x3D;center&gt;没有找到和&quot;.htmlspecialchars($str).&quot;相关的结果.&lt;&#x2F;h2&gt;&quot;.&#39;&lt;center&gt;</span><br><span class="line">&lt;form action&#x3D;level2.php method&#x3D;GET&gt;</span><br><span class="line">&lt;input name&#x3D;keyword  value&#x3D;&quot;&#39;.$str.&#39;&quot;&gt;</span><br><span class="line">&lt;input type&#x3D;submit name&#x3D;submit value&#x3D;&quot;搜索&quot;&#x2F;&gt;</span><br></pre></td></tr></table></figure>
 <p>有两处输出，第一处在echo处，但被做了转义处理，起到过滤效果，第二处在input处，没有过滤，所以选择在表单的input里攻击,注意语句闭合方式为 “ ，<br>payload:<code>&quot; onclick=&quot;alert(1)</code></p>
-<h2 id="less-3"><a href="#less-3" class="headerlink" title="less-3"></a>less-3</h2><p>查看源代码，<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$str = $_GET[&quot;keyword&quot;];</span><br><span class="line">echo &quot;&lt;h2 align=center&gt;没有找到和&quot;.htmlspecialchars($str).&quot;相关的结果.&lt;/h2&gt;&quot;.&quot;&lt;center&gt;</span><br><span class="line">&lt;form action=level3.php method=GET&gt;</span><br><span class="line">&lt;input name=keyword  value=&apos;&quot;.htmlspecialchars($str).&quot;&apos;&gt;</span><br><span class="line">&lt;input type=submit name=submit value=搜索 /&gt;</span><br></pre></td></tr></table></figure></p>
+<h2 id="less-3"><a href="#less-3" class="headerlink" title="less-3"></a>less-3</h2><p>查看源代码，</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$str &#x3D; $_GET[&quot;keyword&quot;];</span><br><span class="line">echo &quot;&lt;h2 align&#x3D;center&gt;没有找到和&quot;.htmlspecialchars($str).&quot;相关的结果.&lt;&#x2F;h2&gt;&quot;.&quot;&lt;center&gt;</span><br><span class="line">&lt;form action&#x3D;level3.php method&#x3D;GET&gt;</span><br><span class="line">&lt;input name&#x3D;keyword  value&#x3D;&#39;&quot;.htmlspecialchars($str).&quot;&#39;&gt;</span><br><span class="line">&lt;input type&#x3D;submit name&#x3D;submit value&#x3D;搜索 &#x2F;&gt;</span><br></pre></td></tr></table></figure>
 <p>两处输出位置都做了转义处理，都被过滤了，所以 “，&lt;，&gt;符号（双引号和尖括号）就没有效果了，但是源码里input里的value的闭合方式为 ‘，所以还是可以攻击的。<br>payload:<code>&#39; onclick=&#39;alert(1)</code></p>
-<h2 id="less-4"><a href="#less-4" class="headerlink" title="less-4"></a>less-4</h2><p>查看源代码，<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">$str = $_GET[&quot;keyword&quot;];</span><br><span class="line">$str2=str_replace(&quot;&gt;&quot;,&quot;&quot;,$str);</span><br><span class="line">$str3=str_replace(&quot;&lt;&quot;,&quot;&quot;,$str2);</span><br><span class="line">echo &quot;&lt;h2 align=center&gt;没有找到和&quot;.htmlspecialchars($str).&quot;相关的结果.&lt;/h2&gt;&quot;.&apos;&lt;center&gt;</span><br><span class="line">&lt;form action=level4.php method=GET&gt;</span><br><span class="line">&lt;input name=keyword  value=&quot;&apos;.$str3.&apos;&quot;&gt;</span><br><span class="line">&lt;input type=submit name=submit value=搜索 /&gt;</span><br></pre></td></tr></table></figure></p>
+<h2 id="less-4"><a href="#less-4" class="headerlink" title="less-4"></a>less-4</h2><p>查看源代码，</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">$str &#x3D; $_GET[&quot;keyword&quot;];</span><br><span class="line">$str2&#x3D;str_replace(&quot;&gt;&quot;,&quot;&quot;,$str);</span><br><span class="line">$str3&#x3D;str_replace(&quot;&lt;&quot;,&quot;&quot;,$str2);</span><br><span class="line">echo &quot;&lt;h2 align&#x3D;center&gt;没有找到和&quot;.htmlspecialchars($str).&quot;相关的结果.&lt;&#x2F;h2&gt;&quot;.&#39;&lt;center&gt;</span><br><span class="line">&lt;form action&#x3D;level4.php method&#x3D;GET&gt;</span><br><span class="line">&lt;input name&#x3D;keyword  value&#x3D;&quot;&#39;.$str3.&#39;&quot;&gt;</span><br><span class="line">&lt;input type&#x3D;submit name&#x3D;submit value&#x3D;搜索 &#x2F;&gt;</span><br></pre></td></tr></table></figure>
 <p>两处输出位置，一处被转义了，input处没被转义，但是被做了函数处理，尖括号被替换为了空，和less-3的套路一样。<br>payload:<code>&quot; onclick=&quot;alert(1)</code></p>
 <h2 id="less-5"><a href="#less-5" class="headerlink" title="less-5"></a>less-5</h2><p>查看源代码，</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">$str = strtolower($_GET[&quot;keyword&quot;]);</span><br><span class="line">$str2=str_replace(&quot;&lt;script&quot;,&quot;&lt;scr_ipt&quot;,$str);</span><br><span class="line">$str3=str_replace(&quot;on&quot;,&quot;o_n&quot;,$str2);</span><br><span class="line">echo &quot;&lt;h2 align=center&gt;没有找到和&quot;.htmlspecialchars($str).&quot;相关的结果.&lt;/h2&gt;&quot;.&apos;&lt;center&gt;</span><br><span class="line">&lt;form action=level5.php method=GET&gt;</span><br><span class="line">&lt;input name=keyword  value=&quot;&apos;.$str3.&apos;&quot;&gt;</span><br><span class="line">&lt;input type=submit name=submit value=搜索 /&gt;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">$str &#x3D; strtolower($_GET[&quot;keyword&quot;]);</span><br><span class="line">$str2&#x3D;str_replace(&quot;&lt;script&quot;,&quot;&lt;scr_ipt&quot;,$str);</span><br><span class="line">$str3&#x3D;str_replace(&quot;on&quot;,&quot;o_n&quot;,$str2);</span><br><span class="line">echo &quot;&lt;h2 align&#x3D;center&gt;没有找到和&quot;.htmlspecialchars($str).&quot;相关的结果.&lt;&#x2F;h2&gt;&quot;.&#39;&lt;center&gt;</span><br><span class="line">&lt;form action&#x3D;level5.php method&#x3D;GET&gt;</span><br><span class="line">&lt;input name&#x3D;keyword  value&#x3D;&quot;&#39;.$str3.&#39;&quot;&gt;</span><br><span class="line">&lt;input type&#x3D;submit name&#x3D;submit value&#x3D;搜索 &#x2F;&gt;</span><br></pre></td></tr></table></figure>
 <p>有两处输出，一处被做了转义处理，input处输入被做了小写和on，&lt;script被做了替换处理，<br>payload:<code>&quot;&gt;&lt;a href=&quot;javascript:alert(1)&quot;&gt;xss&lt;/a&gt;</code></p>
-<h2 id="less-6"><a href="#less-6" class="headerlink" title="less-6"></a>less-6</h2><p>查看源代码，<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">$str = $_GET[&quot;keyword&quot;];</span><br><span class="line">$str2=str_replace(&quot;&lt;script&quot;,&quot;&lt;scr_ipt&quot;,$str);</span><br><span class="line">$str3=str_replace(&quot;on&quot;,&quot;o_n&quot;,$str2);</span><br><span class="line">$str4=str_replace(&quot;src&quot;,&quot;sr_c&quot;,$str3);</span><br><span class="line">$str5=str_replace(&quot;data&quot;,&quot;da_ta&quot;,$str4);</span><br><span class="line">$str6=str_replace(&quot;href&quot;,&quot;hr_ef&quot;,$str5);</span><br><span class="line">echo &quot;&lt;h2 align=center&gt;没有找到和&quot;.htmlspecialchars($str).&quot;相关的结果.&lt;/h2&gt;&quot;.&apos;&lt;center&gt;</span><br><span class="line">&lt;form action=level6.php method=GET&gt;</span><br><span class="line">&lt;input name=keyword  value=&quot;&apos;.$str6.&apos;&quot;&gt;</span><br></pre></td></tr></table></figure></p>
+<h2 id="less-6"><a href="#less-6" class="headerlink" title="less-6"></a>less-6</h2><p>查看源代码，</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">$str &#x3D; $_GET[&quot;keyword&quot;];</span><br><span class="line">$str2&#x3D;str_replace(&quot;&lt;script&quot;,&quot;&lt;scr_ipt&quot;,$str);</span><br><span class="line">$str3&#x3D;str_replace(&quot;on&quot;,&quot;o_n&quot;,$str2);</span><br><span class="line">$str4&#x3D;str_replace(&quot;src&quot;,&quot;sr_c&quot;,$str3);</span><br><span class="line">$str5&#x3D;str_replace(&quot;data&quot;,&quot;da_ta&quot;,$str4);</span><br><span class="line">$str6&#x3D;str_replace(&quot;href&quot;,&quot;hr_ef&quot;,$str5);</span><br><span class="line">echo &quot;&lt;h2 align&#x3D;center&gt;没有找到和&quot;.htmlspecialchars($str).&quot;相关的结果.&lt;&#x2F;h2&gt;&quot;.&#39;&lt;center&gt;</span><br><span class="line">&lt;form action&#x3D;level6.php method&#x3D;GET&gt;</span><br><span class="line">&lt;input name&#x3D;keyword  value&#x3D;&quot;&#39;.$str6.&#39;&quot;&gt;</span><br></pre></td></tr></table></figure>
 <p>有两处输出，一处被做了转义处理，input处&lt;script,on,src,data,href被做了替换处理，但是没有做less-5中的小写处理，所以可以通过大写替换字绕过，<br>payload:<code>&quot; ONclick=&quot;alert(1)</code></p>
-<h2 id="less-7"><a href="#less-7" class="headerlink" title="less-7"></a>less-7</h2><p>查看源代码，<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">$str =strtolower( $_GET[&quot;keyword&quot;]);</span><br><span class="line">$str2=str_replace(&quot;script&quot;,&quot;&quot;,$str);</span><br><span class="line">$str3=str_replace(&quot;on&quot;,&quot;&quot;,$str2);</span><br><span class="line">$str4=str_replace(&quot;src&quot;,&quot;&quot;,$str3);</span><br><span class="line">$str5=str_replace(&quot;data&quot;,&quot;&quot;,$str4);</span><br><span class="line">$str6=str_replace(&quot;href&quot;,&quot;&quot;,$str5);</span><br><span class="line">echo &quot;&lt;h2 align=center&gt;没有找到和&quot;.htmlspecialchars($str).&quot;相关的结果.&lt;/h2&gt;&quot;.&apos;&lt;center&gt;</span><br><span class="line">&lt;form action=level7.php method=GET&gt;</span><br><span class="line">&lt;input name=keyword  value=&quot;&apos;.$str6.&apos;&quot;&gt;</span><br></pre></td></tr></table></figure></p>
+<h2 id="less-7"><a href="#less-7" class="headerlink" title="less-7"></a>less-7</h2><p>查看源代码，</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">$str &#x3D;strtolower( $_GET[&quot;keyword&quot;]);</span><br><span class="line">$str2&#x3D;str_replace(&quot;script&quot;,&quot;&quot;,$str);</span><br><span class="line">$str3&#x3D;str_replace(&quot;on&quot;,&quot;&quot;,$str2);</span><br><span class="line">$str4&#x3D;str_replace(&quot;src&quot;,&quot;&quot;,$str3);</span><br><span class="line">$str5&#x3D;str_replace(&quot;data&quot;,&quot;&quot;,$str4);</span><br><span class="line">$str6&#x3D;str_replace(&quot;href&quot;,&quot;&quot;,$str5);</span><br><span class="line">echo &quot;&lt;h2 align&#x3D;center&gt;没有找到和&quot;.htmlspecialchars($str).&quot;相关的结果.&lt;&#x2F;h2&gt;&quot;.&#39;&lt;center&gt;</span><br><span class="line">&lt;form action&#x3D;level7.php method&#x3D;GET&gt;</span><br><span class="line">&lt;input name&#x3D;keyword  value&#x3D;&quot;&#39;.$str6.&#39;&quot;&gt;</span><br></pre></td></tr></table></figure>
 <p>有两处输出，一处被做了转义处理，input处做了小写处理和script,on,src,data,href被做了替换处理，可以利用双写来拼合成，例如oonn被处理后就变为了on，<br>payload:<code>&quot; oonnclick=&quot;alert(1)</code></p>
-<h2 id="less-8"><a href="#less-8" class="headerlink" title="less-8"></a>less-8</h2><p>查看源代码，<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">$str = strtolower($_GET[&quot;keyword&quot;]);</span><br><span class="line">$str2=str_replace(&quot;script&quot;,&quot;scr_ipt&quot;,$str);</span><br><span class="line">$str3=str_replace(&quot;on&quot;,&quot;o_n&quot;,$str2);</span><br><span class="line">$str4=str_replace(&quot;src&quot;,&quot;sr_c&quot;,$str3);</span><br><span class="line">$str5=str_replace(&quot;data&quot;,&quot;da_ta&quot;,$str4);</span><br><span class="line">$str6=str_replace(&quot;href&quot;,&quot;hr_ef&quot;,$str5);</span><br><span class="line">$str7=str_replace(&apos;&quot;&apos;,&apos;&amp;quot&apos;,$str6);</span><br><span class="line">……</span><br><span class="line">&lt;input name=keyword  value=&quot;&apos;.htmlspecialchars($str).&apos;&quot;&gt;</span><br><span class="line">&lt;input type=submit name=submit value=添加友情链接 /&gt;</span><br><span class="line"> echo &apos;&lt;center&gt;&lt;BR&gt;&lt;a href=&quot;&apos;.$str7.&apos;&quot;&gt;友情链接&lt;/a&gt;&lt;/center&gt;&apos;;</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure></p>
+<h2 id="less-8"><a href="#less-8" class="headerlink" title="less-8"></a>less-8</h2><p>查看源代码，</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">$str &#x3D; strtolower($_GET[&quot;keyword&quot;]);</span><br><span class="line">$str2&#x3D;str_replace(&quot;script&quot;,&quot;scr_ipt&quot;,$str);</span><br><span class="line">$str3&#x3D;str_replace(&quot;on&quot;,&quot;o_n&quot;,$str2);</span><br><span class="line">$str4&#x3D;str_replace(&quot;src&quot;,&quot;sr_c&quot;,$str3);</span><br><span class="line">$str5&#x3D;str_replace(&quot;data&quot;,&quot;da_ta&quot;,$str4);</span><br><span class="line">$str6&#x3D;str_replace(&quot;href&quot;,&quot;hr_ef&quot;,$str5);</span><br><span class="line">$str7&#x3D;str_replace(&#39;&quot;&#39;,&#39;&amp;quot&#39;,$str6);</span><br><span class="line">……</span><br><span class="line">&lt;input name&#x3D;keyword  value&#x3D;&quot;&#39;.htmlspecialchars($str).&#39;&quot;&gt;</span><br><span class="line">&lt;input type&#x3D;submit name&#x3D;submit value&#x3D;添加友情链接 &#x2F;&gt;</span><br><span class="line"> echo &#39;&lt;center&gt;&lt;BR&gt;&lt;a href&#x3D;&quot;&#39;.$str7.&#39;&quot;&gt;友情链接&lt;&#x2F;a&gt;&lt;&#x2F;center&gt;&#39;;</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
 <p>有两处输出，一处input做了转义处理，另一处做了小写处理和script,on,src,data,href，” ，被做了替换处理，这题的关键在友情链接处,点击”添加友情链接”后会在友情链接出加入一个拼接的语句。<br>t的ASCII码116用表示为”&amp;#116”，同理:表示为”&amp;#58”，<br>payload:<code>javascrip&amp;#116:alert(1)</code></p>
-<h2 id="less-9"><a href="#less-9" class="headerlink" title="less-9"></a>less-9</h2><p>查看源代码，<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">$str = strtolower($_GET[&quot;keyword&quot;]);</span><br><span class="line">$str2=str_replace(&quot;script&quot;,&quot;scr_ipt&quot;,$str);</span><br><span class="line">$str3=str_replace(&quot;on&quot;,&quot;o_n&quot;,$str2);</span><br><span class="line">$str4=str_replace(&quot;src&quot;,&quot;sr_c&quot;,$str3);</span><br><span class="line">$str5=str_replace(&quot;data&quot;,&quot;da_ta&quot;,$str4);</span><br><span class="line">$str6=str_replace(&quot;href&quot;,&quot;hr_ef&quot;,$str5);</span><br><span class="line">$str7=str_replace(&apos;&quot;&apos;,&apos;&amp;quot&apos;,$str6);</span><br><span class="line">……</span><br><span class="line">&lt;form action=level9.php method=GET&gt;</span><br><span class="line">&lt;input name=keyword  value=&quot;&apos;.htmlspecialchars($str).&apos;&quot;&gt;</span><br><span class="line">&lt;input type=submit name=submit value=添加友情链接 /&gt;</span><br><span class="line">……</span><br><span class="line">if(false===strpos($str7,&apos;http://&apos;))</span><br><span class="line">&#123;</span><br><span class="line">  echo &apos;&lt;center&gt;&lt;BR&gt;&lt;a href=&quot;您的链接不合法？有没有！&quot;&gt;友情链接&lt;/a&gt;&lt;/center&gt;&apos;;</span><br><span class="line">        &#125;</span><br><span class="line">else</span><br><span class="line">&#123;</span><br><span class="line">  echo &apos;&lt;center&gt;&lt;BR&gt;&lt;a href=&quot;&apos;.$str7.&apos;&quot;&gt;友情链接&lt;/a&gt;&lt;/center&gt;&apos;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h2 id="less-9"><a href="#less-9" class="headerlink" title="less-9"></a>less-9</h2><p>查看源代码，</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">$str &#x3D; strtolower($_GET[&quot;keyword&quot;]);</span><br><span class="line">$str2&#x3D;str_replace(&quot;script&quot;,&quot;scr_ipt&quot;,$str);</span><br><span class="line">$str3&#x3D;str_replace(&quot;on&quot;,&quot;o_n&quot;,$str2);</span><br><span class="line">$str4&#x3D;str_replace(&quot;src&quot;,&quot;sr_c&quot;,$str3);</span><br><span class="line">$str5&#x3D;str_replace(&quot;data&quot;,&quot;da_ta&quot;,$str4);</span><br><span class="line">$str6&#x3D;str_replace(&quot;href&quot;,&quot;hr_ef&quot;,$str5);</span><br><span class="line">$str7&#x3D;str_replace(&#39;&quot;&#39;,&#39;&amp;quot&#39;,$str6);</span><br><span class="line">……</span><br><span class="line">&lt;form action&#x3D;level9.php method&#x3D;GET&gt;</span><br><span class="line">&lt;input name&#x3D;keyword  value&#x3D;&quot;&#39;.htmlspecialchars($str).&#39;&quot;&gt;</span><br><span class="line">&lt;input type&#x3D;submit name&#x3D;submit value&#x3D;添加友情链接 &#x2F;&gt;</span><br><span class="line">……</span><br><span class="line">if(false&#x3D;&#x3D;&#x3D;strpos($str7,&#39;http:&#x2F;&#x2F;&#39;))</span><br><span class="line">&#123;</span><br><span class="line">  echo &#39;&lt;center&gt;&lt;BR&gt;&lt;a href&#x3D;&quot;您的链接不合法？有没有！&quot;&gt;友情链接&lt;&#x2F;a&gt;&lt;&#x2F;center&gt;&#39;;</span><br><span class="line">        &#125;</span><br><span class="line">else</span><br><span class="line">&#123;</span><br><span class="line">  echo &#39;&lt;center&gt;&lt;BR&gt;&lt;a href&#x3D;&quot;&#39;.$str7.&#39;&quot;&gt;友情链接&lt;&#x2F;a&gt;&lt;&#x2F;center&gt;&#39;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>有两处输出，一处input做了转义处理，另一处做了小写处理和script,on,src,data,href，” ，被做了替换处理，而且出现了strpos()函数，表示查找 “http://“ 在字符串中第一次出现的位置。只要!=false，就会跳向可攻击的语句，所以构造的语句中要含有http://，利用javascript中的注释符//，<br>payload:<code>javascrip&amp;#116:alert(1)//http://</code></p>
-<h2 id="less-10"><a href="#less-10" class="headerlink" title="less-10"></a>less-10</h2><p>查看源代码，<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">$str = $_GET[&quot;keyword&quot;];</span><br><span class="line">$str11 = $_GET[&quot;t_sort&quot;];</span><br><span class="line">$str22=str_replace(&quot;&gt;&quot;,&quot;&quot;,$str11);</span><br><span class="line">$str33=str_replace(&quot;&lt;&quot;,&quot;&quot;,$str22);</span><br><span class="line">echo &quot;&lt;h2 align=center&gt;没有找到和&quot;.htmlspecialchars($str).&quot;相关的结果.&lt;/h2&gt;&quot;.&apos;&lt;center&gt;</span><br><span class="line">&lt;form id=search&gt;</span><br><span class="line">&lt;input name=&quot;t_link&quot;  value=&quot;&apos;.&apos;&quot; type=&quot;hidden&quot;&gt;</span><br><span class="line">&lt;input name=&quot;t_history&quot;  value=&quot;&apos;.&apos;&quot; type=&quot;hidden&quot;&gt;</span><br><span class="line">&lt;input name=&quot;t_sort&quot;  value=&quot;&apos;.$str33.&apos;&quot; type=&quot;hidden&quot;&gt;</span><br></pre></td></tr></table></figure></p>
+<h2 id="less-10"><a href="#less-10" class="headerlink" title="less-10"></a>less-10</h2><p>查看源代码，</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">$str &#x3D; $_GET[&quot;keyword&quot;];</span><br><span class="line">$str11 &#x3D; $_GET[&quot;t_sort&quot;];</span><br><span class="line">$str22&#x3D;str_replace(&quot;&gt;&quot;,&quot;&quot;,$str11);</span><br><span class="line">$str33&#x3D;str_replace(&quot;&lt;&quot;,&quot;&quot;,$str22);</span><br><span class="line">echo &quot;&lt;h2 align&#x3D;center&gt;没有找到和&quot;.htmlspecialchars($str).&quot;相关的结果.&lt;&#x2F;h2&gt;&quot;.&#39;&lt;center&gt;</span><br><span class="line">&lt;form id&#x3D;search&gt;</span><br><span class="line">&lt;input name&#x3D;&quot;t_link&quot;  value&#x3D;&quot;&#39;.&#39;&quot; type&#x3D;&quot;hidden&quot;&gt;</span><br><span class="line">&lt;input name&#x3D;&quot;t_history&quot;  value&#x3D;&quot;&#39;.&#39;&quot; type&#x3D;&quot;hidden&quot;&gt;</span><br><span class="line">&lt;input name&#x3D;&quot;t_sort&quot;  value&#x3D;&quot;&#39;.$str33.&#39;&quot; type&#x3D;&quot;hidden&quot;&gt;</span><br></pre></td></tr></table></figure>
 <p>有两处输出，一处被做了转义，一处input被作为隐藏表单(type=”hidden”)处理页面没有显示，需要先将隐藏表单触发显示出来，然后在input处攻击，看到url处可以get参数t_sort，所以可以构造payload了。<br>payload:<code>url后加 &amp;t_sort=xss&quot; onclick=alert(1) type=&quot;text&quot;</code></p>
 <p><strong><em>xss(1~10)关卡全部完成了，如有错误，欢迎在评论中指出!</em></strong></p>
  
@@ -194,7 +211,7 @@
    
   <nav class="article-nav">
     
-      <a href="/2019/03/30/利用msf攻击win10/" class="article-nav-link">
+      <a href="/2019/03/30/%E5%88%A9%E7%94%A8msf%E6%94%BB%E5%87%BBwin10/" class="article-nav-link">
         <strong class="article-nav-caption">上一篇</strong>
         <div class="article-nav-title">
           
@@ -221,11 +238,11 @@
 <script>
   new Valine({
     el: "#vcomments",
-    app_id: "",
-    app_key: "",
+    app_id: "ds54farWshFsUraKxWRVVf4G-gzGzoHsz",
+    app_key: "q4rgias5HDeq09ugweytekJQ",
     path: window.location.pathname,
-    avatar: "mp",
-    placeholder: "Add some comments to my article~",
+    avatar: "monsterid",
+    placeholder: "",
     recordIP: true,
   });
   const infoEle = document.querySelector("#vcomments .info");
@@ -406,11 +423,17 @@
     
   </div>
 </div>
-    <script src="/js/jquery-2.0.3.min.js"></script>
+    
+<script src="/js/jquery-2.0.3.min.js"></script>
+
+
 <script src="/js/lazyload.min.js"></script>
+
 <!-- Tocbot -->
 
+
 <script src="/js/tocbot.min.js"></script>
+
 <script>
   tocbot.init({
     tocSelector: '.tocbot',
@@ -428,7 +451,9 @@
 <script src="https://cdn.jsdelivr.net/npm/jquery-modal@0.9.2/jquery.modal.min.js"></script>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jquery-modal@0.9.2/jquery.modal.min.css">
 <script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js"></script>
+
 <script src="/dist/main.js"></script>
+
 <!-- ImageViewer -->
 
 <!-- Root element of PhotoSwipe. Must have class pswp. -->
@@ -544,7 +569,9 @@
 
 <!-- busuanzi  -->
 
+
 <script src="/js/busuanzi-2.3.pure.min.js"></script>
+
 
 <!-- ClickLove -->
 
@@ -552,11 +579,15 @@
 
 <!-- ClickBoom2 -->
 
+
 <script src="/js/clickBoom2.js"></script>
+
 
 <!-- CodeCopy -->
 
+
 <link rel="stylesheet" href="/css/clipboard.css">
+
 <script src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js"></script>
 <script>
   function wait(callback, seconds) {
@@ -615,7 +646,9 @@
 
 <!-- CanvasBackground -->
 
+
 <script src="/js/dz.js"></script>
+
 
 
     

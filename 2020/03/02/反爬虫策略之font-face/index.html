@@ -15,16 +15,25 @@
   
   <link rel="shortcut icon" href="/favicon.ico" />
   
-  <link rel="stylesheet" href="/dist/main.css">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Shen-Yu/cdn/css/remixicon.min.css">
-  <link rel="stylesheet" href="/css/custom.css">
   
-  <script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
+<link rel="stylesheet" href="/dist/main.css">
+
+  
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Shen-Yu/cdn/css/remixicon.min.css">
+
+  
+<link rel="stylesheet" href="/css/custom.css">
+
+  
+  
+<script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
+
   
   
 
   
 
+<link rel="alternate" href="/atom.xml" title="心是看客心，人是戏中人" type="application/atom+xml">
 </head>
 
 </html>
@@ -57,7 +66,7 @@
     </header>
      
     <div class="article-meta">
-      <a href="/2020/03/02/反爬虫策略之font-face/" class="article-date">
+      <a href="/2020/03/02/%E5%8F%8D%E7%88%AC%E8%99%AB%E7%AD%96%E7%95%A5%E4%B9%8Bfont-face/" class="article-date">
   <time datetime="2020-03-01T16:00:00.000Z" itemprop="datePublished">2020-03-02</time>
 </a>   
 <div class="word_count">
@@ -90,12 +99,13 @@
     <div class="article-entry" itemprop="articleBody">
        
   <p><strong>在互联网快速发展的时代里，爬虫可以说是无处不在。各类热搜以及热点新闻，时时刻刻都在被爬虫获取。如果开发者并不想让内容大范围传播呢？如何应对爬虫呢？常见的方法有验证码验证，以及对频繁登陆ip进行屏蔽，除此之外，还有一种通过font-face自定义字体的方式，可以让爬取到的内容和网页显示的内容完全不一样，从而产生一种是否爬错内容了的感觉。</strong></p>
-<h2 id="1-font-face介绍："><a href="#1-font-face介绍：" class="headerlink" title="1.font-face介绍："></a>1.font-face介绍：</h2><p>谈到font-face，也许很多人并不熟悉，但是说到应用此技术的公司，大家肯定都很熟悉了，58同城，猫眼电影等，都采用了font-face策略来应对爬虫。以<a href="https://su.58.com/zufang/pn2/?PGTID=0d300008-0000-5965-8ce1-1873463f7758&amp;ClickID=1" target="_blank" rel="noopener">58同城</a>为例，打开审查元素，发现页面内的3室2厅1卫 和120㎡中的数字均变成了乱码 —-“驋室麣厅龒卫”,”龒麣龤㎡”。所以即便爬虫找到了正确位置，也依然无法获得正确信息。<br><img src="https://imgconvert.csdnimg.cn/aHR0cHM6Ly9zMS5heDF4LmNvbS8yMDIwLzA1LzA3L1llWkV3Ui5wbmc?x-oss-process=image/format,png" alt="58同城页面信息"></p>
+<h2 id="1-font-face介绍："><a href="#1-font-face介绍：" class="headerlink" title="1.font-face介绍："></a>1.font-face介绍：</h2><p>谈到font-face，也许很多人并不熟悉，但是说到应用此技术的公司，大家肯定都很熟悉了，58同城，猫眼电影等，都采用了font-face策略来应对爬虫。以<a target="_blank" rel="noopener" href="https://su.58.com/zufang/pn2/?PGTID=0d300008-0000-5965-8ce1-1873463f7758&ClickID=1">58同城</a>为例，打开审查元素，发现页面内的3室2厅1卫 和120㎡中的数字均变成了乱码 —-“驋室麣厅龒卫”,”龒麣龤㎡”。所以即便爬虫找到了正确位置，也依然无法获得正确信息。<br><img src="https://imgconvert.csdnimg.cn/aHR0cHM6Ly9zMS5heDF4LmNvbS8yMDIwLzA1LzA3L1llWkV3Ui5wbmc?x-oss-process=image/format,png" alt="58同城页面信息"></p>
 <h2 id="2-font-face原理："><a href="#2-font-face原理：" class="headerlink" title="2.font-face原理："></a>2.font-face原理：</h2><p>仔细观察审查元素信息，在styles栏里发现了font-family，这就是自定义字体，可以把乱码显示成正常的数字。<br><img src="https://imgconvert.csdnimg.cn/aHR0cHM6Ly9zMS5heDF4LmNvbS8yMDIwLzA1LzA3L1llbVl6OC5wbmc?x-oss-process=image/format,png" alt="审查元素"><br>于是我们要找到font-family字样，右键点击网页源代码，搜索font-family，找到@font-face等关键字，通过分析data:application/font-ttf，可以猜测后面长串字符串应该是对某个ttf字体进行了base64编码。<br><img src="https://imgconvert.csdnimg.cn/aHR0cHM6Ly9zMS5heDF4LmNvbS8yMDIwLzA1LzA3L1lld0Z3bi5wbmc?x-oss-process=image/format,png" alt="查看网页源代码"><br>上python，解码生成ttf字体文件。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">from fontTools.ttLib import TTFont</span><br><span class="line">import base64</span><br><span class="line">import io</span><br><span class="line"></span><br><span class="line">key=&apos;&apos;&apos;</span><br><span class="line">AAEAAAALAIAAAwAwR1NVQiCLJXoAAAE.......AAAA    #key值为源代码中的长串字符串</span><br><span class="line">&apos;&apos;&apos;</span><br><span class="line">data = base64.b64decode(key) #base64解码</span><br><span class="line">fonts = TTFont(io.BytesIO(data)) #生成二进制字节</span><br><span class="line">fonts.save(&apos;font-face.ttf&apos;)</span><br></pre></td></tr></table></figure>
-<p>将生成的font-face.ttf通过<a href="http://fontstore.baidu.com/static/editor/index.html" target="_blank" rel="noopener">百度字体编辑器</a>打开，可以看到对所有数字进行了重新编码。<br><img src="https://imgconvert.csdnimg.cn/aHR0cHM6Ly9zMS5heDF4LmNvbS8yMDIwLzA1LzA3L1llRHJrUi5wbmc?x-oss-process=image/format,png" alt="自定义字体"><br>是不是有点儿疑惑？怎么对数字重新编码？？？其实也可以理解为是对编码对应的图形进行了改变，比如同样是编码(0x9a4b)，在常规字体中是”驋”的模样可能在B字体中就是”2”的模样，在自己设计的字体里，可以任性的把(0x9a4b)编码对应的图形设计成”2”的形状，举个例子:<br><img src="https://imgconvert.csdnimg.cn/aHR0cHM6Ly9zMS5heDF4LmNvbS8yMDIwLzA1LzA3L1llUmxpNC5qcGc?x-oss-process=image/format,png" alt="自定义字体有不一样的形状"><br>同样是(0x9a4b)编码，在字体A中，你认为是2，在字体B中，即便和字体A中形状不一样，你一样认为是2，但在自定义字体中，你会认为是w。同样的道理，我们可以把常规字体中的乱码，设计成数字的形状。<br>所以在自定义字体的基础上，我们可以变相认为对字体进行了加密，从而起到保护重要数据的作用。</p>
-<h2 id="3-实现font-face："><a href="#3-实现font-face：" class="headerlink" title="3.实现font-face："></a>3.实现font-face：</h2><p>理解了font-face的原理后，我们可以将font-face策略应用到自己的web项目中。为了简便操作，我直接用了第二步中在58同城网站下载的字体hhh(自行设计字体也很cool，想怎么画怎么画)。在前端html文件中加入以下内容:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&lt;style&gt;</span><br><span class="line">@font-face&#123;font-family:&apos;secret&apos;;src:url(&apos;data:application/font-ttf;</span><br><span class="line">charset=utf-8;base64,AAEAAAALAIAAAwAwR1NVQiCLJXoA.......AAAAAAAAA&apos;)</span><br><span class="line">format(&apos;truetype&apos;)&#125;.strongbox&#123;font-family:&apos;fangchan-secret&apos;,&apos;Hiragino Sans GB&apos;,</span><br><span class="line">&apos;Microsoft yahei&apos;,Arial,sans-serif,&apos;宋体&apos;!important&#125;</span><br><span class="line">&lt;/style&gt;</span><br><span class="line">&lt;style&gt;</span><br><span class="line">.font&#123;font-family:&apos;secret&apos;,&apos;Hiragino Sans GB&apos;,&apos;Microsoft yahei&apos;,Arial,sans-serif,&apos;\5B8B\4F53&apos; !important&#125;</span><br><span class="line">&lt;/style&gt;</span><br></pre></td></tr></table></figure></p>
-<p>上面一段的作用为引入名叫”secret”的自定义字体,然后通过style设计.font，使所有class为”font”的标签应用此自定义字体。换言之，当你想用自定义字体时，在相应的标签中加入class=”font”，如下html源码和前端显示结果:<br><img src="https://imgconvert.csdnimg.cn/aHR0cHM6Ly9zMS5heDF4LmNvbS8yMDIwLzA1LzA3L1llb3Q5VS5wbmc?x-oss-process=image/format,png" alt="html源码"><br><img src="https://imgconvert.csdnimg.cn/aHR0cHM6Ly9zMS5heDF4LmNvbS8yMDIwLzA1LzA3L1llb0poVC5wbmc?x-oss-process=image/format,png" alt="前端显示结果"><br>可见2020 04-27日期字样在源码中显示为乱码。<br><a href="http://wxt123.top/news" target="_blank" rel="noopener">访问上图中我的web项目，点击链接即可，</a>(暂时只对页面右侧一栏中的日期做了font-face加密。)</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">from fontTools.ttLib import TTFont</span><br><span class="line">import base64</span><br><span class="line">import io</span><br><span class="line"></span><br><span class="line">key&#x3D;&#39;&#39;&#39;</span><br><span class="line">AAEAAAALAIAAAwAwR1NVQiCLJXoAAAE.......AAAA    #key值为源代码中的长串字符串</span><br><span class="line">&#39;&#39;&#39;</span><br><span class="line">data &#x3D; base64.b64decode(key) #base64解码</span><br><span class="line">fonts &#x3D; TTFont(io.BytesIO(data)) #生成二进制字节</span><br><span class="line">fonts.save(&#39;font-face.ttf&#39;)</span><br></pre></td></tr></table></figure>
+<p>将生成的font-face.ttf通过<a target="_blank" rel="noopener" href="http://fontstore.baidu.com/static/editor/index.html">百度字体编辑器</a>打开，可以看到对所有数字进行了重新编码。<br><img src="https://imgconvert.csdnimg.cn/aHR0cHM6Ly9zMS5heDF4LmNvbS8yMDIwLzA1LzA3L1llRHJrUi5wbmc?x-oss-process=image/format,png" alt="自定义字体"><br>是不是有点儿疑惑？怎么对数字重新编码？？？其实也可以理解为是对编码对应的图形进行了改变，比如同样是编码(0x9a4b)，在常规字体中是”驋”的模样可能在B字体中就是”2”的模样，在自己设计的字体里，可以任性的把(0x9a4b)编码对应的图形设计成”2”的形状，举个例子:<br><img src="https://imgconvert.csdnimg.cn/aHR0cHM6Ly9zMS5heDF4LmNvbS8yMDIwLzA1LzA3L1llUmxpNC5qcGc?x-oss-process=image/format,png" alt="自定义字体有不一样的形状"><br>同样是(0x9a4b)编码，在字体A中，你认为是2，在字体B中，即便和字体A中形状不一样，你一样认为是2，但在自定义字体中，你会认为是w。同样的道理，我们可以把常规字体中的乱码，设计成数字的形状。<br>所以在自定义字体的基础上，我们可以变相认为对字体进行了加密，从而起到保护重要数据的作用。</p>
+<h2 id="3-实现font-face："><a href="#3-实现font-face：" class="headerlink" title="3.实现font-face："></a>3.实现font-face：</h2><p>理解了font-face的原理后，我们可以将font-face策略应用到自己的web项目中。为了简便操作，我直接用了第二步中在58同城网站下载的字体hhh(自行设计字体也很cool，想怎么画怎么画)。在前端html文件中加入以下内容:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&lt;style&gt;</span><br><span class="line">@font-face&#123;font-family:&#39;secret&#39;;src:url(&#39;data:application&#x2F;font-ttf;</span><br><span class="line">charset&#x3D;utf-8;base64,AAEAAAALAIAAAwAwR1NVQiCLJXoA.......AAAAAAAAA&#39;)</span><br><span class="line">format(&#39;truetype&#39;)&#125;.strongbox&#123;font-family:&#39;fangchan-secret&#39;,&#39;Hiragino Sans GB&#39;,</span><br><span class="line">&#39;Microsoft yahei&#39;,Arial,sans-serif,&#39;宋体&#39;!important&#125;</span><br><span class="line">&lt;&#x2F;style&gt;</span><br><span class="line">&lt;style&gt;</span><br><span class="line">.font&#123;font-family:&#39;secret&#39;,&#39;Hiragino Sans GB&#39;,&#39;Microsoft yahei&#39;,Arial,sans-serif,&#39;\5B8B\4F53&#39; !important&#125;</span><br><span class="line">&lt;&#x2F;style&gt;</span><br></pre></td></tr></table></figure>
+<p>上面一段的作用为引入名叫”secret”的自定义字体,然后通过style设计.font，使所有class为”font”的标签应用此自定义字体。换言之，当你想用自定义字体时，在相应的标签中加入class=”font”，如下html源码和前端显示结果:<br><img src="https://imgconvert.csdnimg.cn/aHR0cHM6Ly9zMS5heDF4LmNvbS8yMDIwLzA1LzA3L1llb3Q5VS5wbmc?x-oss-process=image/format,png" alt="html源码"><br><img src="https://imgconvert.csdnimg.cn/aHR0cHM6Ly9zMS5heDF4LmNvbS8yMDIwLzA1LzA3L1llb0poVC5wbmc?x-oss-process=image/format,png" alt="前端显示结果"><br>可见2020 04-27日期字样在源码中显示为乱码。<br><a target="_blank" rel="noopener" href="http://wxt123.top/news">访问上图中我的web项目，点击链接即可，</a>(暂时只对页面右侧一栏中的日期做了font-face加密。)</p>
 <h4 id="如有错误或建议，请在评论处指出！"><a href="#如有错误或建议，请在评论处指出！" class="headerlink" title="如有错误或建议，请在评论处指出！"></a>如有错误或建议，请在评论处指出！</h4> 
       <!-- reward -->
       
@@ -166,7 +176,7 @@
     <a class="modal-close" href="javascript:;"><i class="ri-close-circle-line"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAN4AAADeCAAAAAB3DOFrAAACtElEQVR42u3a0U4jMQwF0P7/T7OvrBbae+2ksNKZJzRDmZwgxa7txyO+Pj5dn+/kv/n8yj/7uHHh4eHhLZaevPg7ZLKIf59+lFe+Zjw8PLzbvOdLacPA87+T3NmsBw8PD++38dpg0P7NfJvw8PDw/i9enmRvFpe8BQ8PD++neO2i29LDqWLuxVoLHh4eXsw7lQq/8+cr/T08PDy8dVe9TZrbFDm/P1wtHh4e3gVefuBuktpNyt4Wi/Hw8PDez2sHrdowMDv68+DxxR08PDy8o7z2aE7Y9e4uysQvwgYeHh7eNV6eLp86yuuFxsHmi4iHh4eHd4GXv2DW4G8HC4518/Dw8PAu8PJCbV7MTdLivJ22CUt4eHh47+G1r2lT6nx0oA0SL5B4eHh4h3jJkTp7mpczZqEi2ho8PDy8C7w8MMyKCO3T/NBvtwAPDw/vLG8zCpC3+TfttFnijoeHh3ePlxde27GqtgR8qrRRl2Lw8PDwFrz9iEDOyMvBedJfN8Dw8PDwSt7sUM4T4raQEf0fglD0bZUaDw8Pb82bpbbtSEG+EbNE/MVm4eHh4V3j5aWKvNl/qhmWJ9PfBgY8PDy8Q7y2ZVU07OONa5tkxVgYHh4e3gXeWWqbdm9Gr1YNMDw8PLzLvFlTfwObBaFhDMTDw8Mb8fIW1OaVM/Ys2Dw2y8LDw8Nb8NoXz1LevOTRFnPx8PDwbvNOJc1tufZUCfjR7h8eHh7eBVjb+noeQtrBrE1Y+mt0AA8PD+8ob3OUt2XZTYrcfhYPDw/vNq8NBrOn++JFEhjw8PDw3smbHcr5t/48/MxqDi8CAx4eHt6P8toSQFvmSAJGkZrj4eHh/QJeGySSQ7wdrjo8U4aHh4c34rWjA5vG1SbMDAMDHh4e3lFe+4U/We6+wZ+HhGNzZ3h4eHiveX8ABORBBetISSoAAAAASUVORK5CYII=" alt="微信分享二维码">
+      <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAPYAAAD2CAAAAADAeSUUAAADRUlEQVR42u3awW6jQBAEUP//T3ulPe0qxq7qQZEZHqfIwcAbpHS6ax6P+Hj+PX7+/O8nP4+fvz06/+hq7z8/OvO0AxsbG/si7Ofb44iaPGKyKMnz5OckFmxsbOxd2UnROlqIZ3Aki7WyBLkFGxsb+87s5KHXF/H9dZICho2NjY2dlKj2NvngKb/Lr9ZtbGxs7K9ntyP+lpoM+nNGHjycMEvDxsbG/nr2StD7bT//Ur6NjY2N/TXsZ3nM2ox8kJQPsNpw4r/rYGNjY2/EbkfzCenc8KBtgYqBFDY2NvZG7JXtMusPfRajjYqxsbGx92DPik3+QEmpm50/i4pfdGDY2NjYW7BnsLyozOLY/O7tfbGxsbH3Y68PcdoGJo8TVpb18BViY2Njb8duLz0rLSvFadZ4HE6QsLGxsTdit2P6NgaeNQz5cufpBzY2Nvau7OSPftuc5IVntiUoL3h13cbGxsa+LHv2r//6CClvHvIgIWp4sLGxsbdjt6P2tnS1TUX+MpKi9eKa2NjY2Ddgtw1GC16JfttFKQoYNjY29gXZ7faX9sb50L+NhNefBBsbG3sndvtPfx6yrrc0szCgKF3Y2NjYN2C3w/d2sWZFri2Z0UpjY2NjX5B9VmQ7ayGSpZmF0B8iBGxsbOyN2O1f9XbAtDK4L4LbMvTFxsbG3o+dNxXrIWseA+dxb74cj7wSYmNjY1+EvVIM2uZkvVi2rw0bGxv7Pux2ZJ9EC0ku0Qa061t8sLGxsfdm54UtD3fPCmvbp/1QILGxsbE3Ys8ahnagP4sE2mu2ZRIbGxt7D3YyWB+uZVDGklHRynjrw04lbGxs7C3Y64+e82aBbnKF4fwfGxsbewv2aSt36iApb1GGRREbGxt7O/Zsi8wsTnhfkJLNlB+24yQHNjY29nbs9saz0Hed3Ua5h0+CjY2NvRF7pdTlCzQrk7Nz2pYGGxsbew922wCstyL5t9bHWMPqjY2NjX1Bdlu0koXLr5OT8obnw8YjbGxs7FuyZ1tz8rFU8slsM9CLu2NjY2Pfnp1/N3/0vCi2L2CpFcHGxsa+CHslTM2/m9+9ALwdQh2+JGxsbOyN2CtBbzsqmg2DZks/i5axsbGxL8X+A9Caq89/spwdAAAAAElFTkSuQmCC" alt="微信分享二维码">
     </div>
 </div>
 
@@ -177,7 +187,7 @@
    
   <nav class="article-nav">
     
-      <a href="/2020/04/11/flask+redis-限制ip访问频率/" class="article-nav-link">
+      <a href="/2020/04/11/flask+redis-%E9%99%90%E5%88%B6ip%E8%AE%BF%E9%97%AE%E9%A2%91%E7%8E%87/" class="article-nav-link">
         <strong class="article-nav-caption">上一篇</strong>
         <div class="article-nav-title">
           
@@ -187,7 +197,7 @@
       </a>
     
     
-      <a href="/2020/02/08/python实现微信调用腾讯智能闲聊/" class="article-nav-link">
+      <a href="/2020/02/08/python%E5%AE%9E%E7%8E%B0%E5%BE%AE%E4%BF%A1%E8%B0%83%E7%94%A8%E8%85%BE%E8%AE%AF%E6%99%BA%E8%83%BD%E9%97%B2%E8%81%8A/" class="article-nav-link">
         <strong class="article-nav-caption">下一篇</strong>
         <div class="article-nav-title">python+微信+腾讯智能闲聊</div>
       </a>
@@ -204,11 +214,11 @@
 <script>
   new Valine({
     el: "#vcomments",
-    app_id: "",
-    app_key: "",
+    app_id: "ds54farWshFsUraKxWRVVf4G-gzGzoHsz",
+    app_key: "q4rgias5HDeq09ugweytekJQ",
     path: window.location.pathname,
-    avatar: "mp",
-    placeholder: "Add some comments to my article~",
+    avatar: "monsterid",
+    placeholder: "",
     recordIP: true,
   });
   const infoEle = document.querySelector("#vcomments .info");
@@ -389,11 +399,17 @@
     
   </div>
 </div>
-    <script src="/js/jquery-2.0.3.min.js"></script>
+    
+<script src="/js/jquery-2.0.3.min.js"></script>
+
+
 <script src="/js/lazyload.min.js"></script>
+
 <!-- Tocbot -->
 
+
 <script src="/js/tocbot.min.js"></script>
+
 <script>
   tocbot.init({
     tocSelector: '.tocbot',
@@ -411,7 +427,9 @@
 <script src="https://cdn.jsdelivr.net/npm/jquery-modal@0.9.2/jquery.modal.min.js"></script>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jquery-modal@0.9.2/jquery.modal.min.css">
 <script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js"></script>
+
 <script src="/dist/main.js"></script>
+
 <!-- ImageViewer -->
 
 <!-- Root element of PhotoSwipe. Must have class pswp. -->
@@ -527,7 +545,9 @@
 
 <!-- busuanzi  -->
 
+
 <script src="/js/busuanzi-2.3.pure.min.js"></script>
+
 
 <!-- ClickLove -->
 
@@ -535,11 +555,15 @@
 
 <!-- ClickBoom2 -->
 
+
 <script src="/js/clickBoom2.js"></script>
+
 
 <!-- CodeCopy -->
 
+
 <link rel="stylesheet" href="/css/clipboard.css">
+
 <script src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js"></script>
 <script>
   function wait(callback, seconds) {
@@ -598,7 +622,9 @@
 
 <!-- CanvasBackground -->
 
+
 <script src="/js/dz.js"></script>
+
 
 
     

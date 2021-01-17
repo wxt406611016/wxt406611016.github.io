@@ -15,16 +15,25 @@
   
   <link rel="shortcut icon" href="/favicon.ico" />
   
-  <link rel="stylesheet" href="/dist/main.css">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Shen-Yu/cdn/css/remixicon.min.css">
-  <link rel="stylesheet" href="/css/custom.css">
   
-  <script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
+<link rel="stylesheet" href="/dist/main.css">
+
+  
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Shen-Yu/cdn/css/remixicon.min.css">
+
+  
+<link rel="stylesheet" href="/css/custom.css">
+
+  
+  
+<script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
+
   
   
 
   
 
+<link rel="alternate" href="/atom.xml" title="心是看客心，人是戏中人" type="application/atom+xml">
 </head>
 
 </html>
@@ -57,7 +66,7 @@
     </header>
      
     <div class="article-meta">
-      <a href="/2019/02/07/github+hexo个人博客搭建/" class="article-date">
+      <a href="/2019/02/07/github+hexo%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/" class="article-date">
   <time datetime="2019-02-06T16:00:00.000Z" itemprop="datePublished">2019-02-07</time>
 </a>   
 <div class="word_count">
@@ -65,7 +74,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> Word count:</span>
-            <span class="post-count">968</span>
+            <span class="post-count">1k</span>
         </span>
     </span>
 
@@ -74,7 +83,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-book-open-line"></i>
             <span class="post-meta-item-text"> Reading time≈</span>
-            <span class="post-count">3 min</span>
+            <span class="post-count">4 min</span>
         </span>
     </span>
 </div>
@@ -92,33 +101,38 @@
   <h1 id="github-hexo搭建详细过程"><a href="#github-hexo搭建详细过程" class="headerlink" title="github+hexo搭建详细过程:"></a>github+hexo搭建详细过程:</h1><p>我的操作系统为ubuntu16.04,在搭建的过程中参考了网上很多例子,但都没有完全适合自己的,多多少少还是会碰到一些问题,下面将详细展现github+hexo的搭建过程.<br>tips:萌新一枚,有不足之处,还请指出,tks!!!</p>
 <p><strong>在搭建个人博客之前需要先安装一些环境:</strong></p>
 <h2 id="1-安装nvm"><a href="#1-安装nvm" class="headerlink" title="1.安装nvm"></a>1.安装nvm</h2><p>nvm是node的包版本控制工具,nvm的好处在于你可以找到各种你想要的node版本,这里我们选择安装稳定版的node.(如果选择终端命令apt-get install nodejs方法安装node,node的版本较低,在后续的搭建过程中可能会报错),所以这里建议先安装nvm.</p>
-<p>代码安装nvm(git过程中可能速度缓慢,如果你会翻墙可以翻墙git,个人亲测,速度提升明显)<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git clone https://github.com/creationix/nvm.git ~/.nvm &amp;&amp; cd ~/.nvm &amp;&amp; git checkout `git describe --abbrev=0 --tags`</span><br></pre></td></tr></table></figure></p>
+<p>代码安装nvm(git过程中可能速度缓慢,如果你会翻墙可以翻墙git,个人亲测,速度提升明显)</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git clone https:&#x2F;&#x2F;github.com&#x2F;creationix&#x2F;nvm.git ~&#x2F;.nvm &amp;&amp; cd ~&#x2F;.nvm &amp;&amp; git checkout &#96;git describe --abbrev&#x3D;0 --tags&#96;</span><br></pre></td></tr></table></figure>
 <p>接下来我们编辑环境变量配置文件</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd </span><br><span class="line">vim .bashrc</span><br></pre></td></tr></table></figure>
-<p>将<code>source ~/.nvm/nvm.sh.</code>添加到.bashrc中,然后保存退出<br>输入命令<code>source .bashrc</code> 将新增的nvm添加到系统中.<br>输入命令<code>nvm --version</code>  如果显示版本,则显示安装成功.</p>
-<h2 id="2-安装node"><a href="#2-安装node" class="headerlink" title="2.安装node"></a>2.安装node</h2><p>安装完nvm接下来使用nvm安装node和npm,首先检查远程仓库的可选版本<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nvm ls-remote</span><br></pre></td></tr></table></figure></p>
+<p>将<code>source ~/.nvm/nvm.sh. </code>添加到.bashrc中,然后保存退出<br>输入命令<code>source .bashrc</code> 将新增的nvm添加到系统中.<br>输入命令<code>nvm --version</code>  如果显示版本,则显示安装成功.</p>
+<h2 id="2-安装node"><a href="#2-安装node" class="headerlink" title="2.安装node"></a>2.安装node</h2><p>安装完nvm接下来使用nvm安装node和npm,首先检查远程仓库的可选版本</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nvm ls-remote</span><br></pre></td></tr></table></figure>
 <p>安装node的稳定版</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nvm install stable</span><br></pre></td></tr></table></figure>
 <p>启用安装好的版本,并设置为默认版本</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">nvm use node</span><br><span class="line">nvm alias default node</span><br></pre></td></tr></table></figure>
+
 <h2 id="3-安装hexo"><a href="#3-安装hexo" class="headerlink" title="3.安装hexo"></a>3.安装hexo</h2><p>如果nvm安装完成且成功配置好稳定版以后，就可以安装hexo了.</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">mkdir blog       #创建一个文件夹,文件夹名自拟,本例中为blog</span><br><span class="line">hexo init blog </span><br><span class="line">cd blog         </span><br><span class="line">npm install </span><br><span class="line">npm update -g</span><br></pre></td></tr></table></figure>
 <p>执行没有报错的话hexo应该就可以用了,在blog目录下输入以下命令.</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">hexo g     # 生成静态界面</span><br><span class="line">hexo s     # 开启本地服务</span><br></pre></td></tr></table></figure>
 <p>如果命令行结果如下则安装成功了,此时你可以crtl+鼠标点击命令行url进入该页面。<br><img src="https://s2.ax1x.com/2019/02/08/kNeniR.png" alt="测试安装成功"></p>
-<h2 id="4-配置本机全局git环境"><a href="#4-配置本机全局git环境" class="headerlink" title="4.配置本机全局git环境"></a>4.配置本机全局git环境</h2><p>假设我的邮箱是<a href="mailto:tom@gmail.com" target="_blank" rel="noopener">tom@gmail.com</a>,github的名字是tom</p>
+<h2 id="4-配置本机全局git环境"><a href="#4-配置本机全局git环境" class="headerlink" title="4.配置本机全局git环境"></a>4.配置本机全局git环境</h2><p>假设我的邮箱是<a href="mailto:&#116;&#111;&#x6d;&#x40;&#x67;&#109;&#97;&#105;&#108;&#46;&#x63;&#111;&#109;">&#116;&#111;&#x6d;&#x40;&#x67;&#109;&#97;&#105;&#108;&#46;&#x63;&#111;&#109;</a>,github的名字是tom</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git config --global user.email “tom@gmail.com” </span><br><span class="line">git config --global user.name “tom”</span><br></pre></td></tr></table></figure>
 <h2 id="5-生成ssh密钥"><a href="#5-生成ssh密钥" class="headerlink" title="5.生成ssh密钥"></a>5.生成ssh密钥</h2><p>命令端输入,生成ssh密钥</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh-keygen -t rsa -C tom@gmail.com</span><br></pre></td></tr></table></figure>
 <p>会提示让你输入文件夹的名字来存放ssh秘钥，并且让你确认一个验证的密码，按要求操作就好了。然后输入下面命令查看ssh密钥文件中的公钥内容.</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">less ~/.ssh/id_rsa.pub</span><br></pre></td></tr></table></figure>
-<h2 id="6-创建博客工程"><a href="#6-创建博客工程" class="headerlink" title="6.创建博客工程"></a>6.创建博客工程</h2><p>建一个新的仓库，假设你的用户名是tom，那么你生成的这个工程命名必须为<a href="mailto:tom@github.io" target="_blank" rel="noopener">tom@github.io</a>。(下图中是我个人的github用户名,为wxt406611016)<br><img src="https://s2.ax1x.com/2019/02/08/kNeuJ1.png" alt="本例中用户名为wxt406611016"><br>其他的按照默认配置就可以,然后点击Create repository创建.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">less ~&#x2F;.ssh&#x2F;id_rsa.pub</span><br></pre></td></tr></table></figure>
+<h2 id="6-创建博客工程"><a href="#6-创建博客工程" class="headerlink" title="6.创建博客工程"></a>6.创建博客工程</h2><p>建一个新的仓库，假设你的用户名是tom，那么你生成的这个工程命名必须为<a href="mailto:&#x74;&#111;&#x6d;&#x40;&#103;&#x69;&#x74;&#x68;&#x75;&#98;&#x2e;&#x69;&#x6f;">&#x74;&#111;&#x6d;&#x40;&#103;&#x69;&#x74;&#x68;&#x75;&#98;&#x2e;&#x69;&#x6f;</a>。(下图中是我个人的github用户名,为wxt406611016)<br><img src="https://s2.ax1x.com/2019/02/08/kNeuJ1.png" alt="本例中用户名为wxt406611016"><br>其他的按照默认配置就可以,然后点击Create repository创建.</p>
 <p><strong>然后将你的ssh密钥添加到你的github中</strong><br>在你的github页面依次点击Settings-&gt;SSH and GPG keys-&gt;New SSH key,将第五步中的公钥内容复制到Key里,点击Add SSH key.(如下图)<br><img src="https://s2.ax1x.com/2019/02/08/kNeeo9.png" alt="添加页面"></p>
 <h2 id="7-在hexo中配置git"><a href="#7-在hexo中配置git" class="headerlink" title="7.在hexo中配置git"></a>7.在hexo中配置git</h2><p>在blog文件夹下的 config.yml文件中配置你的git,添加以下代码.<br>注意代码中的xxx为你的github的用户名</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">deploy:</span><br><span class="line">  type: git</span><br><span class="line">  repository: ssh://git@github.com/xxx/xxx.github.io.git</span><br><span class="line">  branch: master</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">deploy:</span><br><span class="line">  type: git</span><br><span class="line">  repository: ssh:&#x2F;&#x2F;git@github.com&#x2F;xxx&#x2F;xxx.github.io.git</span><br><span class="line">  branch: master</span><br></pre></td></tr></table></figure>
 <h2 id="8-将本地文件上传到github"><a href="#8-将本地文件上传到github" class="headerlink" title="8.将本地文件上传到github"></a>8.将本地文件上传到github</h2><p>先安装hexo deploy插件,输入以下代码.</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install hexo-deployer-git --save</span><br></pre></td></tr></table></figure>
-<p>最后将本地文件编译后上传到github上,在终端输入以下代码.<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">hexo g          #生成静态文件</span><br><span class="line">hexo d          #上传部署网站</span><br></pre></td></tr></table></figure></p>
+<p>最后将本地文件编译后上传到github上,在终端输入以下代码.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">hexo g          #生成静态文件</span><br><span class="line">hexo d          #上传部署网站</span><br></pre></td></tr></table></figure>
+
 <p><strong>大功告成了,github+hexo搭建的个人博客就完成了,快在浏览器中输入xxx.github.io(xxx为你github的账户名)来看看你的博客吧</strong></p>
 <p><strong><em>关于如何更改主题,查看下一片文章点击</em></strong><a href="https://wxt406611016.github.io/2019/02/01/github+hexo%E6%9B%B4%E6%8D%A2%E4%B8%BB%E9%A2%98/">–github+hexo更换主题</a></p>
  
@@ -191,7 +205,7 @@
     <a class="modal-close" href="javascript:;"><i class="ri-close-circle-line"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAN4AAADeCAAAAAB3DOFrAAACsElEQVR42u3aS24jMQwFwNz/0pkDeGy/R0qJA1SvArg/Ki1EhuTXV3x9P1yzp55dj09tvltfeHh4eOulP77u9Qfa5T77dbaeN1uAh4eHd433bNHtspLD/fXGJYEhWTMeHh7eX+ElISR/f34/Hh4e3l/htct9naDnW4aHh4f3Cbwk8Z0VIDb3v97Kw7UWPDw8vJiXd5E+5+8r/T08PDy8o639tvA6S5E3weA/b8bDw8O7wMsP3CRhbRtg+WjCap14eHh4P8KbhYp92ywfNSiKvHh4eHhHeXkZtC28zu5MeHmLDg8PD+8GLy8uJKlw8uuNxL3o7+Hh4eEd5c16SbPRqHw44HDvDg8PD2/Ny9PWWTkgGbGatcGGxQg8PDy8Na89S2cHd9LoSr7blkvw8PDw7vHyl+bN/s1x327omxIGHh4e3gVefsieGgvItzX5Vju8hYeHh7fnzYqzbXrdFj5OhRM8PDy8G7xZ9PiOrzyxbt9cbDEeHh7eD/KSku7mbS0vb4Ph4eHh3eblZYV8cS17855VrQUPDw9vVOfcJNZtANhsVj3mhYeHh3eU9/rzX/G1HyDI0/dV6RYPDw/vGm/Wsmq3KS9wzIIHHh4e3m1em7C2jfw2+c4T/agyjYeHh3eIl7fw20VvwsZsI97UWvDw8PAu8PKAkZ+9+7flpeQ6+uHh4eGtee11ak4huX81dIWHh4d3jdcOQuUHd32U59NhyVN4eHh4R3mzYDArDWyGrmZbj4eHh3eDNztwk3Jtm3DP0ujZiBgeHh7enteOBWwCRovPj/6nz+Lh4eFd482GRH8h/W0beHh4eHgfxssLCm077XVoKcYR8PDw8D6AlzeuZuEkp0ZBBQ8PD+8ab1aorUsDizUk2/Q0MODh4eEd5c3+4Z8VW9sUebNleHh4eBd4/wCX1mnO1Sa/yQAAAABJRU5ErkJggg==" alt="微信分享二维码">
+      <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAQ4AAAEOCAAAAABd2qZ5AAAD5ElEQVR42u3aW07DQAwF0O5/07ABkt5rT6BIJ1+IpvM4qeTY49crvr5ur813r0ZLPr2a5eqeYxcOHDhw4FhvNSGY3XO/sftNJqutHycOHDhw4DjEcbX0NrAlHPk4STS8Z8r3iAMHDhw4/orjakv55pMUKw/Jm7lw4MCBA8fncOShsS3S5aXAzYsCDhw4cOB4mmN2zNNuKU/5ZkXD9lMcOHDgwPEERx78/u/fj/R34MCBAweOuAA3aym455sF2nyuPDBf7g4HDhw4cKw58oB0CqUN6m36186IAwcOHDjOcuQT14c38bFWWwS8vzP59HK1OHDgwIHjEMesNWGTpM2OuDZpXgSEAwcOHDjWHG3AO3V81QbvZA2zey4zWhw4cODAMeIo0ptRUpT/Pw+ubZvF6neBAwcOHDjm2c2rnTJPxtomidl/2kRx9aaAAwcOHDhGgXN2XNQ2K7QPY0YZBWAcOHDgwHGII0+H9pE8/+7vwP1wCocDBw4cOE5W7Y5tIw/GyZ1f8ZWnczhw4MCB4zmOWRNbHsCS5DDf/KwxIhkTBw4cOHDsOZIiYJs+te0C7T1JyM9/C29a5XDgwIEDR8nRNgq0E7QNEG0a2b4QRP/BgQMHDhxrjjY0tvlOkmjNwuqDB2A4cODAgWPEkRfg8tA1a1ObpZGHsXDgwIEDx6G4M2uYy8Pz2THzbw3nwoEDBw4ci7mSIdoN52W4TaDNsYbvHThw4MCBY1srK64k2TtVHExmbNsvZvfjwIEDB46EY9YSndyTt7K1h09JcTMpd/6AggMHDhw41hyzzbSJ02a5ySPZP6TL3wgOHDhw4Fhw5G0HeZicJXXJhvdhvj6Fw4EDBw4cJccsuOZJYJ5Eta0JbcL5ppiIAwcOHDgOcbTHOW2ATEbLj7JmoT1aDw4cOHDgWHA8t7h8/Fno3aR/lyPjwIEDB45DHG0xrk6KHkjVNlhFfwcOHDhw4Cg5knSoTZmeSLpmh2EtNw4cOHDg2HPkRcDZstqGhnaEw2Q4cODAgeMQR77oWQPBpn0h6TfYt9DhwIEDB46zHPtmuLwk1wbIttS42gsOHDhw4Di0l027wKyV4RVcp1oc2qIkDhw4cODYcGxKewlWm2LNAm1eHHzzeHDgwIEDx5ojv9rt7Tss2jJf/lrQ0uPAgQMHjpZjM1kSwPatEu2jygNt3QOIAwcOHDjKMtymdWC26NkKZ2uIkjccOHDgwPHrHG2KNTu+mo0zK2LiwIEDB45P4NgnhPtGitkBVXQWhwMHDhw41hxPbGAWntv2hSRUF8EYBw4cOHCsOdpSWl6qyw+ENhB7RBw4cODAcYjjG5xmSUtR2P33AAAAAElFTkSuQmCC" alt="微信分享二维码">
     </div>
 </div>
 
@@ -202,7 +216,7 @@
    
   <nav class="article-nav">
     
-      <a href="/2019/02/08/github+hexo更换主题/" class="article-nav-link">
+      <a href="/2019/02/08/github+hexo%E6%9B%B4%E6%8D%A2%E4%B8%BB%E9%A2%98/" class="article-nav-link">
         <strong class="article-nav-caption">上一篇</strong>
         <div class="article-nav-title">
           
@@ -224,11 +238,11 @@
 <script>
   new Valine({
     el: "#vcomments",
-    app_id: "",
-    app_key: "",
+    app_id: "ds54farWshFsUraKxWRVVf4G-gzGzoHsz",
+    app_key: "q4rgias5HDeq09ugweytekJQ",
     path: window.location.pathname,
-    avatar: "mp",
-    placeholder: "Add some comments to my article~",
+    avatar: "monsterid",
+    placeholder: "",
     recordIP: true,
   });
   const infoEle = document.querySelector("#vcomments .info");
@@ -409,11 +423,17 @@
     
   </div>
 </div>
-    <script src="/js/jquery-2.0.3.min.js"></script>
+    
+<script src="/js/jquery-2.0.3.min.js"></script>
+
+
 <script src="/js/lazyload.min.js"></script>
+
 <!-- Tocbot -->
 
+
 <script src="/js/tocbot.min.js"></script>
+
 <script>
   tocbot.init({
     tocSelector: '.tocbot',
@@ -431,7 +451,9 @@
 <script src="https://cdn.jsdelivr.net/npm/jquery-modal@0.9.2/jquery.modal.min.js"></script>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jquery-modal@0.9.2/jquery.modal.min.css">
 <script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js"></script>
+
 <script src="/dist/main.js"></script>
+
 <!-- ImageViewer -->
 
 <!-- Root element of PhotoSwipe. Must have class pswp. -->
@@ -547,7 +569,9 @@
 
 <!-- busuanzi  -->
 
+
 <script src="/js/busuanzi-2.3.pure.min.js"></script>
+
 
 <!-- ClickLove -->
 
@@ -555,11 +579,15 @@
 
 <!-- ClickBoom2 -->
 
+
 <script src="/js/clickBoom2.js"></script>
+
 
 <!-- CodeCopy -->
 
+
 <link rel="stylesheet" href="/css/clipboard.css">
+
 <script src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js"></script>
 <script>
   function wait(callback, seconds) {
@@ -618,7 +646,9 @@
 
 <!-- CanvasBackground -->
 
+
 <script src="/js/dz.js"></script>
+
 
 
     

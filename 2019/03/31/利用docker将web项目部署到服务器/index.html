@@ -15,16 +15,25 @@
   
   <link rel="shortcut icon" href="/favicon.ico" />
   
-  <link rel="stylesheet" href="/dist/main.css">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Shen-Yu/cdn/css/remixicon.min.css">
-  <link rel="stylesheet" href="/css/custom.css">
   
-  <script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
+<link rel="stylesheet" href="/dist/main.css">
+
+  
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Shen-Yu/cdn/css/remixicon.min.css">
+
+  
+<link rel="stylesheet" href="/css/custom.css">
+
+  
+  
+<script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
+
   
   
 
   
 
+<link rel="alternate" href="/atom.xml" title="心是看客心，人是戏中人" type="application/atom+xml">
 </head>
 
 </html>
@@ -57,7 +66,7 @@
     </header>
      
     <div class="article-meta">
-      <a href="/2019/03/31/利用docker将web项目部署到服务器/" class="article-date">
+      <a href="/2019/03/31/%E5%88%A9%E7%94%A8docker%E5%B0%86web%E9%A1%B9%E7%9B%AE%E9%83%A8%E7%BD%B2%E5%88%B0%E6%9C%8D%E5%8A%A1%E5%99%A8/" class="article-date">
   <time datetime="2019-03-30T16:00:00.000Z" itemprop="datePublished">2019-03-31</time>
 </a>   
 <div class="word_count">
@@ -65,7 +74,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> Word count:</span>
-            <span class="post-count">526</span>
+            <span class="post-count">527</span>
         </span>
     </span>
 
@@ -90,9 +99,9 @@
     <div class="article-entry" itemprop="articleBody">
        
   <p><strong>完成了一个简单的web项目，想部署到云服务器，利用docker是一个很好的办法</strong></p>
-<h2 id="创建docker容器"><a href="#创建docker容器" class="headerlink" title="创建docker容器"></a>创建docker容器</h2><p>在当前web项目目录下创建Dockerfile和requirements.txt两个文件。文件填写内容根据你的web项目来定，具体参考官网教程。<a href="https://docs.docker.com/get-started/part2/#define-a-container-with-dockerfile" target="_blank" rel="noopener">～～docker官网～～</a><br><img src="https://s2.ax1x.com/2019/03/30/ABTpIs.png" alt="我的目录结构"></p>
+<h2 id="创建docker容器"><a href="#创建docker容器" class="headerlink" title="创建docker容器"></a>创建docker容器</h2><p>在当前web项目目录下创建Dockerfile和requirements.txt两个文件。文件填写内容根据你的web项目来定，具体参考官网教程。<a target="_blank" rel="noopener" href="https://docs.docker.com/get-started/part2/#define-a-container-with-dockerfile">～～docker官网～～</a><br><img src="https://s2.ax1x.com/2019/03/30/ABTpIs.png" alt="我的目录结构"></p>
 <p>接下来创建docker镜像，打开终端，输入<br><code>docker image build -t name .</code><br>name为你创建的镜像名字，自定义，注意不要漏了name后的那个“.”<br>然后输入<code>docker image ls</code><br><img src="https://s2.ax1x.com/2019/03/30/ABTdJI.png" alt="在这里插入图片描述"><br>显示已存在的docker镜像，cumt是我的web项目，下面我要将cumt这个镜像部署到我的阿里云服务器。</p>
-<h2 id="生成静态文件"><a href="#生成静态文件" class="headerlink" title="生成静态文件"></a>生成静态文件</h2><p>将docker镜像导出为静态文件<br><code>docker save cumt:latest &gt; cumt.tar</code></p>
+<h2 id="生成静态文件"><a href="#生成静态文件" class="headerlink" title="生成静态文件"></a>生成静态文件</h2><p>将docker镜像导出为静态文件<br><code> docker save cumt:latest &gt; cumt.tar</code></p>
 <p>cumt:latest为镜像名, cumt.tar为新生成的静态文件名。</p>
 <h2 id="部署到云服务器"><a href="#部署到云服务器" class="headerlink" title="部署到云服务器"></a>部署到云服务器</h2><p>使用scp将静态文件上传到服务器端<br><code>scp ./cumt.tar root@47.106.130.6:/cumt.tar</code></p>
 <p>使用ssh登陆你的云服务器<br><code>ssh root@47.106.130.6</code></p>
@@ -171,7 +180,7 @@
     <a class="modal-close" href="javascript:;"><i class="ri-close-circle-line"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAPYAAAD2CAAAAADAeSUUAAADI0lEQVR42u3aUXKjQAwEUN//0t4DpCAtCbJGfnylHGeYBx+KWvN6xdf7x3X025+fH33S+37yV5dd2NjY2A9hv0+vZLvnj+Z86/l9z1fILdjY2Nhb2UeMpHjkN4s2FOyh90qwsbGxsfPSkhS5O5oTbGxsbOwkAMr/9c/L2HmZzEMlbGxs7G9mJ+FOr3jkKX1563+TpWFjY2N/PDvf3Of/fMt8GxsbG/uD2e/BlT+apM3IhwHz/WNjY2NvYk/Co7wNmEQ/8zse3hcbGxt7ETsvDL0SMo/+q8HTKELCxsbGfiA7bwB6h3uSglQ9xJMXtsP9Y2NjY69gTwpP/lB6h2/ye1WPEGFjY2N/Dzth5K1CL+6pDhWiYoaNjY39BexqtJTHTHmpy9ub8vexsbGxF7HzklDd7vwAUPXgzmSogI2Njb2bXS081Yj/2u+Pyhg2Njb2A9lJ+1GN+POVeyOH/JPDe2FjY2MvYk+SlkmI3xswV/+qCcbGxsZ+FDsP8a8aDNw9BoiCJ2xsbOxF7GrUfm2z8d+Q2NjY2IvY8xHsfNjQC4mSR394F2xsbOx17LxQJVusjoqT9auvJwqVsLGxsRexq0dhqk1Fvk41w89Xw8bGxv4GdrVh6LUN1zYqzQNG2NjY2OvY1XC/R50EVVetUzg9hI2Njf0QdrWQTApMXvCqUVe+GjY2NvY+dt42JA1J8ozzoL9aDgurYWNjYy9l91qUfJxQ3Xo+0hgVMGxsbOyHs/O8pdpaTLbbC4+S0lUYA2NjY2M/hJ23BFeVq5yavJneASNsbGzsTey7hwF3H76pHg/CxsbG3seeFJi88bg24k+apV9Ww8bGxl7ErgZDvUM2eVORI3trvvJnho2Njf0Q9rt4VTdxx1GevFj+EidhY2Njr2BXz7EkTUUyKqiWqHzlcqKGjY2NvYKdB+49dq/NqJbP6pEgbGxs7H3s++ahvcNA86aiMO7FxsbG/hr25MbzMjaZgYwKGDY2NvYidl7YJkFSUgLnrwQbGxt7H7sXKp23KNUmJB9LTAbP2NjY2PvYk6ZisoneaKGKvODIDjY2Nvbnsv8BuEZPAo6w2HcAAAAASUVORK5CYII=" alt="微信分享二维码">
+      <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAASYAAAEmCAAAAADqr2IGAAAEi0lEQVR42u3ay27bQAwF0Pz/T6dAVy1SOZfkuBCVo1XgWJbmzGL4+viIr8/f19e///zk63de3/X1m1e/8PW/1bdK3uTAhQkTJkyYbsn0+fKaMF0tKXmT5PMc/TVusiWYMGHChGk7U/5zvWM1vzfnTviqYcTl55gwYcKE6Qcw9fLEefCR/DdPjzFhwoQJE6b8AdUybjWVTRLaBL1a8MWECRMmTM9jyh/2OlzIS8OnirPVTX17LRwTJkyYMN2MaVKi3f734QsTJkyYMN2M6bN45XdNkuFqSnw2CPjHXZgwYcKEaS1TMtoyKfuePZirrc1JklyeAMKECRMmTKuYeovMyfKSbrXsOylef0OGCRMmTJgWMiWLqS6yx5cf/Mnm5al41KbFhAkTJkxrmZLlzQu+eZKcBAT5plYT+3JfFxMmTJgwLWR6XwuzVwjO26JV0GpqjQkTJkyYNjIlR+PZQZxeM3ISKMzXggkTJkyY9jJVW4y9hDP/5ckI0SQZjt4HEyZMmDCtZTqbUvaGb/JGaf5ryV29AjQmTJgwYdrClCSivQGXU8Xc/E3mheZy9o8JEyZMmG7PNGn19dLF5HiutjCrKXo1+MCECRMmTNuZJglqHl5UOXrhRV5Ezt8WEyZMmDDtZZocwDlZktZWW4/VwKWaxv/1HUyYMGHCtJapl1L2GpN5k3KSHufF6FFwgAkTJkyYljBNCqDVQZlkDGh+zM8L1pdxEyZMmDBhegRT7xr1Uasv3WpeTlaECRMmTJj2Mk3KuNVENA8sqgXZyYYVQDFhwoQJ01qmeWKZF4LPPqs6ctScbMKECRMmTA9i6pVrJyXdyYLnhenXwQcmTJgwYdrONGn49Y7bU0Xedzz3UgMTJkyYMD2IKUlie2M31Q2otjbn40SXq8OECRMmTGuZeo/pjdRUU+LJBlTT44QeEyZMmDDtZcofmZRZq7+TlIzzxZy966N3AyZMmDBhuhnTJHX8/yXXPJ2eBwqYMGHChOlJTL0FT9qQ1YAgf5/83urTMWHChAnTXqZJazMJFPLDeNK2nCfAUTsTEyZMmDAtZKo2MvPmZa/92SOrBjcHwgJMmDBhwnRjpvcN3PQS1/wgT1qPOfE3rJgwYcKEaS3TPDk8VfztFXCTLTmVPGPChAkTpo1MpwZx8oO/OjA0L9FWn44JEyZMmJ7H1HtM3p6cl2UnbdE8Rb98CiZMmDBhehxTj2BSzM3bjb2nlPu6V7VwTJgwYcK0likvxU6ahdVkOC/dVoODwrowYcKECdNapuqATvWgTa7q2FBvG5JnFQrEmDBhwoRpCdPZJSXJZ56aThLpvJQcbRUmTJgwYVrLlF/RgMtglKe3sDytTd7/AB8mTJgwYbol03zwpbrIakDQCzLyMCjaMEyYMGHCtJypOkZTfYkEdBKa9AaMCrVwTJgwYcL0A5jy9LIK3TvsE5R8e6JOLyZMmDBh+gFM1eO8l8r2irN5uzRZNSZMmDBhehJTtQibHL29MZ3JUE6+rnJbFBMmTJgwrWWaFEDPHszV1803r9qUbV6YMGHChOleTL8Ak4/eP12REB0AAAAASUVORK5CYII=" alt="微信分享二维码">
     </div>
 </div>
 
@@ -182,7 +191,7 @@
    
   <nav class="article-nav">
     
-      <a href="/2019/04/26/python脚本-暴力破解无线网弱密码/" class="article-nav-link">
+      <a href="/2019/04/26/python%E8%84%9A%E6%9C%AC-%E6%9A%B4%E5%8A%9B%E7%A0%B4%E8%A7%A3%E6%97%A0%E7%BA%BF%E7%BD%91%E5%BC%B1%E5%AF%86%E7%A0%81/" class="article-nav-link">
         <strong class="article-nav-caption">上一篇</strong>
         <div class="article-nav-title">
           
@@ -192,7 +201,7 @@
       </a>
     
     
-      <a href="/2019/03/30/利用msf攻击win10/" class="article-nav-link">
+      <a href="/2019/03/30/%E5%88%A9%E7%94%A8msf%E6%94%BB%E5%87%BBwin10/" class="article-nav-link">
         <strong class="article-nav-caption">下一篇</strong>
         <div class="article-nav-title">利用msf攻击win10</div>
       </a>
@@ -209,11 +218,11 @@
 <script>
   new Valine({
     el: "#vcomments",
-    app_id: "",
-    app_key: "",
+    app_id: "ds54farWshFsUraKxWRVVf4G-gzGzoHsz",
+    app_key: "q4rgias5HDeq09ugweytekJQ",
     path: window.location.pathname,
-    avatar: "mp",
-    placeholder: "Add some comments to my article~",
+    avatar: "monsterid",
+    placeholder: "",
     recordIP: true,
   });
   const infoEle = document.querySelector("#vcomments .info");
@@ -394,11 +403,17 @@
     
   </div>
 </div>
-    <script src="/js/jquery-2.0.3.min.js"></script>
+    
+<script src="/js/jquery-2.0.3.min.js"></script>
+
+
 <script src="/js/lazyload.min.js"></script>
+
 <!-- Tocbot -->
 
+
 <script src="/js/tocbot.min.js"></script>
+
 <script>
   tocbot.init({
     tocSelector: '.tocbot',
@@ -416,7 +431,9 @@
 <script src="https://cdn.jsdelivr.net/npm/jquery-modal@0.9.2/jquery.modal.min.js"></script>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jquery-modal@0.9.2/jquery.modal.min.css">
 <script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js"></script>
+
 <script src="/dist/main.js"></script>
+
 <!-- ImageViewer -->
 
 <!-- Root element of PhotoSwipe. Must have class pswp. -->
@@ -532,7 +549,9 @@
 
 <!-- busuanzi  -->
 
+
 <script src="/js/busuanzi-2.3.pure.min.js"></script>
+
 
 <!-- ClickLove -->
 
@@ -540,11 +559,15 @@
 
 <!-- ClickBoom2 -->
 
+
 <script src="/js/clickBoom2.js"></script>
+
 
 <!-- CodeCopy -->
 
+
 <link rel="stylesheet" href="/css/clipboard.css">
+
 <script src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js"></script>
 <script>
   function wait(callback, seconds) {
@@ -603,7 +626,9 @@
 
 <!-- CanvasBackground -->
 
+
 <script src="/js/dz.js"></script>
+
 
 
     

@@ -15,16 +15,25 @@
   
   <link rel="shortcut icon" href="/favicon.ico" />
   
-  <link rel="stylesheet" href="/dist/main.css">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Shen-Yu/cdn/css/remixicon.min.css">
-  <link rel="stylesheet" href="/css/custom.css">
   
-  <script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
+<link rel="stylesheet" href="/dist/main.css">
+
+  
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Shen-Yu/cdn/css/remixicon.min.css">
+
+  
+<link rel="stylesheet" href="/css/custom.css">
+
+  
+  
+<script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
+
   
   
 
   
 
+<link rel="alternate" href="/atom.xml" title="心是看客心，人是戏中人" type="application/atom+xml">
 </head>
 
 </html>
@@ -57,7 +66,7 @@
     </header>
      
     <div class="article-meta">
-      <a href="/2020/11/09/github之hexo源码备份和应用/" class="article-date">
+      <a href="/2020/11/09/github%E4%B9%8Bhexo%E6%BA%90%E7%A0%81%E5%A4%87%E4%BB%BD%E5%92%8C%E5%BA%94%E7%94%A8/" class="article-date">
   <time datetime="2020-11-08T16:00:00.000Z" itemprop="datePublished">2020-11-09</time>
 </a>   
 <div class="word_count">
@@ -89,19 +98,21 @@
   
     <div class="article-entry" itemprop="articleBody">
        
-  <h1 id="1-使用git分支保存hexo博客源码"><a href="#1-使用git分支保存hexo博客源码" class="headerlink" title="1.使用git分支保存hexo博客源码"></a>1.使用git分支保存hexo博客源码</h1><p>具体操作请<a href="https://zhuanlan.zhihu.com/p/133860750" target="_blank" rel="noopener">跳转到页面。</a></p>
+  <h1 id="1-使用git分支保存hexo博客源码"><a href="#1-使用git分支保存hexo博客源码" class="headerlink" title="1.使用git分支保存hexo博客源码"></a>1.使用git分支保存hexo博客源码</h1><p>具体操作请<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/133860750">跳转到页面。</a></p>
 <h1 id="2-为新电脑添加SSH-keys"><a href="#2-为新电脑添加SSH-keys" class="headerlink" title="2.为新电脑添加SSH keys"></a>2.为新电脑添加SSH keys</h1><p>当你需要在一台新设备上继续写博客上，可以通过github的源码来快速搭建原环境，为了能够使用git clone、push等操作，需要在新电脑上设置github环境，并将SSH keys存储到github中，具体操作请跳转到<a href="https://wxt406611016.github.io/2019/02/07/github+hexo%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/">我之前的一篇博客</a>中4，5，6节部分。</p>
-<h1 id="3-将hexo源码clone到本地"><a href="#3-将hexo源码clone到本地" class="headerlink" title="3.将hexo源码clone到本地"></a>3.将hexo源码clone到本地</h1><p>新设备空空如也，需要将hexo源码克隆到本地，具体操作也在第一步的文档中，<a href="https://zhuanlan.zhihu.com/p/133860750" target="_blank" rel="noopener">跳转！</a></p>
-<h1 id="4-配置hexo所需环境"><a href="#4-配置hexo所需环境" class="headerlink" title="4.配置hexo所需环境"></a>4.配置hexo所需环境</h1><p>将源码clone到本地还不够，还需要配置hexo所需环境，如nodejs，npm。。。这里我们使用nvm来安装，具体操作也在第二步的文档中，<a href="https://zhuxiaoxia.blog.csdn.net/article/details/88855256?utm_medium=distribute.pc_relevant.none-task-blog-BlogCommendFromMachineLearnPai2-5.compare&amp;depth_1-utm_source=distribute.pc_relevant.none-task-blog-BlogCommendFromMachineLearnPai2-5.compare" target="_blank" rel="noopener">跳转！</a>中从第2节开始看。</p>
+<h1 id="3-将hexo源码clone到本地"><a href="#3-将hexo源码clone到本地" class="headerlink" title="3.将hexo源码clone到本地"></a>3.将hexo源码clone到本地</h1><p>新设备空空如也，需要将hexo源码克隆到本地，具体操作也在第一步的文档中，<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/133860750">跳转！</a></p>
+<h1 id="4-配置hexo所需环境"><a href="#4-配置hexo所需环境" class="headerlink" title="4.配置hexo所需环境"></a>4.配置hexo所需环境</h1><p>将源码clone到本地还不够，还需要配置hexo所需环境，如nodejs，npm。。。这里我们使用nvm来安装，具体操作也在第二步的文档中，<a target="_blank" rel="noopener" href="https://zhuxiaoxia.blog.csdn.net/article/details/88855256?utm_medium=distribute.pc_relevant.none-task-blog-BlogCommendFromMachineLearnPai2-5.compare&depth_1-utm_source=distribute.pc_relevant.none-task-blog-BlogCommendFromMachineLearnPai2-5.compare">跳转！</a>中从第2节开始看。</p>
 <h1 id="5-Deploy和Push"><a href="#5-Deploy和Push" class="headerlink" title="5.Deploy和Push"></a>5.Deploy和Push</h1><p>到这一步基本都配置好了，需要测试使得</p>
 <ol>
-<li>hexo d操作能部署博客到github博客仓库的显示分支，_config.yml中默认将hexo d部署到master分支，所以不用修改，直接hexo g，hexo d一顿操作就完事儿了，如果想在本地先调试，就在hexo g后跟一个hexo s。</li>
+<li><p>hexo d操作能部署博客到github博客仓库的显示分支，_config.yml中默认将hexo d部署到master分支，所以不用修改，直接hexo g，hexo d一顿操作就完事儿了，如果想在本地先调试，就在hexo g后跟一个hexo s。</p>
+</li>
 <li><p>git push操作能将博客源码更新到github博客仓库的源码分支，</p>
 <ol>
 <li><p>(可选)如果你是从github上clone下来的源代码，则不需要本步骤。否则的话先本地关联远程仓库：</p>
 <p> <code>git remote add origin git@github.com:yourblog/yourblog.github.io.git</code></p>
 </li>
-<li>接着git三部曲就完事儿了: <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git add .    #添加所有文件到暂存区</span><br><span class="line">git commit -m &quot;date&quot;     #提交，标记我此处用了date字符串</span><br><span class="line">git push origin source     #推送到源码分支source</span><br></pre></td></tr></table></figure></li>
+<li><p>接着git三部曲就完事儿了:</p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git add .    #添加所有文件到暂存区</span><br><span class="line">git commit -m &quot;date&quot;     #提交，标记我此处用了date字符串</span><br><span class="line">git push origin source     #推送到源码分支source</span><br></pre></td></tr></table></figure></li>
 </ol>
 </li>
 </ol>
@@ -175,7 +186,7 @@
     <a class="modal-close" href="javascript:;"><i class="ri-close-circle-line"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAN4AAADeCAAAAAB3DOFrAAACsElEQVR42u3aQZLCMAwEwP3/p9nrVrEJI8micuicKAjB7YNtRvr5ia/Xn+v9/avX9996//R1cb0///CFh4eHNxh68sP34Oo0Jbx8Iv4ZDx4eHt4a72ooV/ck+PzOfCPJx4yHh4f3HF7CTjaM+3vy4zseHh7e83m9n88Hl4QaeHh4eE/gTSLUPORN7uyxD2QteHh4eDEvj1+f83qlvoeHh4c3rqpPFtzqM3tby4cn4+Hh4S3w8gW3B662IFTjj+hwj4eHh3eUl7c05UOpBr7zMPdyPHh4eHjLvHnYer+R5CW3ySbUnCc8PDy8Fq9X+qo2ClSfNjmU4+Hh4e3x9oY4b8wa1fTw8PDwFnjVA24y9OQofD9xyTuFCBgPDw/vKG9+jM6X8lfrSqKNQhiBh4eHt8DLF+LJNCVbSO9peHh4eN/hJT+ZNwRMimp50Ss67uPh4eEt8KpNAL3FvbrcVw/ceXKLh4eHN+dtLO7V9oIeLyrL4eHh4S3wtmF5/DrBRBsGHh4e3gIv/zOfl/bz7/YmrtyqhYeHhzfmJWX4XhjRawWovvPhfTw8PLw1XjWQrRb7580EvbADDw8Pb4/Xa4pKgtRkynJ8njBE+x4eHh5ei9frKagGChPY/FM8PDy8PV41SjjbIpBvSL1v4eHh4Z3l5ftGDp5vGL2Gg9G2iIeHh9fiVQPcvFmqFxBPJhEPDw/vO7zJQt+rPVUP4uVIBQ8PD+8o71W88uJTvsRXN4b8OI6Hh4e3wasutb0pSBb63kSU63t4eHh4h3h5oNALeaulst7zL0eLh4eHt8abL9Z5OFvdKkbThIeHh/cAXn5onkQVeUjxYbLw8PDwHsBLWgTyhbsaYZTjWjw8PLw1Xq9xqhcfJOWrvMT1YTx4eHh4C7wDf/iLi/4cfKCmh4eHh9fh/QKwJHOoIA0KmwAAAABJRU5ErkJggg==" alt="微信分享二维码">
+      <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAASYAAAEmCAAAAADqr2IGAAAEmUlEQVR42u3aS27jSBAFQN3/0u7tDLolv5dJAyw6uDJsqcgKGshfvV7x9fXX9d/fv/vMu89//lb+JJtneP3EhQkTJkyYbsm0315CmfwmfyXvdvFu/eST37wwTJgwYcJ0OFOy3OfAnMTTJMDPVss3nNBjwoQJE6bfzJQUq8k28kCeh/D8u5gwYcKECdPnzbQt2ms70Ek5/ZkVEyZMmDD9NqZ2uRYlSSDyrbZlc7LCZb1wTJgwYcJ0M6a2qfqkny++MGHChAnTzZi+yispJttB5iYhaMP/cNeYMGHChOlYpjxAborhTZ4y2/D+eTBhwoQJ0zOYNsF+1ordpB1tSrEZef5vfUyYMGHCdCxTO4y8qpecb2MzZE3+OjuEhAkTJkyYTmFqF7oKN3/cfLyaDy/bJAMTJkyYMD2JKW/a5hvbPGj+JJ/L2nyc+Y/vYsKECROmw5kSrHzRts06Gzq2TeSLe+GYMGHChOkopll5mRe3ycY2CcfsOE7RBceECRMmTI9jyhuys7Zv2/xtX9IsrSnGmZgwYcKE6XCmnyhEZ2nBvlHb7u4fq2HChAkTpsOZ2rFle4CmbfLW48ZynTZpwIQJEyZM5zLNRoxt87cOwGUJnZeybcld/9dgwoQJE6abMbVDxzwAb5q8P7ftNiHAhAkTJkynM9UfGhWcG/Q8QamP45S7xoQJEyZMJzLlm2nbtbNB5qy9e+3IM+qFY8KECROmQ5g+R71koTYwt2c+66Hj6OBR4YAJEyZMmA5kasvCq5KDfSs2+e7+85gwYcKE6RlMeZs1L483R3lmT5Kz5j9jwoQJE6bTmTaBM4e7avTYltP5wHWYFmDChAkTphszJUPBTZt139jNiS84u/Tu/wgTJkyYMB3LlD9QXkC2QHXxGd9xcyBp+N4wYcKECdMtmdqDL8l4Mg/n7b3axnSbCnzTC8eECRMmTAcytZvfjCrbAJ+nI20reTiaxYQJEyZMBzIlwTXZTL6B5DW0Jfcs8BftYEyYMGHCdCDT5hHbZmv+cLNDQu2OCm5MmDBhwnQsUx4UZw3cWXIwSyCKwzfx8aNvOgSYMGHChOn2TK1oe+O2tdomK+0IM3+FmDBhwoTpSUztDa4tnmcFan7cZ1OuvzbvARMmTJgw3YBpE2KTSWkedNuWa14YzxKU11WZCCZMmDBhug1TvnQyepw1bfOtJqCzQWmUPWHChAkTpkOY8k1uWrr78Nw2bWev4e36mDBhwoTpEUyboWa7pRb0qqM8+XGfqBeOCRMmTJiOYmrHinlreD/UnI1R27Tg7cqYMGHChOlYptmBm7x0bFuubTjflLWrBAITJkyYMB3C9FVeVyUNefGcl+KzZ4iKfEyYMGHCdCxTGyA3ITwvhmfcSTk9uxcmTJgwYTqdKR8czpq8CfesHZxDzBICTJgwYcL0JKb8xvvvtptvuYdDys3sFxMmTJgwPZQpSRc2zd9Zq3dTHr/9PCZMmDBh+mVMm7bv7ABrPmTNS/FiL5gwYcKE6XCmPJBvhp0t0OaQTXv86Ju9YMKECROmY5n2w8KWclYYt6u1pfhrf2HChAkTpnsx/QGl6N4/Mun9UwAAAABJRU5ErkJggg==" alt="微信分享二维码">
     </div>
 </div>
 
@@ -186,17 +197,17 @@
    
   <nav class="article-nav">
     
-      <a href="/2021/01/16/加密/" class="article-nav-link">
+      <a href="/2021/01/16/%E5%8A%A0%E5%AF%86/" class="article-nav-link">
         <strong class="article-nav-caption">上一篇</strong>
         <div class="article-nav-title">
           
-            反爬虫策略之font-face
+            加密
           
         </div>
       </a>
     
     
-      <a href="/2020/04/11/flask+redis-限制ip访问频率/" class="article-nav-link">
+      <a href="/2020/04/11/flask+redis-%E9%99%90%E5%88%B6ip%E8%AE%BF%E9%97%AE%E9%A2%91%E7%8E%87/" class="article-nav-link">
         <strong class="article-nav-caption">下一篇</strong>
         <div class="article-nav-title">flask+redis限制ip访问速率</div>
       </a>
@@ -213,11 +224,11 @@
 <script>
   new Valine({
     el: "#vcomments",
-    app_id: "",
-    app_key: "",
+    app_id: "ds54farWshFsUraKxWRVVf4G-gzGzoHsz",
+    app_key: "q4rgias5HDeq09ugweytekJQ",
     path: window.location.pathname,
-    avatar: "mp",
-    placeholder: "Add some comments to my article~",
+    avatar: "monsterid",
+    placeholder: "",
     recordIP: true,
   });
   const infoEle = document.querySelector("#vcomments .info");
@@ -398,11 +409,17 @@
     
   </div>
 </div>
-    <script src="/js/jquery-2.0.3.min.js"></script>
+    
+<script src="/js/jquery-2.0.3.min.js"></script>
+
+
 <script src="/js/lazyload.min.js"></script>
+
 <!-- Tocbot -->
 
+
 <script src="/js/tocbot.min.js"></script>
+
 <script>
   tocbot.init({
     tocSelector: '.tocbot',
@@ -420,7 +437,9 @@
 <script src="https://cdn.jsdelivr.net/npm/jquery-modal@0.9.2/jquery.modal.min.js"></script>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jquery-modal@0.9.2/jquery.modal.min.css">
 <script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js"></script>
+
 <script src="/dist/main.js"></script>
+
 <!-- ImageViewer -->
 
 <!-- Root element of PhotoSwipe. Must have class pswp. -->
@@ -536,7 +555,9 @@
 
 <!-- busuanzi  -->
 
+
 <script src="/js/busuanzi-2.3.pure.min.js"></script>
+
 
 <!-- ClickLove -->
 
@@ -544,11 +565,15 @@
 
 <!-- ClickBoom2 -->
 
+
 <script src="/js/clickBoom2.js"></script>
+
 
 <!-- CodeCopy -->
 
+
 <link rel="stylesheet" href="/css/clipboard.css">
+
 <script src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js"></script>
 <script>
   function wait(callback, seconds) {
@@ -607,7 +632,9 @@
 
 <!-- CanvasBackground -->
 
+
 <script src="/js/dz.js"></script>
+
 
 
     

