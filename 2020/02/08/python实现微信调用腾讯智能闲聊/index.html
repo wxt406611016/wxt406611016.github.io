@@ -1,483 +1,631 @@
 <!DOCTYPE html>
-<html>
-<head><meta name="generator" content="Hexo 3.9.0">
-    
-
-    
-
-    
 
 
+<html lang="en">
 
-    <meta charset="utf-8">
-    
-    
-    
-    
-    <title>python+微信+腾讯智能闲聊 | 心是看客心，人是戏中人</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    
-    <meta name="theme-color" content="#3F51B5">
-    
-    
-    <meta name="keywords" content>
-    <meta name="description" content="继上一篇调用图灵机器人的玩法后，不满于每天100条的限额，于是！！！又找到了腾讯云产品-智能闲聊，免费！无限额！申请智能闲聊 1.构建调用api文件：由于wxpy库没有集成腾讯智能闲聊的api，我们需要自己配置接口，所以会比调用图灵机器人显得麻烦。上python，下面是api.py的内容，主要用于向腾讯云发送请求，并获取回复内容，相当于一个调用api。如下api.py:12345678910111">
-<meta property="og:type" content="article">
-<meta property="og:title" content="python+微信+腾讯智能闲聊">
-<meta property="og:url" content="https://wxt406611016.github.io/2020/02/08/python实现微信调用腾讯智能闲聊/index.html">
-<meta property="og:site_name" content="心是看客心，人是戏中人">
-<meta property="og:description" content="继上一篇调用图灵机器人的玩法后，不满于每天100条的限额，于是！！！又找到了腾讯云产品-智能闲聊，免费！无限额！申请智能闲聊 1.构建调用api文件：由于wxpy库没有集成腾讯智能闲聊的api，我们需要自己配置接口，所以会比调用图灵机器人显得麻烦。上python，下面是api.py的内容，主要用于向腾讯云发送请求，并获取回复内容，相当于一个调用api。如下api.py:12345678910111">
-<meta property="og:locale" content="default">
-<meta property="og:image" content="https://imgconvert.csdnimg.cn/aHR0cHM6Ly9zMS5heDF4LmNvbS8yMDIwLzA1LzA4L1lteElScy5qcGc?x-oss-process=image/format,png">
-<meta property="og:updated_time" content="2020-11-09T07:50:54.673Z">
-<meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="python+微信+腾讯智能闲聊">
-<meta name="twitter:description" content="继上一篇调用图灵机器人的玩法后，不满于每天100条的限额，于是！！！又找到了腾讯云产品-智能闲聊，免费！无限额！申请智能闲聊 1.构建调用api文件：由于wxpy库没有集成腾讯智能闲聊的api，我们需要自己配置接口，所以会比调用图灵机器人显得麻烦。上python，下面是api.py的内容，主要用于向腾讯云发送请求，并获取回复内容，相当于一个调用api。如下api.py:12345678910111">
-<meta name="twitter:image" content="https://imgconvert.csdnimg.cn/aHR0cHM6Ly9zMS5heDF4LmNvbS8yMDIwLzA1LzA4L1lteElScy5qcGc?x-oss-process=image/format,png">
-    
-        <link rel="alternate" type="application/atom+xml" title="心是看客心，人是戏中人" href="/atom.xml">
-    
-    <link rel="shortcut icon" href="/img/favicon.ico">
-    <link rel="stylesheet" href="//unpkg.com/hexo-theme-material-indigo@latest/css/style.css">
-    <script>window.lazyScripts=[]</script>
 
-    <!-- custom head -->
+<head>
+  <meta charset="utf-8" />
     
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <title>
+    python+微信+腾讯智能闲聊 |  心是看客心，人是戏中人
+  </title>
+  <meta name="generator" content="hexo-theme-ayer">
+  
+  <link rel="shortcut icon" href="/favicon.ico" />
+  
+  <link rel="stylesheet" href="/dist/main.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Shen-Yu/cdn/css/remixicon.min.css">
+  <link rel="stylesheet" href="/css/custom.css">
+  
+  <script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
+  
+  
+
+  
 
 </head>
 
+</html>
+
 <body>
-    <div id="loading" class="active"></div>
-
-    <aside id="menu" class="hide" >
-  <div class="inner flex-row-vertical">
-    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
-        <i class="icon icon-lg icon-close"></i>
-    </a>
-    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
-      <div class="brand">
-        <a href="/" class="avatar waves-effect waves-circle waves-light">
-          <img src="/img/kobe.jpg">
-        </a>
-        <hgroup class="introduce">
-          <h5 class="nickname">Supervampire</h5>
-          <a href="mailto:wxt406611016@gmail.com" title="wxt406611016@gmail.com" class="mail">wxt406611016@gmail.com</a>
-        </hgroup>
-      </div>
-    </div>
-    <div class="scroll-wrap flex-col">
-      <ul class="nav">
-        
-            <li class="waves-block waves-effect">
-              <a href="/"  >
-                <i class="icon icon-lg icon-home"></i>
-                Home
-              </a>
-            </li>
-        
-            <li class="waves-block waves-effect">
-              <a href="https://github.com/wxt406611016" target="_blank" >
-                <i class="icon icon-lg icon-github"></i>
-                Github
-              </a>
-            </li>
-        
-            <li class="waves-block waves-effect">
-              <a href="/archives"  >
-                <i class="icon icon-lg icon-archives"></i>
-                Archives
-              </a>
-            </li>
-        
-            <li class="waves-block waves-effect">
-              <a href="https://wxt123.top/downloads/" target="_blank" >
-                <i class="icon icon-lg icon-tags"></i>
-                Resource
-              </a>
-            </li>
-        
-      </ul>
-    </div>
-  </div>
-</aside>
-
-    <main id="main">
-        <header class="top-header" id="header">
-    <div class="flex-row">
-        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
-          <i class="icon icon-lg icon-navicon"></i>
-        </a>
-        <div class="flex-col header-title ellipsis">python+微信+腾讯智能闲聊</div>
-        
-        <div class="search-wrap" id="search-wrap">
-            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
-                <i class="icon icon-lg icon-chevron-left"></i>
-            </a>
-            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="Search">
-            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
-                <i class="icon icon-lg icon-search"></i>
-            </a>
-        </div>
-        
-        
-        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
-            <i class="icon icon-lg icon-share-alt"></i>
-        </a>
-        
-    </div>
-</header>
-<header class="content-header post-header">
-
-    <div class="container fade-scale">
-        <h1 class="title">python+微信+腾讯智能闲聊</h1>
-        <h5 class="subtitle">
-            
-                <time datetime="2020-02-07T16:00:00.000Z" itemprop="datePublished" class="page-time">
-  2020-02-08
-</time>
-
-
-            
-        </h5>
-    </div>
-
+  <div id="app">
     
-
-
-</header>
-
-
-<div class="container body-wrap">
+      
+      <canvas width="1777" height="841"
+        style="position: fixed; left: 0px; top: 0px; z-index: 99999; pointer-events: none;"></canvas>
+      
+    <main class="content on">
+      <section class="outer">
+  <article
+  id="post-python实现微信调用腾讯智能闲聊"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
     
-    <aside class="post-widget">
-        <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
-            <h4>TOC</h4>
-            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#1-构建调用api文件："><span class="post-toc-number">1.</span> <span class="post-toc-text">1.构建调用api文件：</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#2-与智能闲聊进行聊天"><span class="post-toc-number">2.</span> <span class="post-toc-text">2.与智能闲聊进行聊天</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#3-效果展示："><span class="post-toc-number">3.</span> <span class="post-toc-text">3.效果展示：</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#如有错误或建议，请在评论处指出！"><span class="post-toc-number">3.0.1.</span> <span class="post-toc-text">如有错误或建议，请在评论处指出！</span></a></li></ol></li></ol></li></ol>
-        </nav>
-    </aside>
+    <header class="article-header">
+       
+<h1 class="article-title sea-center" style="border-left:0" itemprop="name">
+  python+微信+腾讯智能闲聊
+</h1>
+ 
+
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2020/02/08/python实现微信调用腾讯智能闲聊/" class="article-date">
+  <time datetime="2020-02-07T16:00:00.000Z" itemprop="datePublished">2020-02-08</time>
+</a>   
+<div class="word_count">
+    <span class="post-time">
+        <span class="post-meta-item-icon">
+            <i class="ri-quill-pen-line"></i>
+            <span class="post-meta-item-text"> Word count:</span>
+            <span class="post-count">867</span>
+        </span>
+    </span>
+
+    <span class="post-time">
+        &nbsp; | &nbsp;
+        <span class="post-meta-item-icon">
+            <i class="ri-book-open-line"></i>
+            <span class="post-meta-item-text"> Reading time≈</span>
+            <span class="post-count">3 min</span>
+        </span>
+    </span>
+</div>
+ 
+    </div>
+      
+    <div class="tocbot"></div>
 
 
-<article id="post-python实现微信调用腾讯智能闲聊"
-  class="post-article article-type-post fade" itemprop="blogPost">
-
-    <div class="post-card">
-        <h1 class="post-card-title">python+微信+腾讯智能闲聊</h1>
-        <div class="post-meta">
-            <time class="post-time" title="2020-02-08 00:00:00" datetime="2020-02-07T16:00:00.000Z"  itemprop="datePublished">2020-02-08</time>
-
-            
 
 
-            
-<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
-    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
-</span>
-
-
-        </div>
-        <div class="post-content" id="post-content" itemprop="postContent">
-            <p><strong>继上一篇调用图灵机器人的玩法后，不满于每天100条的限额，于是！！！又找到了腾讯云产品-智能闲聊，免费！无限额！<br><a href="https://ai.qq.com/" target="_blank" rel="noopener">申请智能闲聊</a></strong></p>
+  
+    <div class="article-entry" itemprop="articleBody">
+       
+  <p><strong>继上一篇调用图灵机器人的玩法后，不满于每天100条的限额，于是！！！又找到了腾讯云产品-智能闲聊，免费！无限额！<br><a href="https://ai.qq.com/" target="_blank" rel="noopener">申请智能闲聊</a></strong></p>
 <h2 id="1-构建调用api文件："><a href="#1-构建调用api文件：" class="headerlink" title="1.构建调用api文件："></a>1.构建调用api文件：</h2><p>由于wxpy库没有集成腾讯智能闲聊的api，我们需要自己配置接口，所以会比调用图灵机器人显得麻烦。上python，下面是api.py的内容，主要用于向腾讯云发送请求，并获取回复内容，相当于一个调用api。如下api.py:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line">###api.py###</span><br><span class="line">import hashlib</span><br><span class="line">import time</span><br><span class="line">import requests</span><br><span class="line">import random</span><br><span class="line">import string</span><br><span class="line">from urllib.parse import quote</span><br><span class="line"> </span><br><span class="line">def curlmd5(src):</span><br><span class="line">    m = hashlib.md5(src.encode(&apos;UTF-8&apos;))</span><br><span class="line">    return m.hexdigest().upper()               # 将得到的MD5值所有字符转换成大写</span><br><span class="line"> </span><br><span class="line">def get_params(plus_item):                    #用于返回request需要的data内容</span><br><span class="line">    global params</span><br><span class="line">    t = time.time()                                             #请求时间戳（秒级）,（保证签名5分钟有效）</span><br><span class="line">    time_stamp=str(int(t))</span><br><span class="line">    nonce_str = &apos;&apos;.join(random.sample(string.ascii_letters + string.digits, 10))            # 请求随机字符串，用于保证签名不可预测  </span><br><span class="line">    app_id=&apos;2135462408&apos;                              # 修改成自己的id  </span><br><span class="line">    app_key=&apos;w3Lv6zsb95T89fay&apos;             # 修改成自己的key  </span><br><span class="line">    params = &#123;&apos;app_id&apos;:app_id,</span><br><span class="line">              &apos;question&apos;:plus_item,</span><br><span class="line">              &apos;time_stamp&apos;:time_stamp,</span><br><span class="line">              &apos;nonce_str&apos;:nonce_str,</span><br><span class="line">              &apos;session&apos;:&apos;10000&apos;</span><br><span class="line">             &#125;</span><br><span class="line">    sign_before = &apos;&apos;</span><br><span class="line">    for key in sorted(params):                      #要对key排序再拼接</span><br><span class="line">        sign_before += &apos;&#123;&#125;=&#123;&#125;&amp;&apos;.format(key,quote(params[key], safe=&apos;&apos;))    # 拼接过程需要使用quote函数形成URL编码</span><br><span class="line">    sign_before += &apos;app_key=&#123;&#125;&apos;.format(app_key)                                           # 将app_key拼接到sign_before后</span><br><span class="line">    sign = curlmd5(sign_before)</span><br><span class="line">    params[&apos;sign&apos;] = sign                                 # 对sign_before进行MD5运算</span><br><span class="line">    return params                                              #得到request需要的data内容</span><br><span class="line"> </span><br><span class="line">def get_content(plus_item):</span><br><span class="line">    global payload,r</span><br><span class="line">    url = &quot;https://api.ai.qq.com/fcgi-bin/nlp/nlp_textchat&quot;         # 聊天的API地址  </span><br><span class="line">    plus_item = plus_item.encode(&apos;utf-8&apos;)</span><br><span class="line">    payload = get_params(plus_item)</span><br><span class="line">    r = requests.post(url,data=payload)                                                 #带参请求api地址</span><br><span class="line">    result=r.json()[&quot;data&quot;][&quot;answer&quot;]</span><br><span class="line">    return result                                                                                                #获得返回内容</span><br></pre></td></tr></table></figure></p>
 <h2 id="2-与智能闲聊进行聊天"><a href="#2-与智能闲聊进行聊天" class="headerlink" title="2.与智能闲聊进行聊天"></a>2.与智能闲聊进行聊天</h2><p>终于将前提基础工作完成了，调用api构建好后，调用智能闲聊也就很简单了，调用wxpy库，初始化和构建自动发送、回复函数和上一章都一样。为了简化工作，本例中只实现自动回复功能，也是最常用的功能。依然上ai.py的代码，用于聊天。ai.py如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">from wxpy import *</span><br><span class="line">from ai import *                                #导入上一步构建的ai.py文件</span><br><span class="line">bot = Bot()</span><br><span class="line">friend = bot.friends().search(&apos;AIbot&apos;)[0]</span><br><span class="line"></span><br><span class="line">@bot.register(friend)</span><br><span class="line">def auto_reply(msg):</span><br><span class="line">    a=msg.text</span><br><span class="line">    answer=get_content(a)</span><br><span class="line">    if answer==&apos;&apos;:                                 #防止返回内容为空</span><br><span class="line">        for i in range(2):                     </span><br><span class="line">            time.sleep(2)</span><br><span class="line">            answer=get_content(a)</span><br><span class="line">            if answer!=&apos;&apos; and answer!=&quot;emmmm，我不是很懂你的意思&quot;:</span><br><span class="line">                break</span><br><span class="line">            else:</span><br><span class="line">                answer=&quot;emmmm，我不是很懂你的意思&quot;</span><br><span class="line">    return &apos;[Stephen] &#123;&#125; &apos;.format(answer)</span><br><span class="line"></span><br><span class="line">bot.join()</span><br></pre></td></tr></table></figure></p>
 <p>由于访问腾讯api的时候，偶尔会返回空内容，为了避免这种情况，当返回空时，隔2s再请求一次，这般重复3次，如果依然返回空，则自动将返回值设为”emmmm，我不是很懂你的意思”。</p>
-<h2 id="3-效果展示："><a href="#3-效果展示：" class="headerlink" title="3.效果展示："></a>3.效果展示：</h2><p>ps：我已将智能闲聊的名字设为了”Stephen”，上图最重要：<br><figure class="image-bubble">
-                <div class="img-lightbox">
-                    <div class="overlay"></div>
-                    <img src="https://imgconvert.csdnimg.cn/aHR0cHM6Ly9zMS5heDF4LmNvbS8yMDIwLzA1LzA4L1lteElScy5qcGc?x-oss-process=image/format,png" alt="和智能闲聊增进感情" title>
-                </div>
-                <div class="image-caption">和智能闲聊增进感情</div>
-            </figure><br>腾讯智能闲聊的智能化程度也挺高，日常闲聊也没有太大问题，有些回答甚至比图灵机器人还要讨喜，各有千秋吧。最关键的是免费！不限额！<br>尽管wxpy功能很强大，但是部分用户无法登陆微信网页版，也就无法体验wxpy的服务了，可以说是很可惜了！</p>
-<h4 id="如有错误或建议，请在评论处指出！"><a href="#如有错误或建议，请在评论处指出！" class="headerlink" title="如有错误或建议，请在评论处指出！"></a>如有错误或建议，请在评论处指出！</h4>
+<h2 id="3-效果展示："><a href="#3-效果展示：" class="headerlink" title="3.效果展示："></a>3.效果展示：</h2><p>ps：我已将智能闲聊的名字设为了”Stephen”，上图最重要：<br><img src="https://imgconvert.csdnimg.cn/aHR0cHM6Ly9zMS5heDF4LmNvbS8yMDIwLzA1LzA4L1lteElScy5qcGc?x-oss-process=image/format,png" alt="和智能闲聊增进感情"><br>腾讯智能闲聊的智能化程度也挺高，日常闲聊也没有太大问题，有些回答甚至比图灵机器人还要讨喜，各有千秋吧。最关键的是免费！不限额！<br>尽管wxpy功能很强大，但是部分用户无法登陆微信网页版，也就无法体验wxpy的服务了，可以说是很可惜了！</p>
+<h4 id="如有错误或建议，请在评论处指出！"><a href="#如有错误或建议，请在评论处指出！" class="headerlink" title="如有错误或建议，请在评论处指出！"></a>如有错误或建议，请在评论处指出！</h4> 
+      <!-- reward -->
+      
+      <div id="reword-out">
+        <div id="reward-btn">
+          Donate
         </div>
-
-        <blockquote class="post-copyright">
-    
-    <div class="content">
-        
-
-        
-        <a href="/2020/02/08/python实现微信调用腾讯智能闲聊/" target="_blank" rel="external">https://wxt406611016.github.io/2020/02/08/python实现微信调用腾讯智能闲聊/</a>
-        
+      </div>
+      
     </div>
     
-    <footer>
-        <a href="https://wxt406611016.github.io">
-            <img src="/img/kobe.jpg" alt="Supervampire">
-            Supervampire
-        </a>
-    </footer>
-</blockquote>
 
-        
-
-
-        <div class="post-footer">
-            
-
-            
-<div class="page-share-wrap">
+    <!-- copyright -->
     
-
-<div class="page-share" id="pageShare">
-    <ul class="reset share-icons">
-      <li>
-        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://wxt406611016.github.io/2020/02/08/python实现微信调用腾讯智能闲聊/&title=《python+微信+腾讯智能闲聊》 — 心是看客心，人是戏中人&pic=https://wxt406611016.github.io/img/kobe.jpg" data-title="微博">
-          <i class="icon icon-weibo"></i>
-        </a>
-      </li>
-      <li>
-        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
-          <i class="icon icon-weixin"></i>
-        </a>
-      </li>
-      <li>
-        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://wxt406611016.github.io/2020/02/08/python实现微信调用腾讯智能闲聊/&title=《python+微信+腾讯智能闲聊》 — 心是看客心，人是戏中人&source=" data-title=" QQ">
-          <i class="icon icon-qq"></i>
-        </a>
-      </li>
-      <li>
-        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://wxt406611016.github.io/2020/02/08/python实现微信调用腾讯智能闲聊/" data-title=" Facebook">
-          <i class="icon icon-facebook"></i>
-        </a>
-      </li>
-      <li>
-        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《python+微信+腾讯智能闲聊》 — 心是看客心，人是戏中人&url=https://wxt406611016.github.io/2020/02/08/python实现微信调用腾讯智能闲聊/&via=https://wxt406611016.github.io" data-title=" Twitter">
-          <i class="icon icon-twitter"></i>
-        </a>
-      </li>
-      <li>
-        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://wxt406611016.github.io/2020/02/08/python实现微信调用腾讯智能闲聊/" data-title=" Google+">
-          <i class="icon icon-google-plus"></i>
-        </a>
-      </li>
-    </ul>
- </div>
-
-
-
-    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
-        <i class="icon icon-share-alt icon-lg"></i>
-    </a>
+    <div class="declare">
+      <ul class="post-copyright">
+        <li>
+          <i class="ri-copyright-line"></i>
+          <strong>Copyright： </strong>
+          
+          Copyright is owned by the author. For commercial reprints, please contact the author for authorization. For non-commercial reprints, please indicate the source.
+          
+        </li>
+      </ul>
+    </div>
+    
+    <footer class="article-footer">
+       
+<div class="share-btn">
+      <span class="share-sns share-outer">
+        <i class="ri-share-forward-line"></i>
+        分享
+      </span>
+      <div class="share-wrap">
+        <i class="arrow"></i>
+        <div class="share-icons">
+          
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="ri-weibo-fill"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="ri-wechat-fill"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="ri-qq-fill"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="ri-douban-line"></i>
+          </a>
+          <!-- <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a> -->
+          
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="ri-facebook-circle-fill"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="ri-twitter-fill"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="ri-google-fill"></i>
+          </a>
+        </div>
+      </div>
 </div>
 
+<div class="wx-share-modal">
+    <a class="modal-close" href="javascript:;"><i class="ri-close-circle-line"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAPYAAAD2CAAAAADAeSUUAAADI0lEQVR42u3awY7iQAwE0Pn/n2avI+1mqXIHCczLaRSYTl5zsFzun5/4evy6ft/5++/k+7M7+dNvu7CxsbE/hP3475U/ZvaKybOu7uSf/uOdsbGxsdexE0ZSKk6+mRSw858EGxsbG/tJYTjAz5oTbGxsbOxZazF7ZN5m5FuJjY2NjZ2HSm3cPxszJMFTGzlhY2Nj72bnU9H3//sl821sbGzsN2Y/Dq42QmoLSd5g1G+OjY2NvYjdFonZ8ZrZwZ1Zs1G0T9jY2NhL2SdLtyUk39bZMZ2iQmJjY2OvYLcDgHZU0G5Bvs5wgIGNjY29jj07ZNOWw7sGAHkhvHxbbGxs7BXsPLJvRwItNV9n9rNdVmxsbGzsdewZbxZFJUPcPDYqCi02Njb2InYS1uRFJbnfbvR58/Nk+7CxsbG/gP26SGi2EbNjRtjY2Nhb2fkRmfZAT/vqtwVGSQnExsbGXsduHzxLZpLSkiOTcvtk0IuNjY29jp2UnzZgSjYuf1Z7fOfyv7CxsbEXsfPRb/4q7YBh9v0jJDY2NvYidv7g2wKd0Ra3o4sna2JjY2N/Gft8xDuLk85HETdnYNjY2NhvyU7ioXwL8sYgCbNOjvXkJRkbGxv709ntcnlFmN2/t9W5VGBjY2MvYrcfz0KfWYHMw6y8RRnuCjY2NvYbs/Mopy0wsyZkNjBomxxsbGzsTezz0pK3B3l4lCQ/sxDqctyLjY2NvYL96uYh377zZqkoYNjY2Ngr2O0xl7bktAPak8Fz8kRsbGzsTexHec0KVR4MnQyV8zALGxsbexO7PaaTl5+TtqEdXQwPHmFjY2OvYOeD0pPQpy0zLSZ//+G/YWNjY78x+2S5diPa77SHgdofABsbG3sH+yRUOgn92wajPTD0ZGuwsbGxF7HzK49y2kDqpKTNxhLY2NjY+9jnpFlRzEtRPlpIVsbGxsbeyj4pDG3Qf9d4oA2Vfu6th9jY2NgfyD4fEpwMfZPVinWwsbGxv5LdhkGvOOKTg6P6ho2Njb2InYdK+Wa1Y4PzQlW8GzY2NvYidlvk8lApL3h5y/FCJDY2Nvbnsf8AlTvJXRzWWaEAAAAASUVORK5CYII=" alt="微信分享二维码">
+    </div>
+</div>
 
+<div id="share-mask"></div>  
+    </footer>
+  </div>
 
+   
+  <nav class="article-nav">
+    
+      <a href="/2020/03/02/反爬虫策略之font-face/" class="article-nav-link">
+        <strong class="article-nav-caption">上一篇</strong>
+        <div class="article-nav-title">
+          
+            反爬虫策略之font-face
+          
         </div>
-    </div>
-
-    
-<nav class="post-nav flex-row flex-justify-between">
-  
-    <div class="waves-block waves-effect prev">
-      <a href="/2020/03/02/反爬虫策略之font-face/" id="post-prev" class="post-nav-link">
-        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
-        <h4 class="title">反爬虫策略之font-face</h4>
       </a>
-    </div>
-  
-
-  
-    <div class="waves-block waves-effect next">
-      <a href="/2020/01/12/python实现微信自动回复+图灵机器人/" id="post-next" class="post-nav-link">
-        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
-        <h4 class="title">python实现微信自动回复+图灵机器人</h4>
-      </a>
-    </div>
-  
-</nav>
-
-
-
     
+    
+      <a href="/2020/01/12/python实现微信自动回复+图灵机器人/" class="article-nav-link">
+        <strong class="article-nav-caption">下一篇</strong>
+        <div class="article-nav-title">python实现微信自动回复+图灵机器人</div>
+      </a>
+    
+  </nav>
 
+   
+<!-- valine评论 -->
+<div id="vcomments-box">
+  <div id="vcomments"></div>
+</div>
+<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/valine@1.4.14/dist/Valine.min.js"></script>
+<script>
+  new Valine({
+    el: "#vcomments",
+    app_id: "",
+    app_key: "",
+    path: window.location.pathname,
+    avatar: "monsterid",
+    placeholder: "给我的文章加点评论吧~",
+    recordIP: true,
+  });
+  const infoEle = document.querySelector("#vcomments .info");
+  if (infoEle && infoEle.childNodes && infoEle.childNodes.length > 0) {
+    infoEle.childNodes.forEach(function (item) {
+      item.parentNode.removeChild(item);
+    });
+  }
+</script>
+<style>
+  #vcomments-box {
+    padding: 5px 30px;
+  }
 
+  @media screen and (max-width: 800px) {
+    #vcomments-box {
+      padding: 5px 0px;
+    }
+  }
 
+  #vcomments-box #vcomments {
+    background-color: #fff;
+  }
 
+  .v .vlist .vcard .vh {
+    padding-right: 20px;
+  }
 
+  .v .vlist .vcard {
+    padding-left: 10px;
+  }
+</style>
 
-
-
-
-
-
-    <!-- Valine Comments -->
-    <div class="comments vcomment" id="comments"></div>
-    <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
-    <script src="//unpkg.com/valine@latest/dist/Valine.min.js"></script>
-    <!-- Valine Comments script -->
-    <script>
-        var GUEST_INFO = ['nick','mail','link'];
-        var guest_info = 'nick'.split(',').filter(function(item){
-          return GUEST_INFO.indexOf(item) > -1
-        });
-        new Valine({
-            el: '#comments',
-            notify: 'false' == 'true',
-            verify: 'false' == 'true',
-            appId: "ds54farWshFsUraKxWRVVf4G-gzGzoHsz",
-            appKey: "q4rgias5HDeq09ugweytekJQ",
-            avatar: "mm",
-            placeholder: "说点什么吧!(别忘了先填写上面的昵称哦)",
-            guest_info: guest_info.length == 0 ? GUEST_INFO : guest_info,
-            pageSize: "10"
-        })
-    </script>
-    <!-- Valine Comments end -->
-
-
-
-
-
-
-
-
-
-
+ 
+   
+     
 </article>
 
-
-
-</div>
-
-        <footer class="footer">
-    <div class="top">
-        
-<p>
-    <span id="busuanzi_container_site_uv" style='display:none'>
-        站点总访客数：<span id="busuanzi_value_site_uv"></span>
-    </span>
-    <span id="busuanzi_container_site_pv" style='display:none'>
-        站点总访问量：<span id="busuanzi_value_site_pv"></span>
-    </span>
-</p>
-
-
-        <p>
-            
-                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
-            
-            <span>This blog is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.</span>
-        </p>
-    </div>
-    <div class="bottom">
-        <p><span>Supervampire &copy; 2018 - 2021</span>
-            <span>
-                
-                <a href="http://www.miitbeian.gov.cn/" target="_blank">苏ICP备20008565号-1</a><br>
-                
-                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
-            </span>
-        </p>
-    </div>
-</footer>
-
-    </main>
-    <div class="mask" id="mask"></div>
-<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
-
-
-
-<div class="global-share" id="globalShare">
-    <ul class="reset share-icons">
+</section>
+      <footer class="footer">
+  <div class="outer">
+    <ul>
       <li>
-        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://wxt406611016.github.io/2020/02/08/python实现微信调用腾讯智能闲聊/&title=《python+微信+腾讯智能闲聊》 — 心是看客心，人是戏中人&pic=https://wxt406611016.github.io/img/kobe.jpg" data-title="微博">
-          <i class="icon icon-weibo"></i>
-        </a>
-      </li>
-      <li>
-        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
-          <i class="icon icon-weixin"></i>
-        </a>
-      </li>
-      <li>
-        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://wxt406611016.github.io/2020/02/08/python实现微信调用腾讯智能闲聊/&title=《python+微信+腾讯智能闲聊》 — 心是看客心，人是戏中人&source=" data-title=" QQ">
-          <i class="icon icon-qq"></i>
-        </a>
-      </li>
-      <li>
-        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://wxt406611016.github.io/2020/02/08/python实现微信调用腾讯智能闲聊/" data-title=" Facebook">
-          <i class="icon icon-facebook"></i>
-        </a>
-      </li>
-      <li>
-        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《python+微信+腾讯智能闲聊》 — 心是看客心，人是戏中人&url=https://wxt406611016.github.io/2020/02/08/python实现微信调用腾讯智能闲聊/&via=https://wxt406611016.github.io" data-title=" Twitter">
-          <i class="icon icon-twitter"></i>
-        </a>
-      </li>
-      <li>
-        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://wxt406611016.github.io/2020/02/08/python实现微信调用腾讯智能闲聊/" data-title=" Google+">
-          <i class="icon icon-google-plus"></i>
-        </a>
+        Copyrights &copy;
+        2021
+        <i class="ri-heart-fill heart_icon"></i> Supervampire
       </li>
     </ul>
- </div>
-
-
-<div class="page-modal wx-share" id="wxShare">
-    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
-    <p>扫一扫，分享到微信</p>
-    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAPYAAAD2CAAAAADAeSUUAAADI0lEQVR42u3awY7iQAwE0Pn/n2avI+1mqXIHCczLaRSYTl5zsFzun5/4evy6ft/5++/k+7M7+dNvu7CxsbE/hP3475U/ZvaKybOu7uSf/uOdsbGxsdexE0ZSKk6+mRSw858EGxsbG/tJYTjAz5oTbGxsbOxZazF7ZN5m5FuJjY2NjZ2HSm3cPxszJMFTGzlhY2Nj72bnU9H3//sl821sbGzsN2Y/Dq42QmoLSd5g1G+OjY2NvYjdFonZ8ZrZwZ1Zs1G0T9jY2NhL2SdLtyUk39bZMZ2iQmJjY2OvYLcDgHZU0G5Bvs5wgIGNjY29jj07ZNOWw7sGAHkhvHxbbGxs7BXsPLJvRwItNV9n9rNdVmxsbGzsdewZbxZFJUPcPDYqCi02Njb2InYS1uRFJbnfbvR58/Nk+7CxsbG/gP26SGi2EbNjRtjY2Nhb2fkRmfZAT/vqtwVGSQnExsbGXsduHzxLZpLSkiOTcvtk0IuNjY29jp2UnzZgSjYuf1Z7fOfyv7CxsbEXsfPRb/4q7YBh9v0jJDY2NvYidv7g2wKd0Ra3o4sna2JjY2N/Gft8xDuLk85HETdnYNjY2NhvyU7ioXwL8sYgCbNOjvXkJRkbGxv709ntcnlFmN2/t9W5VGBjY2MvYrcfz0KfWYHMw6y8RRnuCjY2NvYbs/Mopy0wsyZkNjBomxxsbGzsTezz0pK3B3l4lCQ/sxDqctyLjY2NvYL96uYh377zZqkoYNjY2Ngr2O0xl7bktAPak8Fz8kRsbGzsTexHec0KVR4MnQyV8zALGxsbexO7PaaTl5+TtqEdXQwPHmFjY2OvYOeD0pPQpy0zLSZ//+G/YWNjY78x+2S5diPa77SHgdofABsbG3sH+yRUOgn92wajPTD0ZGuwsbGxF7HzK49y2kDqpKTNxhLY2NjY+9jnpFlRzEtRPlpIVsbGxsbeyj4pDG3Qf9d4oA2Vfu6th9jY2NgfyD4fEpwMfZPVinWwsbGxv5LdhkGvOOKTg6P6ho2Njb2InYdK+Wa1Y4PzQlW8GzY2NvYidlvk8lApL3h5y/FCJDY2Nvbnsf8AlTvJXRzWWaEAAAAASUVORK5CYII=" alt="微信分享二维码">
+    <ul>
+      <li>
+        
+        
+        
+        Powered by <a href="https://hexo.io" target="_blank">Hexo</a>
+        <span class="division">|</span>
+        Theme - <a href="https://github.com/Shen-Yu/hexo-theme-ayer" target="_blank">Ayer</a>
+        
+      </li>
+    </ul>
+    <ul>
+      <li>
+        
+        
+        <span>
+  <span><i class="ri-user-3-fill"></i>Visitors:<span id="busuanzi_value_site_uv"></span></s>
+  <span class="division">|</span>
+  <span><i class="ri-eye-fill"></i>Views:<span id="busuanzi_value_page_pv"></span></span>
+</span>
+        
+      </li>
+    </ul>
+    <ul>
+      
+        <li>
+          <a href="https://beian.miit.gov.cn/#/Integrated/recordQuery" target="_black" rel="nofollow">苏ICP备20008565号-1</a>
+        </li>
+        
+    </ul>
+    <ul>
+      
+    </ul>
+    <ul>
+      <li>
+        <!-- cnzz统计 -->
+        
+        <script type="text/javascript" src='https://s9.cnzz.com/z_stat.php?id=1278069914&amp;web_id=1278069914'></script>
+        
+      </li>
+    </ul>
+  </div>
+</footer>
+      <div class="float_btns">
+        <div class="totop" id="totop">
+  <i class="ri-arrow-up-line"></i>
 </div>
 
+<div class="todark" id="todark">
+  <i class="ri-moon-line"></i>
+</div>
 
+      </div>
+    </main>
+    <aside class="sidebar on">
+      <button class="navbar-toggle"></button>
+<nav class="navbar">
+  
+  <div class="logo">
+    <a href="/"><img src="/images/ayer-side.svg" alt="心是看客心，人是戏中人"></a>
+  </div>
+  
+  <ul class="nav nav-main">
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/">主页</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/archives">归档</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/categories">分类</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/tags">标签</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/links">友链</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/about">关于我</a>
+    </li>
+    
+  </ul>
+</nav>
+<nav class="navbar navbar-bottom">
+  <ul class="nav">
+    <li class="nav-item">
+      
+      <a class="nav-item-link nav-item-search"  title="Search">
+        <i class="ri-search-line"></i>
+      </a>
+      
+      
+      <a class="nav-item-link" target="_blank" href="/atom.xml" title="RSS Feed">
+        <i class="ri-rss-line"></i>
+      </a>
+      
+    </li>
+  </ul>
+</nav>
+<div class="search-form-wrap">
+  <div class="local-search local-search-plugin">
+  <input type="search" id="local-search-input" class="local-search-input" placeholder="Search...">
+  <div id="local-search-result" class="local-search-result"></div>
+</div>
+</div>
+    </aside>
+    <script>
+      if (window.matchMedia("(max-width: 768px)").matches) {
+        document.querySelector('.content').classList.remove('on');
+        document.querySelector('.sidebar').classList.remove('on');
+      }
+    </script>
+    <div id="mask"></div>
 
+<!-- #reward -->
+<div id="reward">
+  <span class="close"><i class="ri-close-line"></i></span>
+  <p class="reward-p"><i class="ri-cup-line"></i>请我喝杯咖啡吧~</p>
+  <div class="reward-box">
+    
+    <div class="reward-item">
+      <img class="reward-img" src="https://cdn.jsdelivr.net/gh/Shen-Yu/cdn/img/alipay.jpg">
+      <span class="reward-type">支付宝</span>
+    </div>
+    
+    
+    <div class="reward-item">
+      <img class="reward-img" src="https://cdn.jsdelivr.net/gh/Shen-Yu/cdn/img/wechat.jpg">
+      <span class="reward-type">微信</span>
+    </div>
+    
+  </div>
+</div>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/lazyload.min.js"></script>
+<!-- Tocbot -->
 
-    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script src="/js/tocbot.min.js"></script>
 <script>
-var BLOG = { ROOT: '/', SHARE: true, REWARD: false };
-
-
+  tocbot.init({
+    tocSelector: '.tocbot',
+    contentSelector: '.article-entry',
+    headingSelector: 'h1, h2, h3, h4, h5, h6',
+    hasInnerContainers: true,
+    scrollSmooth: true,
+    scrollContainer: 'main',
+    positionFixedSelector: '.tocbot',
+    positionFixedClass: 'is-position-fixed',
+    fixedSidebarOffset: 'auto'
+  });
 </script>
 
-<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/main.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery-modal@0.9.2/jquery.modal.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jquery-modal@0.9.2/jquery.modal.min.css">
+<script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js"></script>
+<script src="/dist/main.js"></script>
+<!-- ImageViewer -->
 
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
 
-<div class="search-panel" id="search-panel">
-    <ul class="search-result" id="search-result"></ul>
-</div>
-<template id="search-tpl">
-<li class="item">
-    <a href="{path}" class="waves-block waves-effect">
-        <div class="title ellipsis" title="{title}">{title}</div>
-        <div class="flex-row flex-middle">
-            <div class="tags ellipsis">
-                {tags}
-            </div>
-            <time class="flex-col time">{date}</time>
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
         </div>
-    </a>
-</li>
-</template>
 
-<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/search.min.js" async></script>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
 
+            <div class="pswp__top-bar">
 
+                <!--  Controls are self-explanatory. Order can be changed. -->
 
+                <div class="pswp__counter"></div>
 
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
 
+                <button class="pswp__button pswp__button--share" style="display:none" title="Share"></button>
 
-<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
 
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
 
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css">
+<script src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"></script>
 
 <script>
-(function() {
-    var OriginTitile = document.title, titleTime;
-    document.addEventListener('visibilitychange', function() {
-        if (document.hidden) {
-            document.title = '客官去哪儿了，快回来呜呜呜';
-            clearTimeout(titleTime);
-        } else {
-            document.title = 'Welcome To My Blog';
-            titleTime = setTimeout(function() {
-                document.title = OriginTitile;
-            },2000);
+    function viewer_init() {
+        let pswpElement = document.querySelectorAll('.pswp')[0];
+        let $imgArr = document.querySelectorAll(('.article-entry img:not(.reward-img)'))
+
+        $imgArr.forEach(($em, i) => {
+            $em.onclick = () => {
+                // slider展开状态
+                // todo: 这样不好，后面改成状态
+                if (document.querySelector('.left-col.show')) return
+                let items = []
+                $imgArr.forEach(($em2, i2) => {
+                    let img = $em2.getAttribute('data-idx', i2)
+                    let src = $em2.getAttribute('data-target') || $em2.getAttribute('src')
+                    let title = $em2.getAttribute('alt')
+                    // 获得原图尺寸
+                    const image = new Image()
+                    image.src = src
+                    items.push({
+                        src: src,
+                        w: image.width || $em2.width,
+                        h: image.height || $em2.height,
+                        title: title
+                    })
+                })
+                var gallery = new PhotoSwipe(pswpElement, PhotoSwipeUI_Default, items, {
+                    index: parseInt(i)
+                });
+                gallery.init()
+            }
+        })
+    }
+    viewer_init()
+</script>
+
+<!-- MathJax -->
+
+<!-- Katex -->
+
+<!-- busuanzi  -->
+
+<script src="/js/busuanzi-2.3.pure.min.js"></script>
+
+<!-- ClickLove -->
+
+<!-- ClickBoom1 -->
+
+<!-- ClickBoom2 -->
+
+<script src="/js/clickBoom2.js"></script>
+
+<!-- CodeCopy -->
+
+<link rel="stylesheet" href="/css/clipboard.css">
+<script src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js"></script>
+<script>
+  function wait(callback, seconds) {
+    var timelag = null;
+    timelag = window.setTimeout(callback, seconds);
+  }
+  !function (e, t, a) {
+    var initCopyCode = function(){
+      var copyHtml = '';
+      copyHtml += '<button class="btn-copy" data-clipboard-snippet="">';
+      copyHtml += '<i class="ri-file-copy-2-line"></i><span>COPY</span>';
+      copyHtml += '</button>';
+      $(".highlight .code pre").before(copyHtml);
+      $(".article pre code").before(copyHtml);
+      var clipboard = new ClipboardJS('.btn-copy', {
+        target: function(trigger) {
+          return trigger.nextElementSibling;
         }
-    });
-})();
+      });
+      clipboard.on('success', function(e) {
+        let $btn = $(e.trigger);
+        $btn.addClass('copied');
+        let $icon = $($btn.find('i'));
+        $icon.removeClass('ri-file-copy-2-line');
+        $icon.addClass('ri-checkbox-circle-line');
+        let $span = $($btn.find('span'));
+        $span[0].innerText = 'COPIED';
+        
+        wait(function () { // 等待两秒钟后恢复
+          $icon.removeClass('ri-checkbox-circle-line');
+          $icon.addClass('ri-file-copy-2-line');
+          $span[0].innerText = 'COPY';
+        }, 2000);
+      });
+      clipboard.on('error', function(e) {
+        e.clearSelection();
+        let $btn = $(e.trigger);
+        $btn.addClass('copy-failed');
+        let $icon = $($btn.find('i'));
+        $icon.removeClass('ri-file-copy-2-line');
+        $icon.addClass('ri-time-line');
+        let $span = $($btn.find('span'));
+        $span[0].innerText = 'COPY FAILED';
+        
+        wait(function () { // 等待两秒钟后恢复
+          $icon.removeClass('ri-time-line');
+          $icon.addClass('ri-file-copy-2-line');
+          $span[0].innerText = 'COPY';
+        }, 2000);
+      });
+    }
+    initCopyCode();
+  }(window, document);
 </script>
 
 
+<!-- CanvasBackground -->
 
+<script src="/js/dz.js"></script>
+
+
+    
+    <div id="music">
+    
+    
+    
+    <iframe frameborder="no" border="1" marginwidth="0" marginheight="0" width="200" height="86"
+        src="//music.163.com/outchain/player?type=2&id=22707008&auto=1&height=66"></iframe>
+</div>
+
+<style>
+    #music {
+        position: fixed;
+        right: 15px;
+        bottom: 0;
+        z-index: 998;
+    }
+</style>
+    
+  </div>
 </body>
+
 </html>
