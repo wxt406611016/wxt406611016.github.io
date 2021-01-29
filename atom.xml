@@ -62,7 +62,7 @@
     <link href="https://wxt406611016.github.io/2021/01/22/Bugku%20Web%E6%80%BB%E7%BB%93(%E6%8C%81%E7%BB%AD%E6%9B%B4%E6%96%B0ing)/"/>
     <id>https://wxt406611016.github.io/2021/01/22/Bugku%20Web%E6%80%BB%E7%BB%93(%E6%8C%81%E7%BB%AD%E6%9B%B4%E6%96%B0ing)/</id>
     <published>2021-01-21T16:00:00.000Z</published>
-    <updated>2021-01-29T12:30:31.445Z</updated>
+    <updated>2021-01-29T12:48:58.991Z</updated>
     
     
     <summary type="html">&lt;p&gt;Bugku对于入门CTF的小白还是挺适合的，新版的Bugku和旧版有些不同，而且此前也没有整理过ctf web的骚操作，正好借这个机会补一补，总结新版Bugku Web中典型题目的wp，和一些常用函数的介绍，以及基础绕过姿势的总结。&lt;/p&gt;
