@@ -9,7 +9,7 @@
     
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
   <title>
-    github+hexo更换主题:indigo |  の
+    配置反向socks5代理实现内网渗透 |  の
   </title>
   <meta name="generator" content="hexo-theme-ayer">
   
@@ -48,7 +48,7 @@
     <main class="content on">
       <section class="outer">
   <article
-  id="post-github+hexo更换主题"
+  id="post-内网反向socks代理"
   class="article article-type-post"
   itemscope
   itemprop="blogPost"
@@ -59,15 +59,15 @@
     <header class="article-header">
        
 <h1 class="article-title sea-center" style="border-left:0" itemprop="name">
-  github+hexo更换主题:indigo
+  配置反向socks5代理实现内网渗透
 </h1>
  
 
     </header>
      
     <div class="article-meta">
-      <a href="/2019/02/08/github+hexo%E6%9B%B4%E6%8D%A2%E4%B8%BB%E9%A2%98/" class="article-date">
-  <time datetime="2019-02-07T16:00:00.000Z" itemprop="datePublished">2019-02-08</time>
+      <a href="/2021/01/28/%E5%86%85%E7%BD%91%E5%8F%8D%E5%90%91socks%E4%BB%A3%E7%90%86/" class="article-date">
+  <time datetime="2021-01-27T16:00:00.000Z" itemprop="datePublished">2021-01-28</time>
 </a> 
   <div class="article-category">
     <a class="article-category-link" href="/categories/Web/">Web</a>
@@ -78,7 +78,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> Word count:</span>
-            <span class="post-count">995</span>
+            <span class="post-count">568</span>
         </span>
     </span>
 
@@ -87,7 +87,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-book-open-line"></i>
             <span class="post-meta-item-text"> Reading time≈</span>
-            <span class="post-count">4 min</span>
+            <span class="post-count">2 min</span>
         </span>
     </span>
 </div>
@@ -102,24 +102,59 @@
   
     <div class="article-entry" itemprop="articleBody">
        
-  <h1 id="github-hexo更换主题"><a href="#github-hexo更换主题" class="headerlink" title="github+hexo更换主题:"></a>github+hexo更换主题:</h1><p>上一篇写了关于github+hexo搭建个人博客的过程,搭建成功后页面主题是默认主题,但其实有很多主题可供选择,这篇文章就主要学习一下如何更换主题,以及更换主题后如何丰富优化功能,如评论功能,站内搜索功能.</p>
+  <p>EarthWorm是一款用于开启 SOCKS v5 代理服务的工具，基于标准 C 开发，可提供多平台间的转接通讯，用于复杂网络环境下的数据转发。 </p>
+<p>EW主页： <a target="_blank" rel="noopener" href="http://rootkiter.com/EarthWorm/">http://rootkiter.com/EarthWorm/</a></p>
+<p>EW项目地址：<a target="_blank" rel="noopener" href="https://github.com/idlefire/ew">https://github.com/idlefire/ew</a></p>
 <a id="more"></a>
-<h2 id="1-查看并选择主题"><a href="#1-查看并选择主题" class="headerlink" title="1.查看并选择主题"></a>1.查看并选择主题</h2><p>主题当然不用自己开发,这涉及到很多前端知识很复杂,而在hexo官网上,就有themes栏,有已经开发完成的主题可供选择.<a target="_blank" rel="noopener" href="https://hexo.io/themes/">(点击选择主题to themes)!</a><br><img src="https://s2.ax1x.com/2019/02/08/kNmp0e.png" alt="hexo主题页面"><br> 可以看到有很多主题可以选择,点击图片可以进入预览模式,选择完成后,返回主题页面,点击主题名(如上图中,点击”一个男孩”字样),即可进入开发者的github页面.本例中,我们以indigo为例,页面如下图所示,也可点击图片下方”进入indigo预览”进入预览模式.<br> <img src="https://s2.ax1x.com/2019/02/08/kNmSmD.png" alt="indigo页面"><br> <a target="_blank" rel="noopener" href="https://www.imys.net/">(进入indigo预览)</a><br> 然后我们进入对应开发者的github页面.<a target="_blank" rel="noopener" href="https://github.com/yscoder/hexo-theme-indigo">(进入开发者github)</a></p>
-<h2 id="2-从github-clone-indigo主题"><a href="#2-从github-clone-indigo主题" class="headerlink" title="2.从github clone indigo主题"></a>2.从github clone indigo主题</h2><p>进入开发者github页面后,点击”clone or download”,选择use ssh,会出现git命令,复制该命令到终端并运行.</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git clone git@github.com:yscoder&#x2F;hexo-theme-indigo.git</span><br></pre></td></tr></table></figure>
-<p>(速度可能较慢,还记得上篇提到的翻墙git吗,速度快很多)<br>将clone下来的文件夹放入hexo下themes文件夹下.<br>clone后,需要安装主题需要的依赖.</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">npm install hexo-renderer-less --save    #安装less,作为css的预处理工具 </span><br><span class="line">npm install hexo-generator-feed --save    #安装rss的feed生成工具 </span><br><span class="line">npm install hexo-generator-json-content --save    #用于生成静态站点数据，用于站内搜索的数据源 </span><br><span class="line">npm install hexo-helper-qrcode --save    #用于生成微信分享二维码</span><br></pre></td></tr></table></figure>
-<h2 id="3-修改-config-yml-使用indigo主题"><a href="#3-修改-config-yml-使用indigo主题" class="headerlink" title="3.修改_config.yml,使用indigo主题"></a>3.修改_config.yml,使用indigo主题</h2><p>打开_config.yml,将主题更改,如以下代码:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># Extensions</span><br><span class="line">## Plugins: https:&#x2F;&#x2F;hexo.io&#x2F;plugins&#x2F;</span><br><span class="line">## Themes: https:&#x2F;&#x2F;hexo.io&#x2F;themes&#x2F;</span><br><span class="line">theme: hexo-theme-indigo</span><br></pre></td></tr></table></figure>
-<h2 id="4-调整修改个人信息"><a href="#4-调整修改个人信息" class="headerlink" title="4.调整修改个人信息"></a>4.调整修改个人信息</h2><p> _config.yml的author改成自己,title改为自己想展示的内容， themes/indigo/_config.yml里的email改成自己的邮箱,title_change改成自己想展示的,头像avater可以自行调整图片路径,menu可以自行修改调整.下面是我个人调整的代码,根据需要调整修改.</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">menu:</span><br><span class="line">  home:</span><br><span class="line">    url: &#x2F;</span><br><span class="line">  archives:</span><br><span class="line">    url: &#x2F;archives</span><br><span class="line">  tags:</span><br><span class="line">     text: CUMT</span><br><span class="line">     url: http:&#x2F;&#x2F;cs.cumt.edu.cn&#x2F;</span><br><span class="line">     target: _blank</span><br><span class="line">  github:</span><br><span class="line">    url: https:&#x2F;&#x2F;github.com&#x2F;xxxxx</span><br><span class="line">    target: _blank</span><br><span class="line">  weibo:</span><br><span class="line">    url: https:&#x2F;&#x2F;weibo.com&#x2F;xxxxx</span><br><span class="line">    target: _blank</span><br><span class="line"># 你的头像url</span><br><span class="line">avatar: &#x2F;img&#x2F;host.jpg</span><br><span class="line"># 动态定义title</span><br><span class="line">title_change:</span><br><span class="line">  normal: Welcome My Blog</span><br><span class="line">  leave: Welcome</span><br></pre></td></tr></table></figure>
-<h2 id="5-增加评论功能-valine"><a href="#5-增加评论功能-valine" class="headerlink" title="5.增加评论功能:valine"></a>5.增加评论功能:valine</h2><p>有很多评论系统,本例中我们选择valine,这个评论系统是基于LeanCloud的，大家应该对这个很熟悉，官网网址如下，<a target="_blank" rel="noopener" href="https://leancloud.cn/">LeanCloud官网</a>,需要注册一个账户。<br>注册完成后登录,依次点击设置-&gt;应用Key,得到App ID和App Key,<br>打开themes/indigo/_config.yml,因为该主题集成了valine方法,所以直接修改valine对应的参数就可以了:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">valine:</span><br><span class="line">  enable: true       # 如果你想使用valine，请将值设置为 true</span><br><span class="line">  appId: xxxxxxxxxxxxxxxxxxxxxxx               #在应用Key里得到的App ID</span><br><span class="line">  appKey: xxxxxxxxxxxxxxxxxxxxxx             #在应用Key里得到的App Key</span><br><span class="line">  notify: false      # Mail notify</span><br><span class="line">  verify: false      # Verify code</span><br><span class="line">  avatar: mm      # Gravatar style : mm&#x2F;identicon&#x2F;monsterid&#x2F;wavatar&#x2F;retro&#x2F;hide</span><br><span class="line">  placeholder: 说点什么吧!(别忘了先填写上面的昵称哦)        # Comment Box placeholder</span><br><span class="line">  guest_info: nick       # Comment header info</span><br><span class="line">  pageSize: 10       # comment list page size</span><br></pre></td></tr></table></figure>
-<p>登录你的LeanCloud页面,依次点击设置-&gt;安全中心,在Web安全域名下添加你的github博客网址,如下图<br><img src="https://s2.ax1x.com/2019/02/08/kNmFfI.png" alt="本图中github账户名为wxt406611016"></p>
-<h2 id="6-将本地文件重新上传到github"><a href="#6-将本地文件重新上传到github" class="headerlink" title="6.将本地文件重新上传到github"></a>6.将本地文件重新上传到github</h2><p>最后将本地文件编译后上传到github上,在终端输入以下代码.</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">hexo clean   #清除缓存文件</span><br><span class="line">hexo g          #生成静态文件</span><br><span class="line">hexo d          #上传部署网站</span><br></pre></td></tr></table></figure>
+<hr>
+<h2 id="使用场景"><a href="#使用场景" class="headerlink" title="使用场景"></a>使用场景</h2><ul>
+<li>云服务器B</li>
+<li>主机A处于内网</li>
+<li>主机C处于不同于A的内网</li>
+<li>效果：主机A作为主机C的代理，使得主机C能够访问主机A内网内的Web资源</li>
+</ul>
+<p>主机A网络不存在公网ip，需要通过反弹到云服务器B的方式创建socks5代理，当另一内网内的主机C挂了云服务器B的正向代理时，即可访问A内网内的Web资源，如下图所示：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/wxt406611016/cdn/image/20210128214524.png" alt="20210128214524"></p>
+<p>上图中，当C挂了B的正向代理时，访问baidu.com时流程如下：</p>
+<ul>
+<li>1.C把请求发送给代理B；</li>
+<li>2.代理B把请求发送给搭建反向socks5的A；</li>
+<li>3.A去请求baidu.com页面；</li>
+<li>4.A将baidu.com的返回页面回复给B；</li>
+<li>5.B将A的回复信息回复给C，至此，A作为C的代理成功访问；</li>
+</ul>
+<hr>
+<h2 id="使用方法"><a href="#使用方法" class="headerlink" title="使用方法"></a>使用方法</h2><p>首先通过上述链接下载EW项目，其中包含多个系统的版本，根据需要选择，搭建步骤如下：</p>
+<ul>
+<li><p>在阿里云控制台的防火墙页面添加1080和1024两个端口，下面会用到：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/wxt406611016/cdn/image/20210128215352.png" alt="20210128215352"></p>
+</li>
+<li><p>在云服务器B(linux)上分别执行以下命令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">chmod a+x ew_for_linux64     #允许文件以可执行程序运行</span><br><span class="line">.&#x2F;ew_for_linux64 -s rcsocks -l 1080 -e 1024</span><br></pre></td></tr></table></figure>
 
-<p><strong>ok,主题更换完成,评论功能也添加,继续打造属于你自己的博客吧!</strong></p>
+<p>监听vps本机的1080端口并转发到反连1024端口的主机</p>
+</li>
+<li><p>在主机A(Windows)上，执行以下命令：</p>
+<p><code>.\ew_for_Win.exe -s rssocks -d x.x.x.x -e 1024</code></p>
+<p>通过socks隧道连接公网IP的1024端口，其中x.x.x.x为云服务器ip</p>
+</li>
+<li><p>服务器和客户端启动正常时，会提示成功：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/wxt406611016/cdn/image/20210128213040.png" alt="20210128213040"></p>
+</li>
+</ul>
+<hr>
+<h2 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h2><ul>
+<li><p>在主机A(内网ip为192.168.101.32)上，开一个flask服务，web端口为5000；</p>
+<p><img src="https://cdn.jsdelivr.net/gh/wxt406611016/cdn/image/20210128220521.png" alt="20210128220521"></p>
+</li>
+<li><p>在主机C上，浏览器利用代理插件配置socks5代理，IP为云服务器的ip(x.x.x.x)，端口为1080:</p>
+<p><img src="https://cdn.jsdelivr.net/gh/wxt406611016/cdn/image/20210128215805.png" alt="20210128215805"></p>
+</li>
+<li><p>主机C挂上上一步配置的socks5代理后，访问A的flask服务，成功访问内网web资源：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/wxt406611016/cdn/image/20210128221906.png" alt="20210128221906"></p>
+</li>
+</ul>
+<p><strong><em>若有错误，请在评论区指出，感谢！！！</em></strong></p>
  
       <!-- reward -->
       
@@ -190,12 +225,12 @@
     <a class="modal-close" href="javascript:;"><i class="ri-close-circle-line"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAPYAAAD2CAAAAADAeSUUAAADNUlEQVR42u3aS1LDQAwFQO5/6bCFouw8SQZipb1KhXjGPV4IfT4+4uvx4/r6/dHnn7/vrX++QrJ+88LGxsa+CftxelXZ+UEckc6p1ec8XA0bGxt7Hfs8MJyTkqCVhLRklyRwRkEOGxsb+43ZeULSY58fQfVlYGNjY2PnxZ08vZmUqP45bmNjY2O/MDt/oDwxyO/t7f5HtTRsbGzsl2fnAen1P/9KfxsbGxv7hdmPwZUXevJWcXVMp/nk2NjY2IvY1SZur1WQJwOTpKJ8LzY2NvYKdv7QvQ2qJf6kSNQbGPp2FzY2NvYidhJIJoOPOabaAJgHSGxsbOwd7Oqiebln0ui9qqF7GD6xsbGxF7HnD5Fslo/dTI4sHyHCxsbG3squbtxr1lZLVL0ji94wNjY29jp2tXhUDRvVZkD+eiZlJmxsbOy7s/MUYtLcnTQerj2Cb7U0bGxs7KXsHr430JPsmxSzyoUtbGxs7EXsvEDfDBVBmSlv6ObHFGVg2NjY2IvY1RZvrzCUh5nq+nnww8bGxt7KrgaDfKBnUtCvYsoNY2xsbOwV7CR5mAxBJiWh3hFXB3TK5SRsbGzsW7GT4cj86o3RXLvvkx2xsbGxF7GrrdYoPBRDY7UlPN8FGxsbexM7H3PpBaRq+pEPAFVfQ6EWhY2NjX1bdt4q6P1+8ri9kZ3DY8XGxsZexJ40aPOgmN+VHHQvAD8Z3MHGxsa+LXtedr/2UHJ2NYl60t/GxsbGXsFOHiVPNvLhm0IxKFin0N/GxsbGXsGej+9clQld237ImxPY2NjYd2fnSyd/7Q1B5oEtSXuiX2JjY2MvYvf+fe8N+uR7zWNyVJzCxsbGXsG+KoBN0pirhnvyQ8TGxsbexM6buL0xmiq7V65qVv6xsbGxV7BH/YTgStKD6pBQfqBRfxsbGxv75uwqYN7EnSQS1bGhXtjDxsbGviO7V3CvhsD8rt5BlAtk2NjY2OvYSSJRLsHHzeBq8zgvKj0Z2cHGxsZ+M/Y8Ubk2sakeMTY2NjZ28k1yNHmISmDV4SFsbGzsrex52zUv5eft2GqxqRDGsLGxsRexe8M31aL/PLz1ikfY2NjYq9mfhTWDBgyNPOEAAAAASUVORK5CYII=" alt="微信分享二维码">
+      <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAPYAAAD2CAAAAADAeSUUAAADIklEQVR42u3aQW7jQAwEwPz/09nrLjaSm6QcyFTpFNiyPDUBwpA9X1/x9R1cf9959Nn/7zm6//x7j5588YWNjY39Iewcc/4FR++eI4/WkKw536YfnomNjY29jl1dbr64ZBEJOymByWexsbGxsRNYUvaSjcg3FBsbGxv72gJ2ju99tjquwsbGxn4aOx/6V0tOXuTyX8CvztKwsbGxb8/OU9H7//yWfBsbGxv7xuzv4jUpIUnx+50LGxsbexN7Htn2Sl2+Qecr6a0fGxsbexN7cpimWoQmLVAeVETbgY2Njb2IPap7xYD2HQFAr73BxsbG3sSex6VXtTE57JxX7r2wsbGxV7ATTPVYzzs2YjLA+ud1bGxs7EXsZLnVJqQ6irr2mYUBFjY2NvYK9lVtRrLQhDSZjeVPwMbGxt7Hrv6Fr7YHk2ghCX3Lm4iNjY39AHa1OCULmhzxybcg2iBsbGzsdey8ACRXPr7Py+dkkPTDu9jY2NgPY8+biuqoaBIMR1uPjY2NvYjdG+7k1+QwUG9E1Qs5sLGxsT+XXT1Sky8obyfywz3VAnb4TGxsbOyl7KQNuKrgJZt77dqaOTY2Njb27dm9cLdX3iaBwbxNenE/NjY29oeze2Od5JX5wZ1Jc1Ku3tjY2NgfyJ4HAPk//ZORU0ItjJywsbGxH8POF5RHBdU6Ut2aZtCLjY2NvZpdPXxTHfT3YoCkdB1+OzY2NvY6dnVwnx/0mZN64UQUDGBjY2M/hl0tIb1BUvL8PPp9UVyxsbGxF7ETWDXcnQzxe0FC9dgQNjY29j52L2TNX58PnvItK+CxsbGx17GThVaH+5OF9gpYoUXBxsbGXsfOx/TvgM1j5vwbsbGxsTexe4P7arD67sM9+fCrmVpgY2Nj35idX9WxURIJV2PaSSTQ3AJsbGzsD2FXD9BMkAm4Wt6agy1sbGzsdezqWKd3KLPa6lQboUJ7g42Njf1gdrXN6EW5eenqxQ/Y2NjYT2b3ZuzVoVIvQigMxbCxsbHXseeFJB9FTSLeHPZiPdjY2NiL2L0i1GtFko1Llpjcf1m+jY2NjX1f9h9rw8+rNI4r3gAAAABJRU5ErkJggg==" alt="微信分享二维码">
     </div>
 </div>
 
 <div id="share-mask"></div>  
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/hexo/" rel="tag">hexo</a></li></ul>
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/" rel="tag">内网渗透</a></li></ul>
 
     </footer>
   </div>
@@ -203,19 +238,19 @@
    
   <nav class="article-nav">
     
-      <a href="/2019/02/14/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E5%AE%9E%E9%AA%8C%E5%AE%A4--%E5%9F%BA%E7%A1%80%E5%85%B3/" class="article-nav-link">
+      <a href="/2021/01/28/vps+frp%E5%AE%9E%E7%8E%B0%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F/" class="article-nav-link">
         <strong class="article-nav-caption">上一篇</strong>
         <div class="article-nav-title">
           
-            网络安全实验室--基础关
+            vps+frp实现内网穿透
           
         </div>
       </a>
     
     
-      <a href="/2019/02/07/github+hexo%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/" class="article-nav-link">
+      <a href="/2021/01/22/Bugku%20Web%E6%80%BB%E7%BB%93(%E6%8C%81%E7%BB%AD%E6%9B%B4%E6%96%B0ing)/" class="article-nav-link">
         <strong class="article-nav-caption">下一篇</strong>
-        <div class="article-nav-title">ubuntu下 github+hexo个人博客搭建</div>
+        <div class="article-nav-title">Bugku Web总结(持续更新ing)</div>
       </a>
     
   </nav>

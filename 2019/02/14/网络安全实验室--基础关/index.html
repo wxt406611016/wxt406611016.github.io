@@ -103,6 +103,7 @@
     <div class="article-entry" itemprop="articleBody">
        
   <p><a target="_blank" rel="noopener" href="http://hackinglab.cn/index.php">基础关题目地址</a><br><strong>刚入web坑，菜鸟一枚，如有错误，欢迎在评论中指出。</strong></p>
+<a id="more"></a>
 <h2 id="1-key在哪里？"><a href="#1-key在哪里？" class="headerlink" title="1.key在哪里？"></a>1.key在哪里？</h2><p><a target="_blank" rel="noopener" href="http://lab1.xseclab.com/base1_4a4d993ed7bd7d467b27af52d2aaa800/index.php">（过关地址）</a><br>解：右击查看网页源代码，得到flag。<br><em>key is jflsjklejflkdsjfklds</em></p>
 <h2 id="2-再加密一次你就得到key啦"><a href="#2-再加密一次你就得到key啦" class="headerlink" title="2.再加密一次你就得到key啦~"></a>2.再加密一次你就得到key啦~</h2><p><strong>加密之后的数据为xrlvf23xfqwsxsqf</strong><br>解：根据提示再加密一次得到key，这是rot13加密的特点，我们再用rot13加密一次，得到flag。<br><em>keyis23ksdjfkfds</em></p>
 <h2 id="3-猜猜这是经过了多少次加密？"><a href="#3-猜猜这是经过了多少次加密？" class="headerlink" title="3.猜猜这是经过了多少次加密？"></a>3.猜猜这是经过了多少次加密？</h2><p><strong>加密后的字符串为：</strong><code>Vm0wd2QyUXlVWGxWV0d4V1YwZDRWAxV2JETlhh……（中间省略n行）UVkVXbFphVjFJeFNsVmlSa1pXVmtSQk5RPT0=</code><br>解：根据加密结果的最后是“=”，这是base64加密的标志，我们通过base64不断解密20次，得到flag。<br><em>key is jkljdkl232jkljkdl2389</em></p>

@@ -102,7 +102,9 @@
   
     <div class="article-entry" itemprop="articleBody">
        
-  <p><strong>背景：学校最近重新架设无线网一体化，而初始密码为弱密码（6位数字），下面我们要做的就是通过暴力破解的方式破解弱密码！（所以建议大家以后无论是在注册还是什么情况，都千万不要使用弱密钥）</strong><br><strong>攻击过程如下：</strong></p>
+  <p><strong>背景：学校最近重新架设无线网一体化，而初始密码为弱密码（6位数字），下面我们要做的就是通过暴力破解的方式破解弱密码！（所以建议大家以后无论是在注册还是什么情况，都千万不要使用弱密钥）</strong></p>
+<a id="more"></a>
+<p><strong>攻击过程如下：</strong></p>
 <h2 id="1-获取get参数"><a href="#1-获取get参数" class="headerlink" title="1.获取get参数"></a>1.获取get参数</h2><p><strong>在爆破之前我们需要获取一些get参数，这些参数应该包含着我们输入的登陆信息。</strong></p>
 <p>登陆无线网前需要在网页上进行身份验证。<br><img src="https://s2.ax1x.com/2019/04/26/Eni5OU.png" alt="验证界面"><br>随便输入一个账号密码，看返回结果是什么。比如输入学号：1122，密码：1231131，运营商选择联通。提示无账号，但是无所谓，毕竟我们的目的在于接下来的抓包环节。抓包看看get的网址，选择我们有用的，比如下图中get参数中包含了我们输入的信息。这很有用，因为这为我们下面的python脚本提供了url。<br><img src="https://s2.ax1x.com/2019/04/26/EniomF.png" alt="获取输入的get参数"><br>看一下回显结果，提示<code>&quot;result&quot;:&quot;0&quot;</code>等信息。<br><img src="https://s2.ax1x.com/2019/04/26/EniTw4.png" alt="验证失败回显内容"><br>我们再输入一个正确的账号密码，将get参数中的user_account和user_password换成正确的（我自己的无线网认证账号密码，账号和密码就不公布了hhhhh），看一下正确登陆后的回显内容。显示<code>&quot;result&quot;:&quot;1&quot;,&quot;认证成功&quot;</code>等信息。<br><img src="https://s2.ax1x.com/2019/04/26/Eni7TJ.png" alt="验证正确回显内容"><br>ok，我们可以根据回显内容的不同来判断是否验证成功。下面就可以进行暴力破解了，只需要选定一个存在的账号，然后穷举6位数字密码的所有可能性，一一验证即可。</p>
 <h2 id="python脚本暴力破解"><a href="#python脚本暴力破解" class="headerlink" title="python脚本暴力破解"></a>python脚本暴力破解</h2><p>直接上代码吧：</p>

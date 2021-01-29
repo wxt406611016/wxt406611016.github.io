@@ -104,7 +104,8 @@
        
   <hr>
 <p>攻击环境：<br>攻击者系统：虚拟机下kali linux<br>靶机系统：win10（需要打开Easy File Sharing服务）<br>攻击者ip：10.3.134.27<br>靶机ip：10.3.37.56<br>攻击者和靶机在同一个wifi下，保证在同一网段里，能互相ping通。<br>漏洞利用：EsayFileSharing</p>
-<h6 id="注意点：-攻击者的虚拟机网络模式应选择桥接模式。"><a href="#注意点：-攻击者的虚拟机网络模式应选择桥接模式。" class="headerlink" title="注意点： 攻击者的虚拟机网络模式应选择桥接模式。"></a><strong>注意点：</strong> 攻击者的虚拟机网络模式应选择桥接模式。</h6><hr>
+<h6 id="注意点：-攻击者的虚拟机网络模式应选择桥接模式。"><a href="#注意点：-攻击者的虚拟机网络模式应选择桥接模式。" class="headerlink" title="注意点： 攻击者的虚拟机网络模式应选择桥接模式。"></a><strong>注意点：</strong> 攻击者的虚拟机网络模式应选择桥接模式。</h6><a id="more"></a>
+<hr>
 <p><strong>准备工作完成，可以开始内网渗透之旅了。</strong></p>
 <h2 id="step-1"><a href="#step-1" class="headerlink" title="step-1"></a>step-1</h2><p>首先我们先用nmap扫描一下靶机开了哪些服务<br><code>root@kali:~# nmap -sV 10.3.37.56</code><br><img src="https://s2.ax1x.com/2019/03/30/AByzVK.png" alt="namp扫描结果">我们可以看到80端口和443端口开放了，对应的是Easy File Sharing Web Server，满足EasyFileSharing漏洞攻击，进入下一步。</p>
 <h2 id="step-2"><a href="#step-2" class="headerlink" title="step-2"></a>step-2</h2><p>打开msf控制台，设置攻击参数</p>
