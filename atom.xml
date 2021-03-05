@@ -6,7 +6,7 @@
   <link href="https://wxt406611016.github.io/atom.xml" rel="self"/>
   
   <link href="https://wxt406611016.github.io/"/>
-  <updated>2021-01-29T12:38:06.669Z</updated>
+  <updated>2021-03-05T14:04:49.099Z</updated>
   <id>https://wxt406611016.github.io/</id>
   
   <author>
@@ -15,6 +15,71 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>2021.03.05(南京行)</title>
+    <link href="https://wxt406611016.github.io/2021/03/05/2021-03-05(%E5%8D%97%E4%BA%AC)/"/>
+    <id>https://wxt406611016.github.io/2021/03/05/2021-03-05(%E5%8D%97%E4%BA%AC)/</id>
+    <published>2021-03-04T16:00:00.000Z</published>
+    <updated>2021-03-05T14:04:49.099Z</updated>
+    
+    
+    <summary type="html">Here&#39;s something encrypted, password is required to continue reading.</summary>
+    
+    
+    
+    <category term="Emotion" scheme="https://wxt406611016.github.io/categories/Emotion/"/>
+    
+    
+    <category term="cloud" scheme="https://wxt406611016.github.io/tags/cloud/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>audit+camflow实验</title>
+    <link href="https://wxt406611016.github.io/2021/02/01/audit+camflow%E5%AE%9E%E9%AA%8C/"/>
+    <id>https://wxt406611016.github.io/2021/02/01/audit+camflow%E5%AE%9E%E9%AA%8C/</id>
+    <published>2021-01-31T16:00:00.000Z</published>
+    <updated>2021-03-05T14:57:44.756Z</updated>
+    
+    
+    <summary type="html">&lt;h1 id=&quot;Auditd测试&quot;&gt;&lt;a href=&quot;#Auditd测试&quot; class=&quot;headerlink&quot; title=&quot;Auditd测试&quot;&gt;&lt;/a&gt;Auditd测试&lt;/h1&gt;&lt;ul&gt;
+&lt;li&gt;测试目标：拷贝，压缩&lt;/li&gt;
+&lt;li&gt;测试环境：C，Python，命令行，图形界面&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://wxt123.top/dict/Auditd/&quot;&gt;测试脚本源码地址链接&lt;/a&gt;</summary>
+    
+    
+    
+    <category term="Web" scheme="https://wxt406611016.github.io/categories/Web/"/>
+    
+    
+    <category term="系统监控" scheme="https://wxt406611016.github.io/tags/%E7%B3%BB%E7%BB%9F%E7%9B%91%E6%8E%A7/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>audit+camflow使用记录</title>
+    <link href="https://wxt406611016.github.io/2021/02/01/audit+camflow%E4%BD%BF%E7%94%A8%E8%AE%B0%E5%BD%95/"/>
+    <id>https://wxt406611016.github.io/2021/02/01/audit+camflow%E4%BD%BF%E7%94%A8%E8%AE%B0%E5%BD%95/</id>
+    <published>2021-01-31T16:00:00.000Z</published>
+    <updated>2021-03-05T14:56:38.149Z</updated>
+    
+    
+    <summary type="html">&lt;h1 id=&quot;auditd&quot;&gt;&lt;a href=&quot;#auditd&quot; class=&quot;headerlink&quot; title=&quot;auditd&quot;&gt;&lt;/a&gt;auditd&lt;/h1&gt;&lt;ul&gt;
+&lt;li&gt;实验系统：ubuntu 20.04&lt;/li&gt;
+&lt;li&gt;auditctl命令：用于制定规则&lt;/li&gt;
+&lt;li&gt;ausearch命令: 用于查看日志&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;</summary>
+    
+    
+    
+    <category term="Web" scheme="https://wxt406611016.github.io/categories/Web/"/>
+    
+    
+    <category term="系统监控" scheme="https://wxt406611016.github.io/tags/%E7%B3%BB%E7%BB%9F%E7%9B%91%E6%8E%A7/"/>
+    
+  </entry>
   
   <entry>
     <title>vps+frp实现内网穿透</title>
@@ -78,11 +143,11 @@
   </entry>
   
   <entry>
-    <title>2021.01.16</title>
-    <link href="https://wxt406611016.github.io/2021/01/16/2021-01-21/"/>
-    <id>https://wxt406611016.github.io/2021/01/16/2021-01-21/</id>
+    <title>2021.01.16(学期总结)</title>
+    <link href="https://wxt406611016.github.io/2021/01/16/2021-01-21(%E5%AD%A6%E6%9C%9F%E6%80%BB%E7%BB%93)/"/>
+    <id>https://wxt406611016.github.io/2021/01/16/2021-01-21(%E5%AD%A6%E6%9C%9F%E6%80%BB%E7%BB%93)/</id>
     <published>2021-01-15T16:00:00.000Z</published>
-    <updated>2021-01-21T16:30:34.578Z</updated>
+    <updated>2021-03-05T14:05:28.427Z</updated>
     
     
     <summary type="html">Here&#39;s something encrypted, password is required to continue reading.</summary>
@@ -350,44 +415,6 @@
     
     
     <category term="ctf" scheme="https://wxt406611016.github.io/tags/ctf/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>github+hexo更换主题:indigo</title>
-    <link href="https://wxt406611016.github.io/2019/02/08/github+hexo%E6%9B%B4%E6%8D%A2%E4%B8%BB%E9%A2%98/"/>
-    <id>https://wxt406611016.github.io/2019/02/08/github+hexo%E6%9B%B4%E6%8D%A2%E4%B8%BB%E9%A2%98/</id>
-    <published>2019-02-07T16:00:00.000Z</published>
-    <updated>2021-01-28T14:34:54.108Z</updated>
-    
-    
-    <summary type="html">&lt;h1 id=&quot;github-hexo更换主题&quot;&gt;&lt;a href=&quot;#github-hexo更换主题&quot; class=&quot;headerlink&quot; title=&quot;github+hexo更换主题:&quot;&gt;&lt;/a&gt;github+hexo更换主题:&lt;/h1&gt;&lt;p&gt;上一篇写了关于github+hexo搭建个人博客的过程,搭建成功后页面主题是默认主题,但其实有很多主题可供选择,这篇文章就主要学习一下如何更换主题,以及更换主题后如何丰富优化功能,如评论功能,站内搜索功能.&lt;/p&gt;</summary>
-    
-    
-    
-    <category term="Web" scheme="https://wxt406611016.github.io/categories/Web/"/>
-    
-    
-    <category term="hexo" scheme="https://wxt406611016.github.io/tags/hexo/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>ubuntu下 github+hexo个人博客搭建</title>
-    <link href="https://wxt406611016.github.io/2019/02/07/github+hexo%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/"/>
-    <id>https://wxt406611016.github.io/2019/02/07/github+hexo%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/</id>
-    <published>2019-02-06T16:00:00.000Z</published>
-    <updated>2021-01-28T14:34:49.164Z</updated>
-    
-    
-    <summary type="html">&lt;h1 id=&quot;github-hexo搭建详细过程&quot;&gt;&lt;a href=&quot;#github-hexo搭建详细过程&quot; class=&quot;headerlink&quot; title=&quot;github+hexo搭建详细过程:&quot;&gt;&lt;/a&gt;github+hexo搭建详细过程:&lt;/h1&gt;&lt;p&gt;我的操作系统为ubuntu16.04,在搭建的过程中参考了网上很多例子,但都没有完全适合自己的,多多少少还是会碰到一些问题,下面将详细展现github+hexo的搭建过程.&lt;br&gt;tips:萌新一枚,有不足之处,还请指出,tks!!!&lt;/p&gt;</summary>
-    
-    
-    
-    <category term="Web" scheme="https://wxt406611016.github.io/categories/Web/"/>
-    
-    
-    <category term="hexo" scheme="https://wxt406611016.github.io/tags/hexo/"/>
     
   </entry>
   
