@@ -977,4 +977,96 @@
         <tag>系统监控</tag>
       </tags>
   </entry>
+  <entry>
+    <title>hack the box[Delivery]</title>
+    <url>/2021/03/07/hack_the_box%5BDelivery%5D/</url>
+    <content><![CDATA[<p>小白初学渗透测试，使用hack the box平台，注册方法以及使用方法网上已经很多教程了，就不再赘述了，百度或者google即可。本题路径为：Labs-Machines-Delivery，这道题有点儿社工的味道，需要认真看website上的内容。</p>
+<a id="more"></a>
+
+<hr>
+<h2 id="1-System-Scan"><a href="#1-System-Scan" class="headerlink" title="1.System Scan"></a>1.System Scan</h2><p>使用nmap扫描主机，查看开放了哪些端口和服务：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$ sudo nmap -sS -sV -sC -p- 10.10.10.222 </span><br><span class="line">----------------------------------------</span><br><span class="line">Starting Nmap 7.91 ( https:&#x2F;&#x2F;nmap.org ) at 2021-03-07 23:28 CST</span><br><span class="line">Nmap scan report for delivery.htb (10.10.10.222)</span><br><span class="line">Host is up (0.29s latency).</span><br><span class="line">Not shown: 65532 closed ports</span><br><span class="line">PORT     STATE SERVICE VERSION</span><br><span class="line">22&#x2F;tcp   open  ssh     OpenSSH 7.9p1 Debian 10+deb10u2 (protocol 2.0)</span><br><span class="line">| ssh-hostkey: </span><br><span class="line">|   2048 9c:40:fa:85:9b:01:ac:ac:0e:bc:0c:19:51:8a:ee:27 (RSA)</span><br><span class="line">|   256 5a:0c:c0:3b:9b:76:55:2e:6e:c4:f4:b9:5d:76:17:09 (ECDSA)</span><br><span class="line">|_  256 b7:9d:f7:48:9d:a2:f2:76:30:fd:42:d3:35:3a:80:8c (ED25519)</span><br><span class="line">80&#x2F;tcp   open  http    nginx 1.14.2</span><br><span class="line">|_http-server-header: nginx&#x2F;1.14.2</span><br><span class="line">|_http-title: Welcome</span><br><span class="line">8065&#x2F;tcp open  unknown</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>从扫描的结果可以看出，开放了如下端口和服务：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">22:ssh</span><br><span class="line">80:web</span><br><span class="line">8065:unknown</span><br></pre></td></tr></table></figure>
+<hr>
+<h2 id="2-Enumeration-Web-Site"><a href="#2-Enumeration-Web-Site" class="headerlink" title="2.Enumeration: Web Site"></a>2.Enumeration: Web Site</h2><p>接下来就先从80端口入手，访问10.10.10.222:80，</p>
+<p><img src="https://cdn.jsdelivr.net/gh/wxt406611016/cdn/image/20210307233250.png" alt="20210307233250"></p>
+<p>首页存在一个可疑链接，CONTACT US页面也存在一个可疑链接：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">HELPDESK: http:&#x2F;&#x2F;helpdesk.delivery.htb&#x2F;</span><br><span class="line">MatterMost server：http:&#x2F;&#x2F;delivery.htb:8065&#x2F;</span><br></pre></td></tr></table></figure>
+<p>并且CONTACT US页面的内容有提示，需要获得一个@delivery.htb邮箱，才能访问MatterMost服务，这很重要：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/wxt406611016/cdn/image/20210308100205.png" alt="20210308100205"></p>
+<p>继续查看链接对应页面，但是链接并打不开，由于.htb不是真正的顶级域名，而且8065是未知服务，所以能够合理假设这些服务是主机本地的，可以通过修改/etc/hosts来更改dns解析，打开hosts文件并添加：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">10.10.10.222  delivery.htb</span><br><span class="line">10.10.10.222  helpdesk.delivery.htb</span><br></pre></td></tr></table></figure>
+<p>( 我刚开始疑惑为什么两个域名都解析到同一个ip，却得到不同的页面，后来想到nginx可以实现多域名对应的多服务绑定在同一个ip上，通过域名来访问不同服务，这个题应该也是这样的。可以最后打通后看看nginx的配置文件验证下。)</p>
+<p>现在依次访问 <a href="http://helpdesk.delivery.htb/">http://helpdesk.delivery.htb/</a> 和 <a href="http://delivery.htb:8065/">http://delivery.htb:8065/</a> ，发现两个运行的web服务：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">HelpDesk: osTicket Support Ticket System</span><br><span class="line">MatterMost: 是一种开源的，可自托管的在线聊天服务，用于公司内部的聊天。</span><br></pre></td></tr></table></figure>
+<hr>
+<h2 id="3-Enumeration-MatterMost"><a href="#3-Enumeration-MatterMost" class="headerlink" title="3.Enumeration: MatterMost"></a>3.Enumeration: MatterMost</h2><p>先从MatterMost入手，在ExploitDB上没有发现MatterMost的相关漏洞，然后看一下website页面上的内容，点击Create one now，尝试注册一个新账号，但是需要邮箱验证，但是注册时填写的邮箱又收不到验证邮件(应该时HTB上的机器无法向外发送邮件)：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/wxt406611016/cdn/image/20210308095103.png" alt="20210308095103"></p>
+<hr>
+<h2 id="4-Enumeration-Help-Desk"><a href="#4-Enumeration-Help-Desk" class="headerlink" title="4.Enumeration: Help Desk"></a>4.Enumeration: Help Desk</h2><p>打开 <a href="http://helpdesk.delivery.htb/">http://helpdesk.delivery.htb/</a> 尝试从HelpDesk页面取得突破，这个服务看起来是由osTicket’s Support Ticket System提供的，是广泛使用且值得信赖的开源支持票务系统。</p>
+<p>尝试创建一个用户，点击Open a New Ticket，按照提示，完成注册：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/wxt406611016/cdn/image/20210308100724.png" alt="20210308100724"></p>
+<p>!!!惊喜，发现我们得到了一个@delivery.htb邮箱，想到在第二步中CONTACT US页面的内容了吗，我们可以用这个邮箱去通过MatterMost的验证，点击View Ticket Thread，使用注册时的邮箱和注册成功后的ticket id登录；</p>
+<p><img src="https://cdn.jsdelivr.net/gh/wxt406611016/cdn/image/20210308101312.png" alt="20210308101312"></p>
+<hr>
+<h2 id="5-Accessing-MatterMost"><a href="#5-Accessing-MatterMost" class="headerlink" title="5.Accessing MatterMost"></a>5.Accessing MatterMost</h2><p>既然得到了@delivery.htb的邮箱，可以继续突破MatterMost了，使用该邮箱注册MatterMost：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/wxt406611016/cdn/image/20210308101652.png" alt="20210308101652"></p>
+<p>注册成功时提示去验证邮箱，然后去HelpDesk服务页面刷新View Ticket Thread，即可看到验证链接：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/wxt406611016/cdn/image/20210308101831.png" alt="20210308101831"></p>
+<p>验证链接：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">http:&#x2F;&#x2F;delivery.htb:8065&#x2F;do_verify_email?token&#x3D;mbke8qepod1htgm4ttpptfbmsp4ecucq1hkdwt4r6i5jwpdi3ocq7a1itzp68any&amp;email&#x3D;6236837%40delivery.htb</span><br></pre></td></tr></table></figure>
+<p>点击后即提示Email Verified，然后根据注册时的账户密码登录即可，</p>
+<p><img src="https://cdn.jsdelivr.net/gh/wxt406611016/cdn/image/20210308105836.png" alt="20210308105836"></p>
+<p>这个图里的聊天内容部分有两个关键信息：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Credentials to the server are maildeliverer:Youve_G0t_Mail! </span><br><span class="line">stop re-using the same passwords everywhere.... Especially those that are a variant of &quot;PleaseSubscribe!&quot;</span><br></pre></td></tr></table></figure>
+<p>可以通过ssh credentials登录该主机,目标对象为<a href="mailto:&#x6d;&#97;&#x69;&#108;&#x64;&#101;&#x6c;&#x69;&#118;&#101;&#x72;&#x65;&#114;&#64;&#x31;&#x30;&#x2e;&#x31;&#48;&#x2e;&#x31;&#x30;&#46;&#x32;&#50;&#50;">&#x6d;&#97;&#x69;&#108;&#x64;&#101;&#x6c;&#x69;&#118;&#101;&#x72;&#x65;&#114;&#64;&#x31;&#x30;&#x2e;&#x31;&#48;&#x2e;&#x31;&#x30;&#46;&#x32;&#50;&#50;</a>,密码为Youve_G0t_Mail!</p>
+<p><img src="https://cdn.jsdelivr.net/gh/wxt406611016/cdn/image/20210308112512.png" alt="20210308112512"></p>
+<p>登录成功，但这只是普通用户，得想办法搞搞root用户。</p>
+<hr>
+<h2 id="6-Privilege-Escalation"><a href="#6-Privilege-Escalation" class="headerlink" title="6.Privilege Escalation"></a>6.Privilege Escalation</h2><p>切换root账户需要密码无法直接登录，得另寻办法了。利用netstat查看运行的服务，发现3306端口被占用，即mysql在运行:</p>
+<p><img src="https://cdn.jsdelivr.net/gh/wxt406611016/cdn/image/20210308200457.png" alt="20210308200457"></p>
+<p>可以理解，ticketing system需要一种方式存取数据，并且MatterMost应该也用到了mysql，需要找到数据库的登录凭证。</p>
+<p>经查阅资料MatterMost的配置文件在/opt/mattermost/config/config.json，其中SqlSetting中包含MySQL的登录凭证信息：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/wxt406611016/cdn/image/20210308211057.png" alt="20210308211057"></p>
+<p>发现用户名、密码、数据库名信息，数据库名为mattermost，登录数据库：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">mysql -u mmuser -p</span><br><span class="line">password: Crack_The_MM_Admin_PW</span><br></pre></td></tr></table></figure>
+<p>在mattermost数据库下的Users表中发现关键信息：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/wxt406611016/cdn/image/20210308211516.png" alt="20210308211516"></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">root : $2a$10$VM6EeymRxJ29r8Wjkr8Dtev0O.1STWb4.4ScG.anuu7v0EFJwgjjO</span><br></pre></td></tr></table></figure>
+<p>虽然这个root用户是MatterMost账户里名为root的用户，但根据第5步中得到的聊天内容中的re-using可以合理猜测主机的root用户也是该密码。</p>
+<hr>
+<h2 id="7-Cracking-the-Password-with-hashcat"><a href="#7-Cracking-the-Password-with-hashcat" class="headerlink" title="7.Cracking the Password with hashcat"></a>7.Cracking the Password with hashcat</h2><p>拿到了root用户的密码hash值后，可以使用hashcat进行破解。在破解之前，首先需要知道加密方式和密码字典等信息，还记得第5步中得到的聊天内容的关键信息吗：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Credentials to the server are maildeliverer:Youve_G0t_Mail! </span><br><span class="line">stop re-using the same passwords everywhere.... Especially those that are a variant of &quot;PleaseSubscribe!&quot;</span><br></pre></td></tr></table></figure>
+<p>可以使用hashcat基于规则的攻击，且<code>PleaseSubscribe!</code>作为单词表，接下来可以开始攻击破解密码：</p>
+<ul>
+<li>Identifying the Hash Type<ul>
+<li>首先需要确定加密方式，可以使用kali自带的<code>hashid</code>得到加密方式为bcrypt：<br><img src="https://cdn.jsdelivr.net/gh/wxt406611016/cdn/image/20210308212526.png" alt="20210308212526"><br>查阅资料bcrypt在hashcat中对应的模式为3200。</li>
+</ul>
+</li>
+<li>Hashcat Rules<ul>
+<li>基于规则的攻击是所有攻击模式中最复杂的一种。因为基于规则的攻击就像是用于生成密码候选者的编程语言。这里直接用github的开源规则：<a href="https://github.com/praetorian-inc/Hob0Rules">https://github.com/praetorian-inc/Hob0Rules</a> ，将文件git下来即可。</li>
+</ul>
+</li>
+<li>Putting It All Together<ul>
+<li>利用hashcat进行破解： <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">hashcat -a 0 -m 3200 hash.txt wordlist.txt -r Hob0Rules&#x2F;d3adhob0.rule -o cracked.txt -w 3 -O</span><br><span class="line"></span><br><span class="line">-a 0：表示攻击模式，表示使用规则生成的所有密码空间</span><br><span class="line">-m 3200：表示使用bcrypt加密方式</span><br><span class="line">hash.txt：文本内容为需要被破解的哈希值</span><br><span class="line">wordlist.txt：表示破解需要使用的字典，如PleaseSubscribe!</span><br><span class="line">-r Hob0Rules&#x2F;d3adhob0.rule：指明使用的规则</span><br><span class="line">-o cracked.txt：表明输出结果</span><br></pre></td></tr></table></figure>
+ 经过半个小时后得到密码<code>PleaseSubscribe!21</code>：<br> <img src="https://cdn.jsdelivr.net/gh/wxt406611016/cdn/image/20210308213650.png" alt="20210308213650"></li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2 id="8-Owning-Root"><a href="#8-Owning-Root" class="headerlink" title="8.Owning Root"></a>8.Owning Root</h2><p>破解出了MatterMost账户里名为root的用户的密码，猜测主机密码也是这个，从maildeliverer用户切换到root用户：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">su - root</span><br><span class="line">password: PleaseSubscribe!21</span><br></pre></td></tr></table></figure>
+<p>登录root用户后，在当前目录读root.txt的内容，得到flag:<code>2994a60a63ea6d88fbae4266b3787553</code></p>
+<p><img src="https://cdn.jsdelivr.net/gh/wxt406611016/cdn/image/20210308215745.png" alt="20210308215745"></p>
+<hr>
+<p>Now it’s time to party!</p>
+]]></content>
+      <categories>
+        <category>Web</category>
+      </categories>
+      <tags>
+        <tag>渗透测试</tag>
+      </tags>
+  </entry>
 </search>
