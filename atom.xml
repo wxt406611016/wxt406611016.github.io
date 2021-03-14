@@ -6,7 +6,7 @@
   <link href="https://wxt406611016.github.io/atom.xml" rel="self"/>
   
   <link href="https://wxt406611016.github.io/"/>
-  <updated>2021-03-08T14:05:23.962Z</updated>
+  <updated>2021-03-14T09:15:18.149Z</updated>
   <id>https://wxt406611016.github.io/</id>
   
   <author>
@@ -17,11 +17,30 @@
   <generator uri="https://hexo.io/">Hexo</generator>
   
   <entry>
-    <title>hack the box[Delivery]</title>
-    <link href="https://wxt406611016.github.io/2021/03/07/hack_the_box[Delivery]/"/>
-    <id>https://wxt406611016.github.io/2021/03/07/hack_the_box[Delivery]/</id>
+    <title>HTB[Laboratory]</title>
+    <link href="https://wxt406611016.github.io/2021/03/14/htb[Laboratory]/"/>
+    <id>https://wxt406611016.github.io/2021/03/14/htb[Laboratory]/</id>
+    <published>2021-03-13T16:00:00.000Z</published>
+    <updated>2021-03-14T09:15:18.149Z</updated>
+    
+    
+    <summary type="html">&lt;p&gt;小白初学渗透测试，使用hack the box平台，注册方法以及使用方法网上已经很多教程了，就不再赘述了，百度或者google即可。本题路径为:Labs-Machines-Laboratory，又是学知识的一天。&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="Web" scheme="https://wxt406611016.github.io/categories/Web/"/>
+    
+    
+    <category term="渗透测试" scheme="https://wxt406611016.github.io/tags/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>HTB[Delivery]</title>
+    <link href="https://wxt406611016.github.io/2021/03/07/htb[Delivery]/"/>
+    <id>https://wxt406611016.github.io/2021/03/07/htb[Delivery]/</id>
     <published>2021-03-06T16:00:00.000Z</published>
-    <updated>2021-03-08T14:05:23.962Z</updated>
+    <updated>2021-03-14T08:59:32.595Z</updated>
     
     
     <summary type="html">&lt;p&gt;小白初学渗透测试，使用hack the box平台，注册方法以及使用方法网上已经很多教程了，就不再赘述了，百度或者google即可。本题路径为：Labs-Machines-Delivery，这道题有点儿社工的味道，需要认真看website上的内容。&lt;/p&gt;</summary>
@@ -389,25 +408,6 @@
     
     
     <summary type="html">&lt;p&gt;&lt;a href=&quot;http://43.247.91.228:84/&quot;&gt;sqli-labs网址链接&lt;/a&gt;&lt;/p&gt;</summary>
-    
-    
-    
-    <category term="Web" scheme="https://wxt406611016.github.io/categories/Web/"/>
-    
-    
-    <category term="ctf" scheme="https://wxt406611016.github.io/tags/ctf/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>网络安全实验室--上传关</title>
-    <link href="https://wxt406611016.github.io/2019/02/20/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E5%AE%9E%E9%AA%8C%E5%AE%A4--%E4%B8%8A%E4%BC%A0%E5%85%B3/"/>
-    <id>https://wxt406611016.github.io/2019/02/20/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E5%AE%9E%E9%AA%8C%E5%AE%A4--%E4%B8%8A%E4%BC%A0%E5%85%B3/</id>
-    <published>2019-02-19T16:00:00.000Z</published>
-    <updated>2021-01-28T14:34:23.496Z</updated>
-    
-    
-    <summary type="html">&lt;p&gt;&lt;a href=&quot;http://hackinglab.cn/index.php&quot;&gt;基础关题目地址&lt;/a&gt;&lt;br&gt;&lt;strong&gt;网络安全实验室之上传关，题目略少，也很基础，如有错误，欢迎在评论中指出。&lt;/strong&gt;&lt;/p&gt;</summary>
     
     
     

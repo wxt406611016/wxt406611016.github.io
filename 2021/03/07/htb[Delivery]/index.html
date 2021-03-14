@@ -9,7 +9,7 @@
     
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
   <title>
-    hack the box[Delivery] |  の
+    HTB[Delivery] |  の
   </title>
   <meta name="generator" content="hexo-theme-ayer">
   
@@ -48,7 +48,7 @@
     <main class="content on">
       <section class="outer">
   <article
-  id="post-hack_the_box[Delivery]"
+  id="post-htb[Delivery]"
   class="article article-type-post"
   itemscope
   itemprop="blogPost"
@@ -59,14 +59,14 @@
     <header class="article-header">
        
 <h1 class="article-title sea-center" style="border-left:0" itemprop="name">
-  hack the box[Delivery]
+  HTB[Delivery]
 </h1>
  
 
     </header>
      
     <div class="article-meta">
-      <a href="/2021/03/07/hack_the_box%5BDelivery%5D/" class="article-date">
+      <a href="/2021/03/07/htb%5BDelivery%5D/" class="article-date">
   <time datetime="2021-03-06T16:00:00.000Z" itemprop="datePublished">2021-03-07</time>
 </a> 
   <div class="article-category">
@@ -142,7 +142,7 @@
 <p><img src="https://cdn.jsdelivr.net/gh/wxt406611016/cdn/image/20210308105836.png" alt="20210308105836"></p>
 <p>这个图里的聊天内容部分有两个关键信息：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Credentials to the server are maildeliverer:Youve_G0t_Mail! </span><br><span class="line">stop re-using the same passwords everywhere.... Especially those that are a variant of &quot;PleaseSubscribe!&quot;</span><br></pre></td></tr></table></figure>
-<p>可以通过ssh credentials登录该主机,目标对象为<a href="mailto:&#x6d;&#97;&#x69;&#108;&#x64;&#101;&#x6c;&#x69;&#118;&#101;&#x72;&#x65;&#114;&#64;&#x31;&#x30;&#x2e;&#x31;&#48;&#x2e;&#x31;&#x30;&#46;&#x32;&#50;&#50;">&#x6d;&#97;&#x69;&#108;&#x64;&#101;&#x6c;&#x69;&#118;&#101;&#x72;&#x65;&#114;&#64;&#x31;&#x30;&#x2e;&#x31;&#48;&#x2e;&#x31;&#x30;&#46;&#x32;&#50;&#50;</a>,密码为Youve_G0t_Mail!</p>
+<p>可以通过ssh credentials登录该主机,目标对象为<a href="mailto:&#x6d;&#x61;&#x69;&#x6c;&#100;&#x65;&#108;&#105;&#118;&#x65;&#114;&#101;&#x72;&#x40;&#49;&#x30;&#46;&#x31;&#x30;&#46;&#x31;&#48;&#46;&#x32;&#x32;&#50;">&#x6d;&#x61;&#x69;&#x6c;&#100;&#x65;&#108;&#105;&#118;&#x65;&#114;&#101;&#x72;&#x40;&#49;&#x30;&#46;&#x31;&#x30;&#46;&#x31;&#48;&#46;&#x32;&#x32;&#50;</a>,密码为Youve_G0t_Mail!</p>
 <p><img src="https://cdn.jsdelivr.net/gh/wxt406611016/cdn/image/20210308112512.png" alt="20210308112512"></p>
 <p>登录成功，但这只是普通用户，得想办法搞搞root用户。</p>
 <hr>
@@ -253,7 +253,7 @@
     <a class="modal-close" href="javascript:;"><i class="ri-close-circle-line"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAN4AAADeCAAAAAB3DOFrAAACtElEQVR42u3aQZLiMBAEwPn/p5nrRjBjqrotlt1InxyAZSUHS67ur6/4eDwdz5//+cnzte15MvJtBx4eHt566teMnPTbhJKRkz/x+io8PDy807xkEsmz93qc5NrNfPDw8PD+Fd71Vvj69/nSgoeHh/d/8K43vsmG+HombTCBh4eH905eHjfMwot8un8ta8HDw8OLeXkV6XPOj9T38PDw8NZV9esHbvIgfiyOdkH6YQQ8PDy8A7xNRNtueesQofwrf/0lHh4e3jHe9Y3z1/4kip21c+UlMTw8PLxzvHbozbv/bJw2KKlXMzw8PLwRb3azfYgwg+XtBXh4eHjneLMb51vwvJHr5moeHh4e3rFGgfzlPw8F8sBi1m5VBCV4eHh4t/Ly6GEWKyQLxrmtNh4eHt57eO2q0k4030wni8QLPB4eHt4xXtsUlQcKbeDblrhejIaHh4d3jJdg8sapfAHYLwwvRsPDw8M7wMsnF+XBNz2N88Aias/Cw8PDu5V3V8Swj2jbtoOo9QEPDw/vAC8vd7W/bEtieQCRLzN4eHh4J3izsv1sOdnEDe21eHh4eKd57WM6iS2S4HW2mS4WEjw8PLwDvLoYH8cQ7bdtoJzfBQ8PD+8EL9fnt2mjivy+7VKEh4eHd4LXDtQW8vMWgU2Ai4eHh/dOXrupzcOLTRix2crXiQseHh7eTQFEsgy0cUZ+r1mxDQ8PD+/9vFnkOsPnj/48yIhiXDw8PLwF71Ee+Sa73Uy3i0pUBsPDw8M7wMuPJDDN44nZ58n58MDDw8MreW300DYZzP7E9tE/3Fjj4eHhLXj5S/6s6HVuBXux3cfDw8P7AN6+3LUJGtpr8fDw8D6Ht4lN97C85IaHh4d3jrdpftoXpfKWr3YOeHh4eCd4sxf+vIg1a6iaNXWt6nt4eHh4r3nfVGNpzp5mk4EAAAAASUVORK5CYII=" alt="微信分享二维码">
+      <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACIElEQVR42u3aQXKDMAwF0Nz/0nTbRaFfErRj/LzKJG7g0RlFsvT5xOv4tq7fP3uneq3PEwsDA2NZxnG5rvc8d618PwYGxj6M68CX7Lm+iTyU966LgYGBcb0nSQcTDAYGBsb/BtwklcwLYAwMjD0ZeWE5OURLAuvjtTgGBsaCjOph/V++fqS/gYGBsRTjKK68iM3bCcd4YWBgvJuRB7jqsEU1yZuXuxgYGDsweiMXefBNHsqoYMbAwNiG0WtYXn/P5PgsCd8YGBjvZuQNgPloVy8EJw8UAwNjN0a1MTA5MqsezJ0GfQwMjG0Y83CZP4je8NnpVTAwMDZgJLdevUD1wC5H/vBXGBgYGzDyNmRecOYhe1IkY2Bg7MyYBNYk1FYHNcpjFhgYGC9iJMMN1QRucouTIhkDA+PdjEkzIMdUhyqSh1v+L2FgYCzI6AXTauGap4zVVPUz+U3AwMBYhNHDJAVtj52U1qefYmBgbMDoNSOT5LIHy0tiDAyMfRi9IraK6T2mKG3FwMDYmNE7aMvblrd9DwYGxjaMculYLE17ITu5BwwMjLcyjuK66+byEbSobMbAwHg1I1/5WGoz6g+aBxgYGDsw7g2yk+GwKrjw64GBgfEKxqQxkI9fzNO+X/JcDAwMjLuKybj9kDchMDAwMHqvk6I3SQSj/RgYGBswkiI22dkL1jn4huM2DAyMBRnV0rFXlFYP6R5JUjEwMNZjfAFSXuTz5b6JKgAAAABJRU5ErkJggg==" alt="微信分享二维码">
     </div>
 </div>
 
@@ -265,6 +265,15 @@
 
    
   <nav class="article-nav">
+    
+      <a href="/2021/03/14/htb%5BLaboratory%5D/" class="article-nav-link">
+        <strong class="article-nav-caption">上一篇</strong>
+        <div class="article-nav-title">
+          
+            HTB[Laboratory]
+          
+        </div>
+      </a>
     
     
       <a href="/2021/03/05/2021-03-05(%E5%8D%97%E4%BA%AC)/" class="article-nav-link">
