@@ -6,7 +6,7 @@
   <link href="https://wxt406611016.github.io/atom.xml" rel="self"/>
   
   <link href="https://wxt406611016.github.io/"/>
-  <updated>2021-03-14T09:15:18.149Z</updated>
+  <updated>2021-03-20T11:21:56.973Z</updated>
   <id>https://wxt406611016.github.io/</id>
   
   <author>
@@ -15,6 +15,25 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Life-Tips</title>
+    <link href="https://wxt406611016.github.io/2021/03/20/life-tips/"/>
+    <id>https://wxt406611016.github.io/2021/03/20/life-tips/</id>
+    <published>2021-03-19T16:00:00.000Z</published>
+    <updated>2021-03-20T11:21:56.973Z</updated>
+    
+    
+    <summary type="html">Here&#39;s something encrypted, password is required to continue reading.</summary>
+    
+    
+    
+    <category term="Emotion" scheme="https://wxt406611016.github.io/categories/Emotion/"/>
+    
+    
+    <category term="sunny" scheme="https://wxt406611016.github.io/tags/sunny/"/>
+    
+  </entry>
   
   <entry>
     <title>HTB[Laboratory]</title>
@@ -389,25 +408,6 @@
     
     
     <summary type="html">&lt;p&gt;&lt;a href=&quot;http://test.xss.tv/&quot; title=&quot;xss闯关入口&quot;&gt;xss闯关入口&lt;/a&gt;&lt;/p&gt;</summary>
-    
-    
-    
-    <category term="Web" scheme="https://wxt406611016.github.io/categories/Web/"/>
-    
-    
-    <category term="ctf" scheme="https://wxt406611016.github.io/tags/ctf/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>sqli-labs(1~22)</title>
-    <link href="https://wxt406611016.github.io/2019/03/07/sqli-labs(1_22)/"/>
-    <id>https://wxt406611016.github.io/2019/03/07/sqli-labs(1_22)/</id>
-    <published>2019-03-06T16:00:00.000Z</published>
-    <updated>2021-01-28T14:36:07.043Z</updated>
-    
-    
-    <summary type="html">&lt;p&gt;&lt;a href=&quot;http://43.247.91.228:84/&quot;&gt;sqli-labs网址链接&lt;/a&gt;&lt;/p&gt;</summary>
     
     
     
