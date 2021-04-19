@@ -6,7 +6,7 @@
   <link href="https://wxt406611016.github.io/atom.xml" rel="self"/>
   
   <link href="https://wxt406611016.github.io/"/>
-  <updated>2021-03-20T11:21:56.973Z</updated>
+  <updated>2021-04-19T02:31:38.673Z</updated>
   <id>https://wxt406611016.github.io/</id>
   
   <author>
@@ -15,6 +15,25 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>2021-04-18(C)</title>
+    <link href="https://wxt406611016.github.io/2021/04/18/2021-04-18/"/>
+    <id>https://wxt406611016.github.io/2021/04/18/2021-04-18/</id>
+    <published>2021-04-17T16:00:00.000Z</published>
+    <updated>2021-04-19T02:31:38.673Z</updated>
+    
+    
+    <summary type="html">Here&#39;s something encrypted, password is required to continue reading.</summary>
+    
+    
+    
+    <category term="Emotion" scheme="https://wxt406611016.github.io/categories/Emotion/"/>
+    
+    
+    <category term="cloudy" scheme="https://wxt406611016.github.io/tags/cloudy/"/>
+    
+  </entry>
   
   <entry>
     <title>Life-Tips</title>
@@ -396,25 +415,6 @@
     
     
     <category term="msf" scheme="https://wxt406611016.github.io/tags/msf/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>xss(1~10)</title>
-    <link href="https://wxt406611016.github.io/2019/03/08/xss(1~10)/"/>
-    <id>https://wxt406611016.github.io/2019/03/08/xss(1~10)/</id>
-    <published>2019-03-07T16:00:00.000Z</published>
-    <updated>2021-01-28T14:36:12.191Z</updated>
-    
-    
-    <summary type="html">&lt;p&gt;&lt;a href=&quot;http://test.xss.tv/&quot; title=&quot;xss闯关入口&quot;&gt;xss闯关入口&lt;/a&gt;&lt;/p&gt;</summary>
-    
-    
-    
-    <category term="Web" scheme="https://wxt406611016.github.io/categories/Web/"/>
-    
-    
-    <category term="ctf" scheme="https://wxt406611016.github.io/tags/ctf/"/>
     
   </entry>
   
