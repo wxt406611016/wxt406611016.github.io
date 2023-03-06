@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+
+
+<html lang="en">
+
+
+<head>
+  <meta charset="utf-8" />
+    
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <title>
+    Ubuntu环境下多用户Anaconda以及JupyterHub搭建过程+公网nginx反向代理+nps穿透实现通过公网Https访问内网JupyterHub |  の
+  </title>
+  <meta name="generator" content="hexo-theme-ayer">
+  
+  <link rel="shortcut icon" href="https://cdn.jsdelivr.net/gh/wxt406611016/cdn/image/favicon.ico" />
+  
+  
+<link rel="stylesheet" href="/dist/main.css">
+
+  
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Shen-Yu/cdn/css/remixicon.min.css">
+
+  
+<link rel="stylesheet" href="/css/custom.css">
+
+  
+  
+<script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
+
+  
+  
+
+  
+
+<link rel="alternate" href="/atom.xml" title="の" type="application/atom+xml">
+</head>
+
+</html>
+
+<body>
+  <div id="app">
+    
+      
+      <canvas width="1777" height="841"
+        style="position: fixed; left: 0px; top: 0px; z-index: 99999; pointer-events: none;"></canvas>
+      
+    <main class="content on">
+      <section class="outer">
+  <article
+  id="post-jupyterlab"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h1 class="article-title sea-center" style="border-left:0" itemprop="name">
+  Ubuntu环境下多用户Anaconda以及JupyterHub搭建过程+公网nginx反向代理+nps穿透实现通过公网Https访问内网JupyterHub
+</h1>
+ 
+
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2023/03/05/jupyterlab/" class="article-date">
+  <time datetime="2023-03-04T16:00:00.000Z" itemprop="datePublished">2023-03-05</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Web/">Web</a>
+  </div>
+  
+<div class="word_count">
+    <span class="post-time">
+        <span class="post-meta-item-icon">
+            <i class="ri-quill-pen-line"></i>
+            <span class="post-meta-item-text"> Word count:</span>
+            <span class="post-count">2.2k</span>
+        </span>
+    </span>
+
+    <span class="post-time">
+        &nbsp; | &nbsp;
+        <span class="post-meta-item-icon">
+            <i class="ri-book-open-line"></i>
+            <span class="post-meta-item-text"> Reading time≈</span>
+            <span class="post-count">9 min</span>
+        </span>
+    </span>
+</div>
+ 
+    </div>
+      
+    <div class="tocbot"></div>
+
+
+
+
+  
+    <div class="article-entry" itemprop="articleBody">
+       
+  <p>因为现在有一台处于内网环境下的性能非常好的台式机，想要将其作为GPU服务器供大家一同使用，因此需要配置多用户使用的Anaconda环境。为了更好的方便大家跑代码，选择搭建一个JupyterHub，这样大家可以使用JupyterHub的Web界面直接在浏览器上跑自己的代码。考虑到内网因素对大家的使用影响，比如有些同伴可能在外出差无法访问内网服务，却又需要在GPU服务器上跑代码，可以使用NPS对内网进行穿透，通过公网IP访问内网服务。同时又考虑到安全性问题，选择在NPS之前再套一个nginx反向代理，可以实现HTTPS传输流量。</p>
+<a id="more"></a>
+<hr>
+<h2 id="配置GPU驱动和cuda，cudnn"><a href="#配置GPU驱动和cuda，cudnn" class="headerlink" title="配置GPU驱动和cuda，cudnn"></a>配置GPU驱动和cuda，cudnn</h2><ul>
+<li>Linux换源后，在软件更新里找到驱动，可以选择专用的驱动下载</li>
+<li>驱动安装成功后，<code>nvidia-smi</code>命令可以正常运行</li>
+<li>通过<code>nvidia-smi</code>可以看到支持的CUDA最高版本</li>
+<li>我的设备支持的CUDA最高版本是12.0,因此我选择安装了cuda 11.2版本和cudnn 8.1版本</li>
+</ul>
+<hr>
+<h2 id="安装Anaconda"><a href="#安装Anaconda" class="headerlink" title="安装Anaconda"></a>安装Anaconda</h2><p>Anaconda需要配置多用户使用，因此按照如下步骤，首先以root权限安装conda，而后普通用户再具体配置：</p>
+<p>root用户安装conda：</p>
+<ul>
+<li>以root权限安装conda，安装到所有用户都可以访问的位置（如/opt/anaconda3）</li>
+<li>以root权限运行<code>chmod o-w /opt/anaconda3/envs</code>,使普通用户无法在共享环境里写文件</li>
+<li>以root权限将源换为国内源</li>
+<li>以root权限安装共享环境（如分别安装常用的pytorch,tensorflow环境）</li>
+<li>根据我安装的cuda版本，我这里选择安装的pytorch版本为1.8.0，tensorflow版本为2.6.0，通过以下命令安装：<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"># pytorch 1.8.0版本 conda环境安装：</span><br><span class="line">conda create -n pytorch python&#x3D;3.8.5 # 此时会创建一个名为pytorch的conda环境</span><br><span class="line">conda install pytorch&#x3D;&#x3D;1.8.0 torchvision&#x3D;&#x3D;0.9.0 torchaudio&#x3D;&#x3D;0.8.0 cudatoolkit&#x3D;11.1</span><br><span class="line"># tensorflow-gpu 2.6.0版本 conda安装：</span><br><span class="line">conda create -n tensorflow python&#x3D;3.8.5 # 此时会创建一个名为tensorflow的conda环境</span><br><span class="line">conda install tensorflow-gpu&#x3D;2.6.0</span><br></pre></td></tr></table></figure>
+普通用户使用conda：</li>
+<li>普通用户登录conda前需要先init:<code>/opt/anaconda3/bin/conda init bash</code></li>
+<li>普通用户在conda init后如果通过conda安装新环境会优先考虑安装在共享环境下，但普通用户又没有写权限，从而导致报错，因此需要在用户目录下修改.condarc文件，添加用户安装环境的位置：<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">envs_dirs:</span><br><span class="line">  - ~&#x2F;.conda&#x2F;envs #意为优先将环境安装在用户目录下。</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<hr>
+<h2 id="安装JupyerHub"><a href="#安装JupyerHub" class="headerlink" title="安装JupyerHub"></a>安装JupyerHub</h2><p>按照以下步骤安装JupyterHub：</p>
+<ul>
+<li>在root权限下，使用conda安装：<code>conda install jupyterhub</code></li>
+<li>修改配置文件 jupyterhub_config.py（因为是root用户安装的jupyterhub，因此该文件一般在root用户目录下）,具体修改如下：<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"># 参考来源：https:&#x2F;&#x2F;blog.csdn.net&#x2F;meiaoxue1234&#x2F;article&#x2F;details&#x2F;123252499</span><br><span class="line"></span><br><span class="line"># configurable_http_proxy 代理设置</span><br><span class="line">c.ConfigurableHTTPProxy.should_start &#x3D; True #允许hub启动代理 可以不写，默认的，为False 就需要自己去 启动configurable-http-proxy</span><br><span class="line">c.ConfigurableHTTPProxy.api_url &#x3D; &#39;http:&#x2F;&#x2F;localhost:8001&#39; # proxy与hub与代理通讯，这应该是默认值不行也行</span><br><span class="line"> </span><br><span class="line"># 对外登录设置的ip</span><br><span class="line">c.JupyterHub.ip &#x3D; &#39;x.x.x.x&#39;</span><br><span class="line">c.JupyterHub.port &#x3D; 8001</span><br><span class="line">c.PAMAuthenticator.encoding &#x3D; &#39;utf8&#39;</span><br><span class="line"> </span><br><span class="line"># 用户名单设置，默认身份验证方式PAM与NUIX系统用户管理层一致，root用户可以添加用户test1,test2等等，非root用户，sudo useradd test1&#x2F;test2 不起作用，</span><br><span class="line"># c.Authenticator.allowed_users &#x3D; &#123;&#39;test1&#39;, &#39;test2&#39;&#125;</span><br><span class="line">c.Authenticator.admin_users &#x3D; &#123;&#39;root&#39;&#125;  # 管理员用户</span><br><span class="line"># c.DummyAuthenticator.password &#x3D; &quot;xsxxxx2&quot;  # 初始密码设置</span><br><span class="line">c.JupyterHub.admin_access &#x3D; True  # 则管理员有权在各自计算机上以其他用户身份登录，以进行调试</span><br><span class="line">c.LocalAuthenticator.create_system_users&#x3D;True  # 此选项通常用于 JupyterHub 的托管部署，以避免在启动服务之前手动创建所有用户</span><br><span class="line"> </span><br><span class="line"># 设置每个用户的 book类型 和 工作目录（创建.ipynb文件自动保存的地方）</span><br><span class="line">c.Spawner.notebook_dir &#x3D; &#39;~&#39;</span><br><span class="line">c.Spawner.default_url &#x3D; &#39;&#x2F;lab&#39;</span><br><span class="line">c.Spawner.args &#x3D; [&#39;--allow-root&#39;] </span><br></pre></td></tr></table></figure></li>
+<li>在linux终端terminal里给root用户添加密码（不然jupyterhub启动后，没有密码登录不了）</li>
+<li>挂载配置文件启动jupyerhub：<code>jupyterhub -f jupyterhub_config.py</code></li>
+<li>以管理员用户登录JupyterHub后，可以添加用户，添加用户后，还需要在终端terminal里给该用户设置密码</li>
+<li>考虑是否将该用户加入sudo组（<code>usermod -aG sudo username</code>）,意为将username用户添加进sudo组</li>
+<li>虽然已经创建了共享环境（如pytorch,tensorflow），但是此时登录JupyterHub页面后这些共享环境是不显示的，需要安装kernel使得共享环境在JupyterHub页面中显示出来，具体操作如下：<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># 以root用户进入共享环境，这里以tensorflow共享环境为例：</span><br><span class="line">conda activate tensorflow # 进入tensorflow共享环境</span><br><span class="line">python -m ipykernel install --name tensorflow --display-name tensorflow # 为tensorflow环境安装kernel，需要注意的是这里--name后的tensorflow为之前创建的环境名，--display-name后的tensorflow是你希望这个环境在JupyterHub中显示的名字</span><br></pre></td></tr></table></figure>
+给环境安装完kernel后，刷新JupyterHub页面，即可显示共享环境的kernel，选择该kernel，就可以使用该共享环境了</li>
+</ul>
+<hr>
+<h2 id="普通用户安装conda环境"><a href="#普通用户安装conda环境" class="headerlink" title="普通用户安装conda环境"></a>普通用户安装conda环境</h2><p>普通用户可以直接重新创建一个全新的环境，也可以克隆共享环境里的其中一个环境，这里具体介绍如何克隆环境，普通用户登录后(非root权限)，依次执行以下命令：</p>
+<ul>
+<li><code>source activate</code> # 启动conda环境</li>
+<li><code>conda create -n your_environment_name --clone shared_enviroment_name</code> # clone共享环境</li>
+<li><code>sudo su</code> # 提升为root权限</li>
+<li><code>conda activate path_of_your_environment</code> # 进入刚刚新建的环境</li>
+<li><code>python -m ipykernel install --name your_enviroment_name --display-name new_name</code> #为刚新建的环境安装kernel，并且new_name为用户想要在JupyterHub中显示的Kernel名称</li>
+<li>刷新JupyterHub页面，即可以看到刚刚新建的kernel，选择该kernel就可以使用刚创建的环境了 </li>
+</ul>
+<hr>
+<h2 id="Nginx-NPS实现通过公网Https访问内网JupyterHub的Web界面"><a href="#Nginx-NPS实现通过公网Https访问内网JupyterHub的Web界面" class="headerlink" title="Nginx+NPS实现通过公网Https访问内网JupyterHub的Web界面"></a>Nginx+NPS实现通过公网Https访问内网JupyterHub的Web界面</h2><p>假设拥有一台公网vps，并给该公网配置了域名(假设为myweb.com)，且假设已经通过NPS实现了以HTTP方式通过公网public_ip:public_port或myweb.com:public_port访问内网JupyterHub服务（localhost_ip:localhost_port）。NPS实现内网穿透网上的教程很多，这里不再赘述。此时可以借助Nginx反向代理实现Https传输和端口隐藏。</p>
+<p>在公网vps中安装nginx服务，并在nginx的配置文件下配置如下内容：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line">server&#123;</span><br><span class="line">	listen 80 default; #监听80端口，即http访问请求</span><br><span class="line">	server_name _;</span><br><span class="line">	return 500;</span><br><span class="line">&#125;</span><br><span class="line">server &#123;</span><br><span class="line">	listen 80; # 监听80端口，即http访问请求</span><br><span class="line">	listen [::]:80;</span><br><span class="line">	server_name myweb.com;</span><br><span class="line">	return 301 https:&#x2F;&#x2F;$server_name$request_uri; # 将所有80端口的访问请求重定向到443端口(https服务)</span><br><span class="line">&#125;</span><br><span class="line">server &#123;</span><br><span class="line">	listen 443 ssl default; # 监听443端口，即https访问请求</span><br><span class="line">	server_name _;</span><br><span class="line">	ssl_certificate myweb.com_bundle.crt;# 配置证书（证书文件在买域名的时候会给）</span><br><span class="line">    ssl_certificate_key myweb.com.key; #hps文件夹下的.key文件</span><br><span class="line"> 	ssl_session_timeout 5m;</span><br><span class="line">    ssl_protocols TLSv1 TLSv1.1 TLSv1.2; #按照这个协议配置</span><br><span class="line">    ssl_ciphers ECDHE-RSA-AES128-GCM-SHA256:HIGH:!aNULL:!MD5:!RC4:!DHE;#按照这个套件配置</span><br><span class="line">    ssl_prefer_server_ciphers on;</span><br><span class="line">	return 500;</span><br><span class="line">&#125;</span><br><span class="line">server &#123;</span><br><span class="line">    listen 443 ssl;</span><br><span class="line">    server_name myweb.com; #填写绑定证书的域名</span><br><span class="line">    ssl_certificate myweb.com_bundle.crt;# </span><br><span class="line">    ssl_certificate_key myweb.com.key; </span><br><span class="line">    ssl_session_timeout 5m;</span><br><span class="line">    ssl_protocols TLSv1 TLSv1.1 TLSv1.2; #按照这个协议配置</span><br><span class="line">    ssl_ciphers ECDHE-RSA-AES128-GCM-SHA256:HIGH:!aNULL:!MD5:!RC4:!DHE;#按照这个套件配置</span><br><span class="line">    ssl_prefer_server_ciphers on;</span><br><span class="line">    location &#x2F; &#123;  #此处为转发配置</span><br><span class="line">        proxy_http_version 1.1;</span><br><span class="line">        proxy_set_header Upgrade $http_upgrade;</span><br><span class="line">        proxy_set_header Connection $connection_upgrade;</span><br><span class="line">        proxy_set_header X-Scheme $scheme;</span><br><span class="line">        proxy_buffering off; </span><br><span class="line">        proxy_set_header Host $host;</span><br><span class="line">        proxy_set_header X-Real-IP $remote_addr;</span><br><span class="line">        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;</span><br><span class="line">       	proxy_pass http:&#x2F;&#x2F;127.0.0.1:public_port&#x2F;;</span><br><span class="line">        &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>配置文件中location部分的目的是将对 <code>https://myweb.com</code> 的访问请求代理转发到 <code>http://127.0.0.1:public_port/</code>，这里的127.0.0.1是公网vps的本地地址，因此这里的127.0.0.1就相当于公网的ip，而之前又通过配置NPS将对公网的 <code>http://127.0.0.1:public_port/</code> 的访问请求转发到内网本地的 localhost_ip:localhost_port。因此通过两层代理转发实现了通过公网HTTPS服务访问内网的JupyterHub的web服务，并且隐藏了public_port这一端口。</p>
+<p>！！！注意，配置文件中的location部分，proxy的设置不能少，不然以HTTPS方式访问内网JupyterHub时会出现权限错误，因为并不是所有流量都以https传输，会存在一些http流量被重定向到https（如nginx的配置文件里，将监听到的所有80端口的流量都重定向到https），而这些重定向的http流量就会引起权限问题，这是因为jupyterhub会对协议是否相同来认证权限。具体请参考网址：<a target="_blank" rel="noopener" href="https://jupyterhub.readthedocs.io/en/stable/reference/config-proxy.html">https://jupyterhub.readthedocs.io/en/stable/reference/config-proxy.html</a></p>
+<p>此时重启nginx服务<code>service nginx restart</code>即可实现通过<code>https://myweb.com/</code> 以https的方式访问内网的JupyterHub的Web服务。</p>
+ 
+      <!-- reward -->
+      
+      <div id="reword-out">
+        <div id="reward-btn">
+          Donate
+        </div>
+      </div>
+      
+    </div>
+    
+
+    <!-- copyright -->
+    
+    <div class="declare">
+      <ul class="post-copyright">
+        <li>
+          <i class="ri-copyright-line"></i>
+          <strong>Copyright： </strong>
+          
+          Copyright is owned by the author. For commercial reprints, please contact the author for authorization. For non-commercial reprints, please indicate the source.
+          
+        </li>
+      </ul>
+    </div>
+    
+    <footer class="article-footer">
+       
+<div class="share-btn">
+      <span class="share-sns share-outer">
+        <i class="ri-share-forward-line"></i>
+        分享
+      </span>
+      <div class="share-wrap">
+        <i class="arrow"></i>
+        <div class="share-icons">
+          
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="ri-weibo-fill"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="ri-wechat-fill"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="ri-qq-fill"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="ri-douban-line"></i>
+          </a>
+          <!-- <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a> -->
+          
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="ri-facebook-circle-fill"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="ri-twitter-fill"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="ri-google-fill"></i>
+          </a>
+        </div>
+      </div>
+</div>
+
+<div class="wx-share-modal">
+    <a class="modal-close" href="javascript:;"><i class="ri-close-circle-line"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACLElEQVR42u3aQW6EMAwFUO5/6anUVasR6NvOqCW8rNAMgjwWlh37OOL1+l7X1+/3/1zvv1//cnxiYWBg3JbxulxnW79+cf5L/q6z+zEwMJ7DyIPsGSaPhKsCOgYGBsZ14OttMc/oMDAwMOYBd20JioGBgZEwksD36ZCaBPQFtTgGBsYNGasaA5+4/oP+BgYGxj9jvFqrmrTlBXBzPxgYGFszqkf8k6O33shFIRBjYGBszcgLznyQIn9xHqALz8fAwHgAI7meDHXln6D5gTAwMLZmJA+aHPT32p/VRgUGBsZOjMJhVqscvd5ij1HuwWJgYGzB6A2HVQ/L8iO58vAHBgbG1ozFga9ViPbKYAwMjGcyJqneqmQxTxyjBBEDA2NrxuS6Gi6rDctCwMXAwNiCMUnaJk3HydFeYeYCAwNjC0ZemiZH/Ee8CpvLn4+BgbEpY9JWnJSv86GxX/9iYGBszage9xcOv+J4WG12nr4XAwNja0byyh64MCoRh++kYMbAwNiPMWkG9NLEakEbfT4MDIwHMHptxeoxWbU9MCpiMTAwNmJU25C9sjNJFvNPU2hnYmBg3JzRG9jqpXfzRPA00cTAwNiaMRmP6JW11dGNtUMeGBgY92VUg2y1JZB/jklLFQMD4wmMarjstQ16hWv0BAwMDIxiMteDjYY8MDAwMFrhchJSr1NGDAyMZzKqI6f5/fmhWx6CMTAwnsaYNwZ6xW2vPTkaWcPAwLgf4wtPFJNhDTeSjAAAAABJRU5ErkJggg==" alt="微信分享二维码">
+    </div>
+</div>
+
+<div id="share-mask"></div>  
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/anaconda-jupyterlab/" rel="tag">anaconda,jupyterlab</a></li></ul>
+
+    </footer>
+  </div>
+
+   
+  <nav class="article-nav">
+    
+    
+      <a href="/2022/01/13/Explanation-Guided%20Backdoor%20Poisoning%20Attacks%20Against%20Malware%20Classifiers/" class="article-nav-link">
+        <strong class="article-nav-caption">下一篇</strong>
+        <div class="article-nav-title">论文分析：《Explanation-Guided Backdoor Poisoning Attacks Against Malware Classifiers》</div>
+      </a>
+    
+  </nav>
+
+   
+<!-- valine评论 -->
+<div id="vcomments-box">
+  <div id="vcomments"></div>
+</div>
+<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/valine@1.4.14/dist/Valine.min.js"></script>
+<script>
+  new Valine({
+    el: "#vcomments",
+    app_id: "ds54farWshFsUraKxWRVVf4G-gzGzoHsz",
+    app_key: "q4rgias5HDeq09ugweytekJQ",
+    path: window.location.pathname,
+    avatar: "monsterid",
+    placeholder: "",
+    recordIP: true,
+  });
+  const infoEle = document.querySelector("#vcomments .info");
+  if (infoEle && infoEle.childNodes && infoEle.childNodes.length > 0) {
+    infoEle.childNodes.forEach(function (item) {
+      item.parentNode.removeChild(item);
+    });
+  }
+</script>
+<style>
+  #vcomments-box {
+    padding: 5px 30px;
+  }
+
+  @media screen and (max-width: 800px) {
+    #vcomments-box {
+      padding: 5px 0px;
+    }
+  }
+
+  #vcomments-box #vcomments {
+    background-color: #fff;
+  }
+
+  .v .vlist .vcard .vh {
+    padding-right: 20px;
+  }
+
+  .v .vlist .vcard {
+    padding-left: 10px;
+  }
+</style>
+
+ 
+   
+     
+</article>
+
+</section>
+      <footer class="footer">
+  <div class="outer">
+    <ul>
+      <li>
+        Copyrights &copy;
+        2018-2023
+        <i class="ri-heart-fill heart_icon"></i> Supervampire
+      </li>
+    </ul>
+    <ul>
+      <li>
+        
+      </li>
+    </ul>
+    <ul>
+      <li>
+        
+        
+        <span>
+  <span><i class="ri-user-3-fill"></i>Visitors:<span id="busuanzi_value_site_uv"></span></s>
+  <span class="division">|</span>
+  <span><i class="ri-eye-fill"></i>Views:<span id="busuanzi_value_page_pv"></span></span>
+</span>
+        
+      </li>
+    </ul>
+    <ul>
+      
+        <li>
+          <a href="https://beian.miit.gov.cn/#/Integrated/recordQuery" target="_black" rel="nofollow">苏ICP备2022035104号-1</a>
+        </li>
+        
+    </ul>
+    <ul>
+      
+    </ul>
+    <ul>
+      <li>
+        <!-- cnzz统计 -->
+        
+      </li>
+    </ul>
+  </div>
+</footer>
+      <div class="float_btns">
+        <div class="totop" id="totop">
+  <i class="ri-arrow-up-line"></i>
+</div>
+
+<div class="todark" id="todark">
+  <i class="ri-moon-line"></i>
+</div>
+
+      </div>
+    </main>
+    <aside class="sidebar on">
+      <button class="navbar-toggle"></button>
+<nav class="navbar">
+  
+  <div class="logo">
+    <a href="/"><img src="https://cdn.jsdelivr.net/gh/wxt406611016/cdn/image/ayer-side.svg" alt="の"></a>
+  </div>
+  
+  <ul class="nav nav-main">
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/">主页</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/archives">归档</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/categories">分类</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" target="_blank" rel="noopener" href="https://wxt123.top/downloads/">云盘</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/friends">友链</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/about">关于</a>
+    </li>
+    
+  </ul>
+</nav>
+<nav class="navbar navbar-bottom">
+  <ul class="nav">
+    <li class="nav-item">
+      
+      <a class="nav-item-link nav-item-search"  title="Search">
+        <i class="ri-search-line"></i>
+      </a>
+      
+      
+      <a class="nav-item-link" target="_blank" href="/atom.xml" title="RSS Feed">
+        <i class="ri-rss-line"></i>
+      </a>
+      
+    </li>
+  </ul>
+</nav>
+<div class="search-form-wrap">
+  <div class="local-search local-search-plugin">
+  <input type="search" id="local-search-input" class="local-search-input" placeholder="Search...">
+  <div id="local-search-result" class="local-search-result"></div>
+</div>
+</div>
+    </aside>
+    <script>
+      if (window.matchMedia("(max-width: 768px)").matches) {
+        document.querySelector('.content').classList.remove('on');
+        document.querySelector('.sidebar').classList.remove('on');
+      }
+    </script>
+    <div id="mask"></div>
+
+<!-- #reward -->
+<div id="reward">
+  <span class="close"><i class="ri-close-line"></i></span>
+  <p class="reward-p"><i class="ri-cup-line"></i>请我喝杯咖啡吧~</p>
+  <div class="reward-box">
+    
+    <div class="reward-item">
+      <img class="reward-img" src="https://cdn.jsdelivr.net/gh/wxt406611016/cdn/image/20210117222926.png">
+      <span class="reward-type">支付宝</span>
+    </div>
+    
+    
+    <div class="reward-item">
+      <img class="reward-img" src="https://cdn.jsdelivr.net/gh/wxt406611016/cdn/image/20210117222736.png">
+      <span class="reward-type">微信</span>
+    </div>
+    
+  </div>
+</div>
+    
+<script src="/js/jquery-2.0.3.min.js"></script>
+
+
+<script src="/js/lazyload.min.js"></script>
+
+<!-- Tocbot -->
+
+
+<script src="/js/tocbot.min.js"></script>
+
+<script>
+  tocbot.init({
+    tocSelector: '.tocbot',
+    contentSelector: '.article-entry',
+    headingSelector: 'h1, h2, h3, h4, h5, h6',
+    hasInnerContainers: true,
+    scrollSmooth: true,
+    scrollContainer: 'main',
+    positionFixedSelector: '.tocbot',
+    positionFixedClass: 'is-position-fixed',
+    fixedSidebarOffset: 'auto'
+  });
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/jquery-modal@0.9.2/jquery.modal.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jquery-modal@0.9.2/jquery.modal.min.css">
+<script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js"></script>
+
+<script src="/dist/main.js"></script>
+
+<!-- ImageViewer -->
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                <!--  Controls are self-explanatory. Order can be changed. -->
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" style="display:none" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css">
+<script src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"></script>
+
+<script>
+    function viewer_init() {
+        let pswpElement = document.querySelectorAll('.pswp')[0];
+        let $imgArr = document.querySelectorAll(('.article-entry img:not(.reward-img)'))
+
+        $imgArr.forEach(($em, i) => {
+            $em.onclick = () => {
+                // slider展开状态
+                // todo: 这样不好，后面改成状态
+                if (document.querySelector('.left-col.show')) return
+                let items = []
+                $imgArr.forEach(($em2, i2) => {
+                    let img = $em2.getAttribute('data-idx', i2)
+                    let src = $em2.getAttribute('data-target') || $em2.getAttribute('src')
+                    let title = $em2.getAttribute('alt')
+                    // 获得原图尺寸
+                    const image = new Image()
+                    image.src = src
+                    items.push({
+                        src: src,
+                        w: image.width || $em2.width,
+                        h: image.height || $em2.height,
+                        title: title
+                    })
+                })
+                var gallery = new PhotoSwipe(pswpElement, PhotoSwipeUI_Default, items, {
+                    index: parseInt(i)
+                });
+                gallery.init()
+            }
+        })
+    }
+    viewer_init()
+</script>
+
+<!-- MathJax -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+      tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+  });
+
+  MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+      for(i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+  });
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.6/unpacked/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script>
+  var ayerConfig = {
+    mathjax: true
+  }
+</script>
+
+<!-- Katex -->
+
+<!-- busuanzi  -->
+
+
+<script src="/js/busuanzi-2.3.pure.min.js"></script>
+
+
+<!-- ClickLove -->
+
+<!-- ClickBoom1 -->
+
+<!-- ClickBoom2 -->
+
+
+<script src="/js/clickBoom2.js"></script>
+
+
+<!-- CodeCopy -->
+
+
+<link rel="stylesheet" href="/css/clipboard.css">
+
+<script src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js"></script>
+<script>
+  function wait(callback, seconds) {
+    var timelag = null;
+    timelag = window.setTimeout(callback, seconds);
+  }
+  !function (e, t, a) {
+    var initCopyCode = function(){
+      var copyHtml = '';
+      copyHtml += '<button class="btn-copy" data-clipboard-snippet="">';
+      copyHtml += '<i class="ri-file-copy-2-line"></i><span>COPY</span>';
+      copyHtml += '</button>';
+      $(".highlight .code pre").before(copyHtml);
+      $(".article pre code").before(copyHtml);
+      var clipboard = new ClipboardJS('.btn-copy', {
+        target: function(trigger) {
+          return trigger.nextElementSibling;
+        }
+      });
+      clipboard.on('success', function(e) {
+        let $btn = $(e.trigger);
+        $btn.addClass('copied');
+        let $icon = $($btn.find('i'));
+        $icon.removeClass('ri-file-copy-2-line');
+        $icon.addClass('ri-checkbox-circle-line');
+        let $span = $($btn.find('span'));
+        $span[0].innerText = 'COPIED';
+        
+        wait(function () { // 等待两秒钟后恢复
+          $icon.removeClass('ri-checkbox-circle-line');
+          $icon.addClass('ri-file-copy-2-line');
+          $span[0].innerText = 'COPY';
+        }, 2000);
+      });
+      clipboard.on('error', function(e) {
+        e.clearSelection();
+        let $btn = $(e.trigger);
+        $btn.addClass('copy-failed');
+        let $icon = $($btn.find('i'));
+        $icon.removeClass('ri-file-copy-2-line');
+        $icon.addClass('ri-time-line');
+        let $span = $($btn.find('span'));
+        $span[0].innerText = 'COPY FAILED';
+        
+        wait(function () { // 等待两秒钟后恢复
+          $icon.removeClass('ri-time-line');
+          $icon.addClass('ri-file-copy-2-line');
+          $span[0].innerText = 'COPY';
+        }, 2000);
+      });
+    }
+    initCopyCode();
+  }(window, document);
+</script>
+
+
+<!-- CanvasBackground -->
+
+
+<script src="/js/dz.js"></script>
+
+
+
+    
+    <div id="music">
+    
+    
+    
+    <iframe frameborder="no" border="1" marginwidth="0" marginheight="0" width="200" height="86"
+        src="//music.163.com/outchain/player?type=2&id=22707008&auto=1&height=66"></iframe>
+</div>
+
+<style>
+    #music {
+        position: fixed;
+        right: 15px;
+        bottom: 0;
+        z-index: 998;
+    }
+</style>
+    
+  </div>
+</body>
+
+</html>

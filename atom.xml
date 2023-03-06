@@ -1,0 +1,453 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>の</title>
+  
+  
+  <link href="https://wxt406611016.github.io/atom.xml" rel="self"/>
+  
+  <link href="https://wxt406611016.github.io/"/>
+  <updated>2023-03-05T13:14:55.956Z</updated>
+  <id>https://wxt406611016.github.io/</id>
+  
+  <author>
+    <name>Supervampire</name>
+    
+  </author>
+  
+  <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Ubuntu环境下多用户Anaconda以及JupyterHub搭建过程+公网nginx反向代理+nps穿透实现通过公网Https访问内网JupyterHub</title>
+    <link href="https://wxt406611016.github.io/2023/03/05/jupyterlab/"/>
+    <id>https://wxt406611016.github.io/2023/03/05/jupyterlab/</id>
+    <published>2023-03-04T16:00:00.000Z</published>
+    <updated>2023-03-05T13:14:55.956Z</updated>
+    
+    
+    <summary type="html">&lt;p&gt;因为现在有一台处于内网环境下的性能非常好的台式机，想要将其作为GPU服务器供大家一同使用，因此需要配置多用户使用的Anaconda环境。为了更好的方便大家跑代码，选择搭建一个JupyterHub，这样大家可以使用JupyterHub的Web界面直接在浏览器上跑自己的代码。考虑到内网因素对大家的使用影响，比如有些同伴可能在外出差无法访问内网服务，却又需要在GPU服务器上跑代码，可以使用NPS对内网进行穿透，通过公网IP访问内网服务。同时又考虑到安全性问题，选择在NPS之前再套一个nginx反向代理，可以实现HTTPS传输流量。&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="Web" scheme="https://wxt406611016.github.io/categories/Web/"/>
+    
+    
+    <category term="anaconda,jupyterlab" scheme="https://wxt406611016.github.io/tags/anaconda-jupyterlab/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>论文分析：《Explanation-Guided Backdoor Poisoning Attacks Against Malware Classifiers》</title>
+    <link href="https://wxt406611016.github.io/2022/01/13/Explanation-Guided%20Backdoor%20Poisoning%20Attacks%20Against%20Malware%20Classifiers/"/>
+    <id>https://wxt406611016.github.io/2022/01/13/Explanation-Guided%20Backdoor%20Poisoning%20Attacks%20Against%20Malware%20Classifiers/</id>
+    <published>2022-01-12T16:00:00.000Z</published>
+    <updated>2022-01-13T08:08:09.204Z</updated>
+    
+    
+    <summary type="html">&lt;h2 id=&quot;Explanation-Guided-Backdoor-Poisoning-Attacks-Against-Malware-Classifiers&quot;&gt;&lt;a href=&quot;#Explanation-Guided-Backdoor-Poisoning-Attacks-Against-Malware-Classifiers&quot; class=&quot;headerlink&quot; title=&quot;Explanation-Guided Backdoor Poisoning Attacks Against Malware Classifiers&quot;&gt;&lt;/a&gt;Explanation-Guided Backdoor Poisoning Attacks Against Malware Classifiers&lt;/h2&gt;&lt;hr&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;论文目的&lt;/p&gt;
+&lt;p&gt;研究内容： &lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;研究针对基于ml的恶意软件分类器的clean-label后门攻击；&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;研究效果：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;将带有后门的良性样本注入恶意软件检测器的训练集中，改变在推断时对带有相同水印的恶意软件样本的预测；</summary>
+    
+    
+    
+    <category term="论文" scheme="https://wxt406611016.github.io/categories/%E8%AE%BA%E6%96%87/"/>
+    
+    
+    <category term="神经网络，恶意代码" scheme="https://wxt406611016.github.io/tags/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%8C%E6%81%B6%E6%84%8F%E4%BB%A3%E7%A0%81/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Deep Q Network(DQN)在LunarLander-v2上的应用</title>
+    <link href="https://wxt406611016.github.io/2021/12/08/dqn-LunarLander-v2/"/>
+    <id>https://wxt406611016.github.io/2021/12/08/dqn-LunarLander-v2/</id>
+    <published>2021-12-07T16:00:00.000Z</published>
+    <updated>2021-12-09T03:28:30.671Z</updated>
+    
+    
+    <summary type="html">&lt;p&gt;&lt;strong&gt;关于QLearning、为什么使用神经网络来决定智能体的动作选择以及如何更新神经网络在上一篇文章《Deep Q Network(DQN)在CartPole-v0上的应用》中已经解释过，不得不说，神经网络作为Q函数的确发挥了重要的作用，这一篇趁热打铁，我们玩另一款游戏在月球登陆，下面将给出DQN在LunarLander-v2上的应用的代码。&lt;/strong&gt;&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="RL" scheme="https://wxt406611016.github.io/categories/RL/"/>
+    
+    
+    <category term="Machine Learning" scheme="https://wxt406611016.github.io/tags/Machine-Learning/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Deep Q Network(DQN)在CartPole-v0上的应用</title>
+    <link href="https://wxt406611016.github.io/2021/12/07/dqn-CartPole-v0/"/>
+    <id>https://wxt406611016.github.io/2021/12/07/dqn-CartPole-v0/</id>
+    <published>2021-12-06T16:00:00.000Z</published>
+    <updated>2021-12-09T03:26:07.361Z</updated>
+    
+    
+    <summary type="html">&lt;p&gt;&lt;strong&gt;如今, 随着机器学习在日常生活中的各种应用, 各种机器学习方法也在融汇, 合并, 升级. 而我们今天所要探讨的强化学习则是这么一种融合了神经网络和 Q learning 的方法, 名字叫做 Deep Q Network. 这种新型结构是为什么被提出来呢? 原来, 传统的表格形式的强化学习有这样一个瓶颈。&lt;/strong&gt;&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="RL" scheme="https://wxt406611016.github.io/categories/RL/"/>
+    
+    
+    <category term="Machine Learning" scheme="https://wxt406611016.github.io/tags/Machine-Learning/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>CobaltStrike DNS Beacon</title>
+    <link href="https://wxt406611016.github.io/2021/10/28/cobaltstrike_dns/"/>
+    <id>https://wxt406611016.github.io/2021/10/28/cobaltstrike_dns/</id>
+    <published>2021-10-27T16:00:00.000Z</published>
+    <updated>2021-10-28T02:37:44.749Z</updated>
+    
+    
+    <summary type="html">&lt;hr&gt;
+&lt;h3 id=&quot;CobaltStrike-DNS-Beacon利用DNS协议进行命令控制。&quot;&gt;&lt;a href=&quot;#CobaltStrike-DNS-Beacon利用DNS协议进行命令控制。&quot; class=&quot;headerlink&quot; title=&quot;CobaltStrike DNS Beacon利用DNS协议进行命令控制。&quot;&gt;&lt;/a&gt;CobaltStrike DNS Beacon利用DNS协议进行命令控制。&lt;/h3&gt;&lt;hr&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;https://www.bianchengquan.com/article/399455.html&quot;&gt;传送门 –&amp;gt; 工具的使用 | CobaltStrike中DNS Beacon的使用&lt;/a&gt;</summary>
+    
+    
+    
+    <category term="Web" scheme="https://wxt406611016.github.io/categories/Web/"/>
+    
+    
+    <category term="cobaltstrike" scheme="https://wxt406611016.github.io/tags/cobaltstrike/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>论文分析：《StegoNet:Turn Deep Neural Network into a Stegomalware》</title>
+    <link href="https://wxt406611016.github.io/2021/09/02/StegoNet:Turn%20Deep%20Neural%20Network%20into%20a%20Stegomalware/"/>
+    <id>https://wxt406611016.github.io/2021/09/02/StegoNet:Turn%20Deep%20Neural%20Network%20into%20a%20Stegomalware/</id>
+    <published>2021-09-01T16:00:00.000Z</published>
+    <updated>2021-09-02T03:37:05.297Z</updated>
+    
+    
+    <summary type="html">&lt;h2 id=&quot;StegoNet-Turn-Deep-Neural-Network-into-a-Stegomalware&quot;&gt;&lt;a href=&quot;#StegoNet-Turn-Deep-Neural-Network-into-a-Stegomalware&quot; class=&quot;headerlink&quot; title=&quot;StegoNet:Turn Deep Neural Network into a Stegomalware&quot;&gt;&lt;/a&gt;StegoNet:Turn Deep Neural Network into a Stegomalware&lt;/h2&gt;&lt;hr&gt;
+&lt;h3 id=&quot;一-背景及要解决的问题：&quot;&gt;&lt;a href=&quot;#一-背景及要解决的问题：&quot; class=&quot;headerlink&quot; title=&quot;一 . 背景及要解决的问题：&quot;&gt;&lt;/a&gt;一 . 背景及要解决的问题：&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;背景：&lt;ul&gt;
+&lt;li&gt;传统的Stegomalware将恶意代码嵌入到image、videos中介质中&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;解决问题：&lt;ul&gt;
+&lt;li&gt;在神经网络模型中嵌入恶意代码躲避检测&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;</summary>
+    
+    
+    
+    <category term="论文" scheme="https://wxt406611016.github.io/categories/%E8%AE%BA%E6%96%87/"/>
+    
+    
+    <category term="神经网络，恶意代码" scheme="https://wxt406611016.github.io/tags/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%8C%E6%81%B6%E6%84%8F%E4%BB%A3%E7%A0%81/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>论文分析：《EvilModel：Hiding Malware Inside of Neural Network Models》</title>
+    <link href="https://wxt406611016.github.io/2021/08/25/EvilModel%EF%BC%9AHiding%20Malware%20Inside%20of%20Neural%20Network%20Models/"/>
+    <id>https://wxt406611016.github.io/2021/08/25/EvilModel%EF%BC%9AHiding%20Malware%20Inside%20of%20Neural%20Network%20Models/</id>
+    <published>2021-08-24T16:00:00.000Z</published>
+    <updated>2021-08-25T14:08:47.936Z</updated>
+    
+    
+    <summary type="html">&lt;h2 id=&quot;EvilModel-Hiding-Malware-Inside-of-Neural-Network-Models&quot;&gt;&lt;a href=&quot;#EvilModel-Hiding-Malware-Inside-of-Neural-Network-Models&quot; class=&quot;headerlink&quot; title=&quot;EvilModel: Hiding Malware Inside of Neural Network Models&quot;&gt;&lt;/a&gt;EvilModel: Hiding Malware Inside of Neural Network Models&lt;/h2&gt;&lt;hr&gt;
+&lt;h3 id=&quot;一-背景及要解决的问题：&quot;&gt;&lt;a href=&quot;#一-背景及要解决的问题：&quot; class=&quot;headerlink&quot; title=&quot;一 . 背景及要解决的问题：&quot;&gt;&lt;/a&gt;一 . 背景及要解决的问题：&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;背景：&lt;ul&gt;
+&lt;li&gt;1）现有成果嵌入率低&lt;/li&gt;
+&lt;li&gt;2）对模型性能有影响&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;解决问题：&lt;ul&gt;
+&lt;li&gt;在神经网络模型中嵌入恶意代码躲避检测，且不影响模型性能&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;</summary>
+    
+    
+    
+    <category term="论文" scheme="https://wxt406611016.github.io/categories/%E8%AE%BA%E6%96%87/"/>
+    
+    
+    <category term="神经网络，恶意代码" scheme="https://wxt406611016.github.io/tags/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%8C%E6%81%B6%E6%84%8F%E4%BB%A3%E7%A0%81/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>2021-04-18(C)</title>
+    <link href="https://wxt406611016.github.io/2021/04/18/2021-04-18/"/>
+    <id>https://wxt406611016.github.io/2021/04/18/2021-04-18/</id>
+    <published>2021-04-17T16:00:00.000Z</published>
+    <updated>2021-04-19T02:31:38.673Z</updated>
+    
+    
+    <summary type="html">Here&#39;s something encrypted, password is required to continue reading.</summary>
+    
+    
+    
+    <category term="Emotion" scheme="https://wxt406611016.github.io/categories/Emotion/"/>
+    
+    
+    <category term="cloudy" scheme="https://wxt406611016.github.io/tags/cloudy/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Life-Tips</title>
+    <link href="https://wxt406611016.github.io/2021/03/20/life-tips/"/>
+    <id>https://wxt406611016.github.io/2021/03/20/life-tips/</id>
+    <published>2021-03-19T16:00:00.000Z</published>
+    <updated>2021-03-20T11:21:56.973Z</updated>
+    
+    
+    <summary type="html">Here&#39;s something encrypted, password is required to continue reading.</summary>
+    
+    
+    
+    <category term="Emotion" scheme="https://wxt406611016.github.io/categories/Emotion/"/>
+    
+    
+    <category term="sunny" scheme="https://wxt406611016.github.io/tags/sunny/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>HTB[Laboratory]</title>
+    <link href="https://wxt406611016.github.io/2021/03/14/htb[Laboratory]/"/>
+    <id>https://wxt406611016.github.io/2021/03/14/htb[Laboratory]/</id>
+    <published>2021-03-13T16:00:00.000Z</published>
+    <updated>2021-03-14T09:15:18.149Z</updated>
+    
+    
+    <summary type="html">&lt;p&gt;小白初学渗透测试，使用hack the box平台，注册方法以及使用方法网上已经很多教程了，就不再赘述了，百度或者google即可。本题路径为:Labs-Machines-Laboratory，又是学知识的一天。&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="Web" scheme="https://wxt406611016.github.io/categories/Web/"/>
+    
+    
+    <category term="渗透测试" scheme="https://wxt406611016.github.io/tags/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>HTB[Delivery]</title>
+    <link href="https://wxt406611016.github.io/2021/03/07/htb[Delivery]/"/>
+    <id>https://wxt406611016.github.io/2021/03/07/htb[Delivery]/</id>
+    <published>2021-03-06T16:00:00.000Z</published>
+    <updated>2021-03-14T08:59:32.595Z</updated>
+    
+    
+    <summary type="html">&lt;p&gt;小白初学渗透测试，使用hack the box平台，注册方法以及使用方法网上已经很多教程了，就不再赘述了，百度或者google即可。本题路径为：Labs-Machines-Delivery，这道题有点儿社工的味道，需要认真看website上的内容。&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="Web" scheme="https://wxt406611016.github.io/categories/Web/"/>
+    
+    
+    <category term="渗透测试" scheme="https://wxt406611016.github.io/tags/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>2021.03.05(南京行)</title>
+    <link href="https://wxt406611016.github.io/2021/03/05/2021-03-05(%E5%8D%97%E4%BA%AC)/"/>
+    <id>https://wxt406611016.github.io/2021/03/05/2021-03-05(%E5%8D%97%E4%BA%AC)/</id>
+    <published>2021-03-04T16:00:00.000Z</published>
+    <updated>2021-03-05T14:04:49.099Z</updated>
+    
+    
+    <summary type="html">Here&#39;s something encrypted, password is required to continue reading.</summary>
+    
+    
+    
+    <category term="Emotion" scheme="https://wxt406611016.github.io/categories/Emotion/"/>
+    
+    
+    <category term="cloud" scheme="https://wxt406611016.github.io/tags/cloud/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>audit+camflow使用记录</title>
+    <link href="https://wxt406611016.github.io/2021/02/01/audit+camflow%E4%BD%BF%E7%94%A8%E8%AE%B0%E5%BD%95/"/>
+    <id>https://wxt406611016.github.io/2021/02/01/audit+camflow%E4%BD%BF%E7%94%A8%E8%AE%B0%E5%BD%95/</id>
+    <published>2021-01-31T16:00:00.000Z</published>
+    <updated>2021-03-05T14:56:38.149Z</updated>
+    
+    
+    <summary type="html">&lt;h1 id=&quot;auditd&quot;&gt;&lt;a href=&quot;#auditd&quot; class=&quot;headerlink&quot; title=&quot;auditd&quot;&gt;&lt;/a&gt;auditd&lt;/h1&gt;&lt;ul&gt;
+&lt;li&gt;实验系统：ubuntu 20.04&lt;/li&gt;
+&lt;li&gt;auditctl命令：用于制定规则&lt;/li&gt;
+&lt;li&gt;ausearch命令: 用于查看日志&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;</summary>
+    
+    
+    
+    <category term="Web" scheme="https://wxt406611016.github.io/categories/Web/"/>
+    
+    
+    <category term="系统监控" scheme="https://wxt406611016.github.io/tags/%E7%B3%BB%E7%BB%9F%E7%9B%91%E6%8E%A7/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>audit+camflow实验</title>
+    <link href="https://wxt406611016.github.io/2021/02/01/audit+camflow%E5%AE%9E%E9%AA%8C/"/>
+    <id>https://wxt406611016.github.io/2021/02/01/audit+camflow%E5%AE%9E%E9%AA%8C/</id>
+    <published>2021-01-31T16:00:00.000Z</published>
+    <updated>2021-03-05T14:57:44.756Z</updated>
+    
+    
+    <summary type="html">&lt;h1 id=&quot;Auditd测试&quot;&gt;&lt;a href=&quot;#Auditd测试&quot; class=&quot;headerlink&quot; title=&quot;Auditd测试&quot;&gt;&lt;/a&gt;Auditd测试&lt;/h1&gt;&lt;ul&gt;
+&lt;li&gt;测试目标：拷贝，压缩&lt;/li&gt;
+&lt;li&gt;测试环境：C，Python，命令行，图形界面&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://wxt123.top/dict/Auditd/&quot;&gt;测试脚本源码地址链接&lt;/a&gt;</summary>
+    
+    
+    
+    <category term="Web" scheme="https://wxt406611016.github.io/categories/Web/"/>
+    
+    
+    <category term="系统监控" scheme="https://wxt406611016.github.io/tags/%E7%B3%BB%E7%BB%9F%E7%9B%91%E6%8E%A7/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>配置反向socks5代理实现内网渗透</title>
+    <link href="https://wxt406611016.github.io/2021/01/28/%E5%86%85%E7%BD%91%E5%8F%8D%E5%90%91socks%E4%BB%A3%E7%90%86/"/>
+    <id>https://wxt406611016.github.io/2021/01/28/%E5%86%85%E7%BD%91%E5%8F%8D%E5%90%91socks%E4%BB%A3%E7%90%86/</id>
+    <published>2021-01-27T16:00:00.000Z</published>
+    <updated>2021-01-28T15:20:46.299Z</updated>
+    
+    
+    <summary type="html">&lt;p&gt;EarthWorm是一款用于开启 SOCKS v5 代理服务的工具，基于标准 C 开发，可提供多平台间的转接通讯，用于复杂网络环境下的数据转发。 &lt;/p&gt;
+&lt;p&gt;EW主页： &lt;a href=&quot;http://rootkiter.com/EarthWorm/&quot;&gt;http://rootkiter.com/EarthWorm/&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;EW项目地址：&lt;a href=&quot;https://github.com/idlefire/ew&quot;&gt;https://github.com/idlefire/ew&lt;/a&gt;&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="Web" scheme="https://wxt406611016.github.io/categories/Web/"/>
+    
+    
+    <category term="内网渗透" scheme="https://wxt406611016.github.io/tags/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>vps+frp实现内网穿透</title>
+    <link href="https://wxt406611016.github.io/2021/01/28/vps+frp%E5%AE%9E%E7%8E%B0%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F/"/>
+    <id>https://wxt406611016.github.io/2021/01/28/vps+frp%E5%AE%9E%E7%8E%B0%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F/</id>
+    <published>2021-01-27T16:00:00.000Z</published>
+    <updated>2021-01-29T12:38:06.669Z</updated>
+    
+    
+    <summary type="html">&lt;p&gt;内网穿透的解决方案有很多，之前我一直在用网云穿提供的内网穿透服务。但是我自己有vps，为什么不自己搭一个内网穿透服务呢？又省钱又稳定又安全。网上教程也很多，通过frp搭建是一个好方法，frp全称fast reverse proxy，是一个开源反向代理，只需一个公网ip即可实现内网穿透。&lt;/p&gt;
+&lt;p&gt;frp项目地址：&lt;a href=&quot;https://github.com/fatedier/frp/releases&quot;&gt;https://github.com/fatedier/frp/releases&lt;/a&gt;&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="Web" scheme="https://wxt406611016.github.io/categories/Web/"/>
+    
+    
+    <category term="渗透测试" scheme="https://wxt406611016.github.io/tags/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Bugku Web总结(持续更新ing)</title>
+    <link href="https://wxt406611016.github.io/2021/01/22/Bugku%20Web%E6%80%BB%E7%BB%93(%E6%8C%81%E7%BB%AD%E6%9B%B4%E6%96%B0ing)/"/>
+    <id>https://wxt406611016.github.io/2021/01/22/Bugku%20Web%E6%80%BB%E7%BB%93(%E6%8C%81%E7%BB%AD%E6%9B%B4%E6%96%B0ing)/</id>
+    <published>2021-01-21T16:00:00.000Z</published>
+    <updated>2021-01-29T12:48:58.991Z</updated>
+    
+    
+    <summary type="html">&lt;p&gt;Bugku对于入门CTF的小白还是挺适合的，新版的Bugku和旧版有些不同，而且此前也没有整理过ctf web的骚操作，正好借这个机会补一补，总结新版Bugku Web中典型题目的wp，和一些常用函数的介绍，以及基础绕过姿势的总结。&lt;/p&gt;
+&lt;p&gt;ps：题目环境的flag可能随机生成，所以每道题的flag不一定固定！&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="Web" scheme="https://wxt406611016.github.io/categories/Web/"/>
+    
+    
+    <category term="Bugku" scheme="https://wxt406611016.github.io/tags/Bugku/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>2021.01.16(学期总结)</title>
+    <link href="https://wxt406611016.github.io/2021/01/16/2021-01-21(%E5%AD%A6%E6%9C%9F%E6%80%BB%E7%BB%93)/"/>
+    <id>https://wxt406611016.github.io/2021/01/16/2021-01-21(%E5%AD%A6%E6%9C%9F%E6%80%BB%E7%BB%93)/</id>
+    <published>2021-01-15T16:00:00.000Z</published>
+    <updated>2021-03-05T14:05:28.427Z</updated>
+    
+    
+    <summary type="html">Here&#39;s something encrypted, password is required to continue reading.</summary>
+    
+    
+    
+    <category term="Emotion" scheme="https://wxt406611016.github.io/categories/Emotion/"/>
+    
+    
+    <category term="sunny" scheme="https://wxt406611016.github.io/tags/sunny/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>github之hexo源码备份和应用</title>
+    <link href="https://wxt406611016.github.io/2020/11/09/github%E4%B9%8Bhexo%E6%BA%90%E7%A0%81%E5%A4%87%E4%BB%BD%E5%92%8C%E5%BA%94%E7%94%A8/"/>
+    <id>https://wxt406611016.github.io/2020/11/09/github%E4%B9%8Bhexo%E6%BA%90%E7%A0%81%E5%A4%87%E4%BB%BD%E5%92%8C%E5%BA%94%E7%94%A8/</id>
+    <published>2020-11-08T16:00:00.000Z</published>
+    <updated>2021-01-28T14:40:27.090Z</updated>
+    
+    
+    <summary type="html">&lt;p&gt;对于写博客的人来说，换电脑时如何迁移博客是比较头疼的，本文介绍了利用git分支保存hexo博客源码的方法，当换电脑时只需要将hexo源码git下来即可。&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="Web" scheme="https://wxt406611016.github.io/categories/Web/"/>
+    
+    
+    <category term="hexo" scheme="https://wxt406611016.github.io/tags/hexo/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>flask+redis限制ip访问速率</title>
+    <link href="https://wxt406611016.github.io/2020/04/11/flask+redis-%E9%99%90%E5%88%B6ip%E8%AE%BF%E9%97%AE%E9%A2%91%E7%8E%87/"/>
+    <id>https://wxt406611016.github.io/2020/04/11/flask+redis-%E9%99%90%E5%88%B6ip%E8%AE%BF%E9%97%AE%E9%A2%91%E7%8E%87/</id>
+    <published>2020-04-10T16:00:00.000Z</published>
+    <updated>2021-01-28T14:34:37.428Z</updated>
+    
+    
+    <summary type="html">&lt;p&gt;&lt;strong&gt;上篇介绍了利用font-face进行反爬虫，这篇介绍另一种常见方法–验证码校验，对频繁访问的ip进行限制，强制要求验证码验证，验证成功方可继续访问。&lt;/strong&gt;&lt;/p&gt;
+&lt;h2 id=&quot;1-限制逻辑-策略：&quot;&gt;&lt;a href=&quot;#1-限制逻辑-策略：&quot; class=&quot;headerlink&quot; title=&quot;1.限制逻辑/策略：&quot;&gt;&lt;/a&gt;1.限制逻辑/策略：&lt;/h2&gt;&lt;ol&gt;
+&lt;li&gt;利用request.remote_addr获取客户端ip；&lt;/li&gt;
+&lt;li&gt;客户端访问时，服务器判断redis中是否有客户端ip；&lt;/li&gt;
+&lt;li&gt;若不存在，将客户端ip存入redis中，对应值设为1；若存在，客户端ip对应值+1；&lt;/li&gt;
+&lt;li&gt;若redis中客户端ip对应值在5分钟内&amp;gt;5，即5分钟内访问页面超过5次，则视为恶意ip，跳转至验证码校验页面；&lt;/li&gt;
+&lt;li&gt;验证成功后，向后端请求过渡函数B，进行redis操作，B函数的功能为将验证成功的ip从redis中删除，删除后再重定向至开始页面；&lt;/li&gt;
+&lt;/ol&gt;</summary>
+    
+    
+    
+    <category term="Web" scheme="https://wxt406611016.github.io/categories/Web/"/>
+    
+    
+    <category term="ip限制" scheme="https://wxt406611016.github.io/tags/ip%E9%99%90%E5%88%B6/"/>
+    
+  </entry>
+  
+</feed>

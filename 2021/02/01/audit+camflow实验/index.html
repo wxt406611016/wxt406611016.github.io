@@ -1,0 +1,746 @@
+<!DOCTYPE html>
+
+
+<html lang="en">
+
+
+<head>
+  <meta charset="utf-8" />
+    
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <title>
+    audit+camflow实验 |  の
+  </title>
+  <meta name="generator" content="hexo-theme-ayer">
+  
+  <link rel="shortcut icon" href="https://cdn.jsdelivr.net/gh/wxt406611016/cdn/image/favicon.ico" />
+  
+  
+<link rel="stylesheet" href="/dist/main.css">
+
+  
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Shen-Yu/cdn/css/remixicon.min.css">
+
+  
+<link rel="stylesheet" href="/css/custom.css">
+
+  
+  
+<script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
+
+  
+  
+
+  
+
+<link rel="alternate" href="/atom.xml" title="の" type="application/atom+xml">
+</head>
+
+</html>
+
+<body>
+  <div id="app">
+    
+      
+      <canvas width="1777" height="841"
+        style="position: fixed; left: 0px; top: 0px; z-index: 99999; pointer-events: none;"></canvas>
+      
+    <main class="content on">
+      <section class="outer">
+  <article
+  id="post-audit+camflow实验"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h1 class="article-title sea-center" style="border-left:0" itemprop="name">
+  audit+camflow实验
+</h1>
+ 
+
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2021/02/01/audit+camflow%E5%AE%9E%E9%AA%8C/" class="article-date">
+  <time datetime="2021-01-31T16:00:00.000Z" itemprop="datePublished">2021-02-01</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Web/">Web</a>
+  </div>
+  
+<div class="word_count">
+    <span class="post-time">
+        <span class="post-meta-item-icon">
+            <i class="ri-quill-pen-line"></i>
+            <span class="post-meta-item-text"> Word count:</span>
+            <span class="post-count">5.7k</span>
+        </span>
+    </span>
+
+    <span class="post-time">
+        &nbsp; | &nbsp;
+        <span class="post-meta-item-icon">
+            <i class="ri-book-open-line"></i>
+            <span class="post-meta-item-text"> Reading time≈</span>
+            <span class="post-count">34 min</span>
+        </span>
+    </span>
+</div>
+ 
+    </div>
+      
+    <div class="tocbot"></div>
+
+
+
+
+  
+    <div class="article-entry" itemprop="articleBody">
+       
+  <h1 id="Auditd测试"><a href="#Auditd测试" class="headerlink" title="Auditd测试"></a>Auditd测试</h1><ul>
+<li>测试目标：拷贝，压缩</li>
+<li>测试环境：C，Python，命令行，图形界面</li>
+<li><a target="_blank" rel="noopener" href="https://wxt123.top/dict/Auditd/">测试脚本源码地址链接</a><a id="more"></a>
+</li>
+</ul>
+<hr>
+<h2 id="C"><a href="#C" class="headerlink" title="C"></a>C</h2><p><strong>拷贝：</strong></p>
+<ul>
+<li>添加规则：<code>sudo auditctl -w /home/supervampire/桌面/C/a.txt -p rwxa -F key=ccopy</code></li>
+<li>拷贝命令：<code>./copy a.txt aa.txt</code></li>
+<li>查看日志：<code>sudo ausearch -i -k ccopy</code><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">type&#x3D;PROCTITLE msg&#x3D;audit(2021年02月02日 10:09:43.146:250) : proctitle&#x3D;.&#x2F;copy a.txt aa.txt </span><br><span class="line">type&#x3D;PATH msg&#x3D;audit(2021年02月02日 10:09:43.146:250) : item&#x3D;0 name&#x3D;a.txt inode&#x3D;394627 dev&#x3D;08:05 mode&#x3D;file,664 ouid&#x3D;supervampire ogid&#x3D;supervampire rdev&#x3D;00:00 nametype&#x3D;NORMAL cap_fp&#x3D;none cap_fi&#x3D;none cap_fe&#x3D;0 cap_fver&#x3D;0 cap_frootid&#x3D;0 </span><br><span class="line">type&#x3D;CWD msg&#x3D;audit(2021年02月02日 10:09:43.146:250) : cwd&#x3D;&#x2F;home&#x2F;supervampire&#x2F;桌面&#x2F;C </span><br><span class="line">type&#x3D;SYSCALL msg&#x3D;audit(2021年02月02日 10:09:43.146:250) : arch&#x3D;x86_64 syscall&#x3D;openat success&#x3D;yes exit&#x3D;3 a0&#x3D;0xffffff9c a1&#x3D;0x7fffe995621a a2&#x3D;O_RDWR a3&#x3D;0x0 items&#x3D;1 ppid&#x3D;3983 pid&#x3D;4117 auid&#x3D;supervampire uid&#x3D;supervampire gid&#x3D;supervampire euid&#x3D;supervampire suid&#x3D;supervampire fsuid&#x3D;supervampire egid&#x3D;supervampire sgid&#x3D;supervampire fsgid&#x3D;supervampire tty&#x3D;pts0 ses&#x3D;3 comm&#x3D;copy exe&#x3D;&#x2F;home&#x2F;supervampire&#x2F;桌面&#x2F;C&#x2F;copy subj&#x3D;unconfined key&#x3D;ccopy </span><br></pre></td></tr></table></figure></li>
+<li>*压缩：**</li>
+<li>添加规则：<code>sudo auditctl -w /home/supervampire/桌面/C/b.txt -p rwxa -F key=czip</code></li>
+<li>压缩命令：<code>./minizip bb.zip b.txt</code></li>
+<li>查看日志：<code>sudo ausearch -i -k czip</code><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">type&#x3D;PROCTITLE msg&#x3D;audit(2021年02月02日 10:20:14.528:323) : proctitle&#x3D;.&#x2F;minizip b.zip b.txt </span><br><span class="line">type&#x3D;PATH msg&#x3D;audit(2021年02月02日 10:20:14.528:323) : item&#x3D;0 name&#x3D;b.txt inode&#x3D;394641 dev&#x3D;08:05 mode&#x3D;file,664 ouid&#x3D;supervampire ogid&#x3D;supervampire rdev&#x3D;00:00 nametype&#x3D;NORMAL cap_fp&#x3D;none cap_fi&#x3D;none cap_fe&#x3D;0 cap_fver&#x3D;0 cap_frootid&#x3D;0 </span><br><span class="line">type&#x3D;CWD msg&#x3D;audit(2021年02月02日 10:20:14.528:323) : cwd&#x3D;&#x2F;home&#x2F;supervampire&#x2F;桌面&#x2F;C </span><br><span class="line">type&#x3D;SYSCALL msg&#x3D;audit(2021年02月02日 10:20:14.528:323) : arch&#x3D;x86_64 syscall&#x3D;openat success&#x3D;yes exit&#x3D;4 a0&#x3D;0xffffff9c a1&#x3D;0x7fff48d0821b a2&#x3D;O_RDONLY a3&#x3D;0x0 items&#x3D;1 ppid&#x3D;3983 pid&#x3D;4300 auid&#x3D;supervampire uid&#x3D;supervampire gid&#x3D;supervampire euid&#x3D;supervampire suid&#x3D;supervampire fsuid&#x3D;supervampire egid&#x3D;supervampire sgid&#x3D;supervampire fsgid&#x3D;supervampire tty&#x3D;pts0 ses&#x3D;3 comm&#x3D;minizip exe&#x3D;&#x2F;home&#x2F;supervampire&#x2F;桌面&#x2F;C&#x2F;minizip subj&#x3D;unconfined key&#x3D;czip </span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<hr>
+<h2 id="Python"><a href="#Python" class="headerlink" title="Python"></a>Python</h2><p><strong>拷贝：</strong></p>
+<ul>
+<li>添加规则：<code>sudo auditctl -w /home/supervampire/桌面/C/c.txt -p rwxa -F key=pcopy</code></li>
+<li>拷贝命令：<code>python copy.py</code></li>
+<li>查看日志：<code>sudo ausearch -i -k pcopy</code><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">type&#x3D;PROCTITLE msg&#x3D;audit(2021年02月02日 10:40:48.226:563) : proctitle&#x3D;python copy.py </span><br><span class="line">type&#x3D;PATH msg&#x3D;audit(2021年02月02日 10:40:48.226:563) : item&#x3D;0 name&#x3D;c.txt inode&#x3D;394656 dev&#x3D;08:05 mode&#x3D;file,664 ouid&#x3D;supervampire ogid&#x3D;supervampire rdev&#x3D;00:00 nametype&#x3D;NORMAL cap_fp&#x3D;none cap_fi&#x3D;none cap_fe&#x3D;0 cap_fver&#x3D;0 cap_frootid&#x3D;0 </span><br><span class="line">type&#x3D;CWD msg&#x3D;audit(2021年02月02日 10:40:48.226:563) : cwd&#x3D;&#x2F;home&#x2F;supervampire&#x2F;桌面&#x2F;C </span><br><span class="line">type&#x3D;SYSCALL msg&#x3D;audit(2021年02月02日 10:40:48.226:563) : arch&#x3D;x86_64 syscall&#x3D;openat success&#x3D;yes exit&#x3D;3 a0&#x3D;0xffffff9c a1&#x3D;0x7f79a78244a0 a2&#x3D;O_RDONLY|O_CLOEXEC a3&#x3D;0x0 items&#x3D;1 ppid&#x3D;3983 pid&#x3D;4634 auid&#x3D;supervampire uid&#x3D;supervampire gid&#x3D;supervampire euid&#x3D;supervampire suid&#x3D;supervampire fsuid&#x3D;supervampire egid&#x3D;supervampire sgid&#x3D;supervampire fsgid&#x3D;supervampire tty&#x3D;pts0 ses&#x3D;3 comm&#x3D;python exe&#x3D;&#x2F;usr&#x2F;bin&#x2F;python3.8 subj&#x3D;unconfined key&#x3D;pcopy</span><br></pre></td></tr></table></figure></li>
+<li>*压缩：**</li>
+<li>添加规则：<code>sudo auditctl -w /home/supervampire/桌面/C/d.txt -p rwxa -F key=pzip</code></li>
+<li>拷贝命令：<code>python zlib.py</code></li>
+<li>查看日志：<code>sudo ausearch -i -k pzip</code><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">type&#x3D;PROCTITLE msg&#x3D;audit(2021年02月02日 10:45:35.582:619) : proctitle&#x3D;python zlib.py </span><br><span class="line">type&#x3D;PATH msg&#x3D;audit(2021年02月02日 10:45:35.582:619) : item&#x3D;0 name&#x3D;.&#x2F;d.txt inode&#x3D;394944 dev&#x3D;08:05 mode&#x3D;file,664 ouid&#x3D;supervampire ogid&#x3D;supervampire rdev&#x3D;00:00 nametype&#x3D;NORMAL cap_fp&#x3D;none cap_fi&#x3D;none cap_fe&#x3D;0 cap_fver&#x3D;0 cap_frootid&#x3D;0 </span><br><span class="line">type&#x3D;CWD msg&#x3D;audit(2021年02月02日 10:45:35.582:619) : cwd&#x3D;&#x2F;home&#x2F;supervampire&#x2F;桌面&#x2F;C </span><br><span class="line">type&#x3D;SYSCALL msg&#x3D;audit(2021年02月02日 10:45:35.582:619) : arch&#x3D;x86_64 syscall&#x3D;openat success&#x3D;yes exit&#x3D;4 a0&#x3D;0xffffff9c a1&#x3D;0x7f156444db30 a2&#x3D;O_RDONLY|O_CLOEXEC a3&#x3D;0x0 items&#x3D;1 ppid&#x3D;3983 pid&#x3D;4715 auid&#x3D;supervampire uid&#x3D;supervampire gid&#x3D;supervampire euid&#x3D;supervampire suid&#x3D;supervampire fsuid&#x3D;supervampire egid&#x3D;supervampire sgid&#x3D;supervampire fsgid&#x3D;supervampire tty&#x3D;pts0 ses&#x3D;3 comm&#x3D;python exe&#x3D;&#x2F;usr&#x2F;bin&#x2F;python3.8 subj&#x3D;unconfined key&#x3D;pzip </span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<hr>
+<h2 id="命令行"><a href="#命令行" class="headerlink" title="命令行"></a>命令行</h2><p><strong>拷贝：</strong></p>
+<ul>
+<li>添加规则：<code>sudo auditctl -w /home/supervampire/桌面/C/e.txt -p rwxa -F key=tcopy</code></li>
+<li>拷贝命令：<code>cp e.txt ee.txt</code></li>
+<li>查看日志：<code>sudo ausearch -i -k tcopy</code><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">type&#x3D;PROCTITLE msg&#x3D;audit(2021年02月02日 10:50:53.861:679) : proctitle&#x3D;cp e.txt ee.txt </span><br><span class="line">type&#x3D;PATH msg&#x3D;audit(2021年02月02日 10:50:53.861:679) : item&#x3D;0 name&#x3D;e.txt inode&#x3D;396347 dev&#x3D;08:05 mode&#x3D;file,664 ouid&#x3D;supervampire ogid&#x3D;supervampire rdev&#x3D;00:00 nametype&#x3D;NORMAL cap_fp&#x3D;none cap_fi&#x3D;none cap_fe&#x3D;0 cap_fver&#x3D;0 cap_frootid&#x3D;0 </span><br><span class="line">type&#x3D;CWD msg&#x3D;audit(2021年02月02日 10:50:53.861:679) : cwd&#x3D;&#x2F;home&#x2F;supervampire&#x2F;桌面&#x2F;C </span><br><span class="line">type&#x3D;SYSCALL msg&#x3D;audit(2021年02月02日 10:50:53.861:679) : arch&#x3D;x86_64 syscall&#x3D;openat success&#x3D;yes exit&#x3D;3 a0&#x3D;0xffffff9c a1&#x3D;0x7ffe0a41f210 a2&#x3D;O_RDONLY a3&#x3D;0x0 items&#x3D;1 ppid&#x3D;3983 pid&#x3D;4801 auid&#x3D;supervampire uid&#x3D;supervampire gid&#x3D;supervampire euid&#x3D;supervampire suid&#x3D;supervampire fsuid&#x3D;supervampire egid&#x3D;supervampire sgid&#x3D;supervampire fsgid&#x3D;supervampire tty&#x3D;pts0 ses&#x3D;3 comm&#x3D;cp exe&#x3D;&#x2F;usr&#x2F;bin&#x2F;cp subj&#x3D;unconfined key&#x3D;tcopy </span><br></pre></td></tr></table></figure></li>
+<li>*压缩：**</li>
+<li>添加规则：<code>sudo auditctl -w /home/supervampire/桌面/C/f.txt -p rwxa -F key=tzip</code></li>
+<li>压缩命令：<code>zip f.zip f.txt</code></li>
+<li>查看日志：<code>sudo ausearch -i -k tzip</code><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">type&#x3D;PROCTITLE msg&#x3D;audit(2021年02月02日 10:52:23.556:717) : proctitle&#x3D;zip f.zip f.txt </span><br><span class="line">type&#x3D;PATH msg&#x3D;audit(2021年02月02日 10:52:23.556:717) : item&#x3D;0 name&#x3D;f.txt inode&#x3D;396348 dev&#x3D;08:05 mode&#x3D;file,664 ouid&#x3D;supervampire ogid&#x3D;supervampire rdev&#x3D;00:00 nametype&#x3D;NORMAL cap_fp&#x3D;none cap_fi&#x3D;none cap_fe&#x3D;0 cap_fver&#x3D;0 cap_frootid&#x3D;0 </span><br><span class="line">type&#x3D;CWD msg&#x3D;audit(2021年02月02日 10:52:23.556:717) : cwd&#x3D;&#x2F;home&#x2F;supervampire&#x2F;桌面&#x2F;C </span><br><span class="line">type&#x3D;SYSCALL msg&#x3D;audit(2021年02月02日 10:52:23.556:717) : arch&#x3D;x86_64 syscall&#x3D;openat success&#x3D;yes exit&#x3D;4 a0&#x3D;0xffffff9c a1&#x3D;0x55e411b10720 a2&#x3D;O_RDONLY a3&#x3D;0x0 items&#x3D;1 ppid&#x3D;3983 pid&#x3D;4861 auid&#x3D;supervampire uid&#x3D;supervampire gid&#x3D;supervampire euid&#x3D;supervampire suid&#x3D;supervampire fsuid&#x3D;supervampire egid&#x3D;supervampire sgid&#x3D;supervampire fsgid&#x3D;supervampire tty&#x3D;pts0 ses&#x3D;3 comm&#x3D;zip exe&#x3D;&#x2F;usr&#x2F;bin&#x2F;zip subj&#x3D;unconfined key&#x3D;tzip </span><br><span class="line"></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<hr>
+<h2 id="图形界面"><a href="#图形界面" class="headerlink" title="图形界面"></a>图形界面</h2><p><strong>拷贝：</strong></p>
+<ul>
+<li>添加规则：<code>sudo auditctl -w /home/supervampire/桌面/C/g.txt -p rwxa -F key=gcopy</code></li>
+<li>查看日志：<code>sudo ausearch -i -k gcopy</code><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">type&#x3D;PROCTITLE msg&#x3D;audit(2021年02月02日 10:59:09.454:862) : proctitle&#x3D;&#x2F;usr&#x2F;bin&#x2F;nautilus --gapplication-service </span><br><span class="line">type&#x3D;PATH msg&#x3D;audit(2021年02月02日 10:59:09.454:862) : item&#x3D;0 name&#x3D;&#x2F;home&#x2F;supervampire&#x2F;桌面&#x2F;C&#x2F;g.txt inode&#x3D;394598 dev&#x3D;08:05 mode&#x3D;file,664 ouid&#x3D;supervampire ogid&#x3D;supervampire rdev&#x3D;00:00 nametype&#x3D;NORMAL cap_fp&#x3D;none cap_fi&#x3D;none cap_fe&#x3D;0 cap_fver&#x3D;0 cap_frootid&#x3D;0 </span><br><span class="line">type&#x3D;CWD msg&#x3D;audit(2021年02月02日 10:59:09.454:862) : cwd&#x3D;&#x2F;home&#x2F;supervampire </span><br><span class="line">type&#x3D;SYSCALL msg&#x3D;audit(2021年02月02日 10:59:09.454:862) : arch&#x3D;x86_64 syscall&#x3D;openat success&#x3D;yes exit&#x3D;30 a0&#x3D;0xffffff9c a1&#x3D;0x5617b38c29c0 a2&#x3D;O_RDONLY a3&#x3D;0x0 items&#x3D;1 ppid&#x3D;1873 pid&#x3D;3183 auid&#x3D;supervampire uid&#x3D;supervampire gid&#x3D;supervampire euid&#x3D;supervampire suid&#x3D;supervampire fsuid&#x3D;supervampire egid&#x3D;supervampire sgid&#x3D;supervampire fsgid&#x3D;supervampire tty&#x3D;(none) ses&#x3D;3 comm&#x3D;pool-org.gnome. exe&#x3D;&#x2F;usr&#x2F;bin&#x2F;nautilus subj&#x3D;unconfined key&#x3D;gcopy </span><br><span class="line">----</span><br><span class="line">type&#x3D;PROCTITLE msg&#x3D;audit(2021年02月02日 10:59:09.454:863) : proctitle&#x3D;&#x2F;usr&#x2F;bin&#x2F;nautilus --gapplication-service </span><br><span class="line">type&#x3D;PATH msg&#x3D;audit(2021年02月02日 10:59:09.454:863) : item&#x3D;0 name&#x3D;(null) inode&#x3D;394598 dev&#x3D;08:05 mode&#x3D;file,664 ouid&#x3D;supervampire ogid&#x3D;supervampire rdev&#x3D;00:00 nametype&#x3D;NORMAL cap_fp&#x3D;none cap_fi&#x3D;none cap_fe&#x3D;0 cap_fver&#x3D;0 cap_frootid&#x3D;0 </span><br><span class="line">type&#x3D;SYSCALL msg&#x3D;audit(2021年02月02日 10:59:09.454:863) : arch&#x3D;x86_64 syscall&#x3D;flistxattr success&#x3D;yes exit&#x3D;0 a0&#x3D;0x1e a1&#x3D;0x0 a2&#x3D;0x0 a3&#x3D;0x7f42e0002440 items&#x3D;1 ppid&#x3D;1873 pid&#x3D;3183 auid&#x3D;supervampire uid&#x3D;supervampire gid&#x3D;supervampire euid&#x3D;supervampire suid&#x3D;supervampire fsuid&#x3D;supervampire egid&#x3D;supervampire sgid&#x3D;supervampire fsgid&#x3D;supervampire tty&#x3D;(none) ses&#x3D;3 comm&#x3D;pool-org.gnome. exe&#x3D;&#x2F;usr&#x2F;bin&#x2F;nautilus subj&#x3D;unconfined key&#x3D;gcopy </span><br><span class="line">----</span><br><span class="line">type&#x3D;PROCTITLE msg&#x3D;audit(2021年02月02日 10:59:10.826:865) : proctitle&#x3D;&#x2F;usr&#x2F;bin&#x2F;vmtoolsd -n vmusr --blockFd 3 </span><br><span class="line">type&#x3D;PATH msg&#x3D;audit(2021年02月02日 10:59:10.826:865) : item&#x3D;0 name&#x3D;&#x2F;home&#x2F;supervampire&#x2F;桌面&#x2F;C&#x2F;g.txt inode&#x3D;394598 dev&#x3D;08:05 mode&#x3D;file,664 ouid&#x3D;supervampire ogid&#x3D;supervampire rdev&#x3D;00:00 nametype&#x3D;NORMAL cap_fp&#x3D;none cap_fi&#x3D;none cap_fe&#x3D;0 cap_fver&#x3D;0 cap_frootid&#x3D;0 </span><br><span class="line">type&#x3D;CWD msg&#x3D;audit(2021年02月02日 10:59:10.826:865) : cwd&#x3D;&#x2F;home&#x2F;supervampire </span><br><span class="line">type&#x3D;SYSCALL msg&#x3D;audit(2021年02月02日 10:59:10.826:865) : arch&#x3D;x86_64 syscall&#x3D;openat success&#x3D;yes exit&#x3D;7 a0&#x3D;0xffffff9c a1&#x3D;0x556fb49c0500 a2&#x3D;O_RDONLY a3&#x3D;0x0 items&#x3D;1 ppid&#x3D;1873 pid&#x3D;2675 auid&#x3D;supervampire uid&#x3D;supervampire gid&#x3D;supervampire euid&#x3D;supervampire suid&#x3D;supervampire fsuid&#x3D;supervampire egid&#x3D;supervampire sgid&#x3D;supervampire fsgid&#x3D;supervampire tty&#x3D;(none) ses&#x3D;3 comm&#x3D;vmtoolsd exe&#x3D;&#x2F;usr&#x2F;bin&#x2F;vmtoolsd subj&#x3D;unconfined key&#x3D;gcopy</span><br><span class="line"></span><br><span class="line">#其中nautilus nautilus是GNOME桌面下的文件管理工具，vmtoolsd是VMWare Tools的服务</span><br></pre></td></tr></table></figure></li>
+<li>*压缩：**</li>
+<li>添加规则：<code>sudo auditctl -w /home/supervampire/桌面/C/h.txt -p rwxa -F key=gzip</code></li>
+<li>查看日志：<code>sudo ausearch -i -k gzip</code><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">type&#x3D;PROCTITLE msg&#x3D;audit(2021年02月02日 11:02:22.947:905) : proctitle&#x3D;&#x2F;usr&#x2F;bin&#x2F;nautilus --gapplication-service </span><br><span class="line">type&#x3D;PATH msg&#x3D;audit(2021年02月02日 11:02:22.947:905) : item&#x3D;0 name&#x3D;&#x2F;home&#x2F;supervampire&#x2F;桌面&#x2F;C&#x2F;h.txt inode&#x3D;394616 dev&#x3D;08:05 mode&#x3D;file,664 ouid&#x3D;supervampire ogid&#x3D;supervampire rdev&#x3D;00:00 nametype&#x3D;NORMAL cap_fp&#x3D;none cap_fi&#x3D;none cap_fe&#x3D;0 cap_fver&#x3D;0 cap_frootid&#x3D;0 </span><br><span class="line">type&#x3D;CWD msg&#x3D;audit(2021年02月02日 11:02:22.947:905) : cwd&#x3D;&#x2F;home&#x2F;supervampire </span><br><span class="line">type&#x3D;SYSCALL msg&#x3D;audit(2021年02月02日 11:02:22.947:905) : arch&#x3D;x86_64 syscall&#x3D;llistxattr success&#x3D;yes exit&#x3D;0 a0&#x3D;0x5617b4151ac0 a1&#x3D;0x0 a2&#x3D;0x0 a3&#x3D;0x5617b3737f10 items&#x3D;1 ppid&#x3D;1873 pid&#x3D;3183 auid&#x3D;supervampire uid&#x3D;supervampire gid&#x3D;supervampire euid&#x3D;supervampire suid&#x3D;supervampire fsuid&#x3D;supervampire egid&#x3D;supervampire sgid&#x3D;supervampire fsgid&#x3D;supervampire tty&#x3D;(none) ses&#x3D;3 comm&#x3D;pool-org.gnome. exe&#x3D;&#x2F;usr&#x2F;bin&#x2F;nautilus subj&#x3D;unconfined key&#x3D;gzip </span><br><span class="line">----</span><br><span class="line">type&#x3D;PROCTITLE msg&#x3D;audit(2021年02月02日 11:02:22.951:907) : proctitle&#x3D;&#x2F;usr&#x2F;bin&#x2F;nautilus --gapplication-service </span><br><span class="line">type&#x3D;PATH msg&#x3D;audit(2021年02月02日 11:02:22.951:907) : item&#x3D;0 name&#x3D;&#x2F;home&#x2F;supervampire&#x2F;桌面&#x2F;C&#x2F;h.txt inode&#x3D;394616 dev&#x3D;08:05 mode&#x3D;file,664 ouid&#x3D;supervampire ogid&#x3D;supervampire rdev&#x3D;00:00 nametype&#x3D;NORMAL cap_fp&#x3D;none cap_fi&#x3D;none cap_fe&#x3D;0 cap_fver&#x3D;0 cap_frootid&#x3D;0 </span><br><span class="line">type&#x3D;CWD msg&#x3D;audit(2021年02月02日 11:02:22.951:907) : cwd&#x3D;&#x2F;home&#x2F;supervampire </span><br><span class="line">type&#x3D;SYSCALL msg&#x3D;audit(2021年02月02日 11:02:22.951:907) : arch&#x3D;x86_64 syscall&#x3D;openat success&#x3D;yes exit&#x3D;31 a0&#x3D;0xffffff9c a1&#x3D;0x5617b4151ac0 a2&#x3D;O_RDONLY a3&#x3D;0x0 items&#x3D;1 ppid&#x3D;1873 pid&#x3D;3183 auid&#x3D;supervampire uid&#x3D;supervampire gid&#x3D;supervampire euid&#x3D;supervampire suid&#x3D;supervampire fsuid&#x3D;supervampire egid&#x3D;supervampire sgid&#x3D;supervampire fsgid&#x3D;supervampire tty&#x3D;(none) ses&#x3D;3 comm&#x3D;pool-org.gnome. exe&#x3D;&#x2F;usr&#x2F;bin&#x2F;nautilus subj&#x3D;unconfined key&#x3D;gzip</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<hr>
+</br>
+</br>
+</br>
+</br>
+</br>
+</br>
+</br>
+
+<h1 id="Camflow测试"><a href="#Camflow测试" class="headerlink" title="Camflow测试"></a>Camflow测试</h1><ul>
+<li>测试目标：进程(搜索，压缩，发送)</li>
+<li>测试环境：Python脚本</li>
+<li><a target="_blank" rel="noopener" href="https://wxt123.top/dict/CamFlow/camflow.py.txt">测试脚本源码地址链接</a></li>
+</ul>
+<hr>
+<ul>
+<li>添加规则：<code>sudo camflow --track-process 2311 true</code></li>
+<li>查看日志：<code>cat /tmp/audit.log</code>(由于日志太长，只截取其中一段的关键部分，该段包含关键文件名和packet信息，<a target="_blank" rel="noopener" href="https://wxt123.top/dict/CamFlow/cc/readme.txt">全部日志链接访问</a>)<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br><span class="line">228</span><br><span class="line">229</span><br><span class="line">230</span><br><span class="line">231</span><br><span class="line">232</span><br><span class="line">233</span><br><span class="line">234</span><br><span class="line">235</span><br><span class="line">236</span><br><span class="line">237</span><br><span class="line">238</span><br><span class="line">239</span><br><span class="line">240</span><br><span class="line">241</span><br><span class="line">242</span><br><span class="line">243</span><br><span class="line">244</span><br><span class="line">245</span><br><span class="line">246</span><br><span class="line">247</span><br><span class="line">248</span><br><span class="line">249</span><br><span class="line">250</span><br><span class="line">251</span><br><span class="line">252</span><br><span class="line">253</span><br><span class="line">254</span><br><span class="line">255</span><br><span class="line">256</span><br><span class="line">257</span><br><span class="line">258</span><br><span class="line">259</span><br><span class="line">260</span><br><span class="line">261</span><br><span class="line">262</span><br><span class="line">263</span><br><span class="line">264</span><br><span class="line">265</span><br><span class="line">266</span><br><span class="line">267</span><br><span class="line">268</span><br><span class="line">269</span><br><span class="line">270</span><br><span class="line">271</span><br><span class="line">272</span><br><span class="line">273</span><br><span class="line">274</span><br><span class="line">275</span><br><span class="line">276</span><br><span class="line">277</span><br><span class="line">278</span><br><span class="line">279</span><br><span class="line">280</span><br><span class="line">281</span><br><span class="line">282</span><br><span class="line">283</span><br><span class="line">284</span><br><span class="line">285</span><br><span class="line">286</span><br><span class="line">287</span><br><span class="line">288</span><br><span class="line">289</span><br><span class="line">290</span><br><span class="line">291</span><br><span class="line">292</span><br><span class="line">293</span><br><span class="line">294</span><br><span class="line">295</span><br><span class="line">296</span><br><span class="line">297</span><br><span class="line">298</span><br><span class="line">299</span><br><span class="line">300</span><br><span class="line">301</span><br><span class="line">302</span><br><span class="line">303</span><br><span class="line">304</span><br><span class="line">305</span><br><span class="line">306</span><br><span class="line">307</span><br><span class="line">308</span><br><span class="line">309</span><br><span class="line">310</span><br><span class="line">311</span><br><span class="line">312</span><br><span class="line">313</span><br><span class="line">314</span><br><span class="line">315</span><br><span class="line">316</span><br><span class="line">317</span><br><span class="line">318</span><br><span class="line">319</span><br><span class="line">320</span><br><span class="line">321</span><br><span class="line">322</span><br><span class="line">323</span><br><span class="line">324</span><br><span class="line">325</span><br><span class="line">326</span><br><span class="line">327</span><br><span class="line">328</span><br><span class="line">329</span><br><span class="line">330</span><br><span class="line">331</span><br><span class="line">332</span><br><span class="line">333</span><br><span class="line">334</span><br><span class="line">335</span><br><span class="line">336</span><br><span class="line">337</span><br><span class="line">338</span><br><span class="line">339</span><br><span class="line">340</span><br><span class="line">341</span><br><span class="line">342</span><br><span class="line">343</span><br><span class="line">344</span><br><span class="line">345</span><br><span class="line">346</span><br><span class="line">347</span><br><span class="line">348</span><br><span class="line">349</span><br><span class="line">350</span><br><span class="line">351</span><br><span class="line">352</span><br><span class="line">353</span><br><span class="line">354</span><br><span class="line">355</span><br><span class="line">356</span><br><span class="line">357</span><br><span class="line">358</span><br><span class="line">359</span><br><span class="line">360</span><br><span class="line">361</span><br><span class="line">362</span><br><span class="line">363</span><br><span class="line">364</span><br><span class="line">365</span><br><span class="line">366</span><br><span class="line">367</span><br><span class="line">368</span><br><span class="line">369</span><br><span class="line">370</span><br><span class="line">371</span><br><span class="line">372</span><br><span class="line">373</span><br><span class="line">374</span><br><span class="line">375</span><br><span class="line">376</span><br><span class="line">377</span><br><span class="line">378</span><br><span class="line">379</span><br><span class="line">380</span><br><span class="line">381</span><br><span class="line">382</span><br><span class="line">383</span><br><span class="line">384</span><br><span class="line">385</span><br><span class="line">386</span><br><span class="line">387</span><br><span class="line">388</span><br><span class="line">389</span><br><span class="line">390</span><br><span class="line">391</span><br><span class="line">392</span><br><span class="line">393</span><br><span class="line">394</span><br><span class="line">395</span><br><span class="line">396</span><br><span class="line">397</span><br><span class="line">398</span><br><span class="line">399</span><br><span class="line">400</span><br><span class="line">401</span><br><span class="line">402</span><br><span class="line">403</span><br><span class="line">404</span><br><span class="line">405</span><br><span class="line">406</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">	&quot;entity&quot;: &#123;</span><br><span class="line">		&quot;cf:ACAAAAAAACCALgIAAAAAACgAAACkyYgGAAAAAAAAAAA&#x3D;&quot;: &#123;</span><br><span class="line">			&quot;cf:id&quot;: &quot;142976&quot;,</span><br><span class="line">			&quot;prov:type&quot;: &quot;socket&quot;,</span><br><span class="line">			&quot;cf:boot_id&quot;: 40,</span><br><span class="line">			&quot;cf:machine_id&quot;: &quot;cf:109627812&quot;,</span><br><span class="line">			&quot;cf:version&quot;: 0,</span><br><span class="line">			&quot;cf:date&quot;: &quot;2021:02:02T07:05:54&quot;,</span><br><span class="line">			&quot;cf:taint&quot;: &quot;0&quot;,</span><br><span class="line">			&quot;cf:jiffies&quot;: &quot;4294963341&quot;,</span><br><span class="line">			&quot;cf:epoch&quot;: 2,</span><br><span class="line">			&quot;cf:uid&quot;: 0,</span><br><span class="line">			&quot;cf:gid&quot;: 0,</span><br><span class="line">			&quot;cf:mode&quot;: &quot;0xc1ff&quot;,</span><br><span class="line">			&quot;cf:secctx&quot;: &quot;system_u:object_r:unlabeled_t:s0&quot;,</span><br><span class="line">			&quot;cf:ino&quot;: 56422,</span><br><span class="line">			&quot;cf:uuid&quot;: &quot;00000000-0000-0000-0000-000000000000&quot;,</span><br><span class="line">			&quot;prov:label&quot;: &quot;[socket] 0&quot;</span><br><span class="line">		&#125;,</span><br><span class="line">		&quot;cf:AAACAAAAACAVIQAAwKi3gi9dKpaxXAAWBgAAAGi29KA&#x3D;&quot;: &#123;</span><br><span class="line">			&quot;cf:id&quot;: 8469,</span><br><span class="line">			&quot;cf:seq&quot;: 2700392040,</span><br><span class="line">			&quot;cf:sender&quot;: &quot;192.168.183.130:45404&quot;,</span><br><span class="line">			&quot;cf:receiver&quot;: &quot;47.93.42.150:22&quot;,</span><br><span class="line">			&quot;prov:type&quot;: &quot;packet&quot;,</span><br><span class="line">			&quot;cf:taint&quot;: &quot;0&quot;,</span><br><span class="line">			&quot;cf:jiffies&quot;: &quot;4294963341&quot;,</span><br><span class="line">			&quot;cf:len&quot;: 15360,</span><br><span class="line">			&quot;prov:label&quot;: &quot;[packet] 192.168.183.130:45404-&gt;47.93.42.150:22 (8469)&quot;</span><br><span class="line">		&#125;,</span><br><span class="line">		&quot;cf:AAAIAAAAACA8JgIAAAAAACgAAACkyYgGFQAAAAAAAAA&#x3D;&quot;: &#123;</span><br><span class="line">			&quot;cf:id&quot;: &quot;140860&quot;,</span><br><span class="line">			&quot;prov:type&quot;: &quot;process_memory&quot;,</span><br><span class="line">			&quot;cf:boot_id&quot;: 40,</span><br><span class="line">			&quot;cf:machine_id&quot;: &quot;cf:109627812&quot;,</span><br><span class="line">			&quot;cf:version&quot;: 21,</span><br><span class="line">			&quot;cf:date&quot;: &quot;2021:02:02T07:05:54&quot;,</span><br><span class="line">			&quot;cf:taint&quot;: &quot;0&quot;,</span><br><span class="line">			&quot;cf:jiffies&quot;: &quot;4294963379&quot;,</span><br><span class="line">			&quot;cf:epoch&quot;: 2,</span><br><span class="line">			&quot;cf:uid&quot;: 1000,</span><br><span class="line">			&quot;cf:gid&quot;: 1000,</span><br><span class="line">			&quot;cf:tgid&quot;: 2341,</span><br><span class="line">			&quot;cf:utsns&quot;: 4026531838,</span><br><span class="line">			&quot;cf:ipcns&quot;: 4026531839,</span><br><span class="line">			&quot;cf:mntns&quot;: 4026531840,</span><br><span class="line">			&quot;cf:pidns&quot;: 4026531836,</span><br><span class="line">			&quot;cf:netns&quot;: 4026531992,</span><br><span class="line">			&quot;cf:cgroupns&quot;: 4026531835,</span><br><span class="line">			&quot;cf:secctx&quot;: &quot;unconfined_u:unconfined_r:unconfined_t:s0-s0:c0.c1023&quot;,</span><br><span class="line">			&quot;prov:label&quot;: &quot;[process] 21&quot;</span><br><span class="line">		&#125;,</span><br><span class="line">		&quot;cf:AAEAAAAAACBDxgAAAAAAACgAAACkyYgGAAAAAAAAAAA&#x3D;&quot;: &#123;</span><br><span class="line">			&quot;cf:id&quot;: &quot;50755&quot;,</span><br><span class="line">			&quot;prov:type&quot;: &quot;file&quot;,</span><br><span class="line">			&quot;cf:boot_id&quot;: 40,</span><br><span class="line">			&quot;cf:machine_id&quot;: &quot;cf:109627812&quot;,</span><br><span class="line">			&quot;cf:version&quot;: 0,</span><br><span class="line">			&quot;cf:date&quot;: &quot;2021:02:02T07:05:54&quot;,</span><br><span class="line">			&quot;cf:taint&quot;: &quot;0&quot;,</span><br><span class="line">			&quot;cf:jiffies&quot;: &quot;4294963462&quot;,</span><br><span class="line">			&quot;cf:epoch&quot;: 2,</span><br><span class="line">			&quot;cf:uid&quot;: 0,</span><br><span class="line">			&quot;cf:gid&quot;: 0,</span><br><span class="line">			&quot;cf:mode&quot;: &quot;0x81a4&quot;,</span><br><span class="line">			&quot;cf:secctx&quot;: &quot;unconfined_u:object_r:ld_so_cache_t:s0&quot;,</span><br><span class="line">			&quot;cf:ino&quot;: 322674,</span><br><span class="line">			&quot;cf:uuid&quot;: &quot;90365732-09d3-477e-bf09-6e627d11b666&quot;,</span><br><span class="line">			&quot;prov:label&quot;: &quot;[file] 0&quot;</span><br><span class="line">		&#125;,</span><br><span class="line">		&quot;cf:AABAAAAAACThul9E+DhrUCgAAACkyYgGAAAAAAAAAAA&#x3D;&quot;: &#123;</span><br><span class="line">			&quot;cf:id&quot;: &quot;5794787984492444385&quot;,</span><br><span class="line">			&quot;prov:type&quot;: &quot;path&quot;,</span><br><span class="line">			&quot;cf:boot_id&quot;: 40,</span><br><span class="line">			&quot;cf:machine_id&quot;: &quot;cf:109627812&quot;,</span><br><span class="line">			&quot;cf:version&quot;: 0,</span><br><span class="line">			&quot;cf:date&quot;: &quot;2021:02:02T07:05:54&quot;,</span><br><span class="line">			&quot;cf:taint&quot;: &quot;0&quot;,</span><br><span class="line">			&quot;cf:jiffies&quot;: &quot;4294963336&quot;,</span><br><span class="line">			&quot;cf:epoch&quot;: 2,</span><br><span class="line">			&quot;cf:pathname&quot;: &quot;&#x2F;usr&#x2F;bin&#x2F;python3.9&quot;,</span><br><span class="line">			&quot;prov:label&quot;: &quot;[path] &#x2F;usr&#x2F;bin&#x2F;python3.9&quot;</span><br><span class="line">		&#125;,</span><br><span class="line">		&quot;cf:AABAAAAAACQLciqz2yQUOygAAACkyYgGAAAAAAAAAAA&#x3D;&quot;: &#123;</span><br><span class="line">			&quot;cf:id&quot;: &quot;4257068073794302475&quot;,</span><br><span class="line">			&quot;prov:type&quot;: &quot;path&quot;,</span><br><span class="line">			&quot;cf:boot_id&quot;: 40,</span><br><span class="line">			&quot;cf:machine_id&quot;: &quot;cf:109627812&quot;,</span><br><span class="line">			&quot;cf:version&quot;: 0,</span><br><span class="line">			&quot;cf:date&quot;: &quot;2021:02:02T07:05:54&quot;,</span><br><span class="line">			&quot;cf:taint&quot;: &quot;0&quot;,</span><br><span class="line">			&quot;cf:jiffies&quot;: &quot;4294963336&quot;,</span><br><span class="line">			&quot;cf:epoch&quot;: 2,</span><br><span class="line">			&quot;cf:pathname&quot;: &quot;&#x2F;home&#x2F;supervampire&#x2F;Camflow-test&#x2F;flag.txt&quot;,</span><br><span class="line">			&quot;prov:label&quot;: &quot;[path] &#x2F;home&#x2F;supervampire&#x2F;Camflow-test&#x2F;flag.txt&quot;</span><br><span class="line">		&#125;,</span><br><span class="line">		&quot;cf:AABAAAAAACTUxo1ZkB2e5ygAAACkyYgGAAAAAAAAAAA&#x3D;&quot;: &#123;</span><br><span class="line">			&quot;cf:id&quot;: &quot;16689809774896596692&quot;,</span><br><span class="line">			&quot;prov:type&quot;: &quot;path&quot;,</span><br><span class="line">			&quot;cf:boot_id&quot;: 40,</span><br><span class="line">			&quot;cf:machine_id&quot;: &quot;cf:109627812&quot;,</span><br><span class="line">			&quot;cf:version&quot;: 0,</span><br><span class="line">			&quot;cf:date&quot;: &quot;2021:02:02T07:05:54&quot;,</span><br><span class="line">			&quot;cf:taint&quot;: &quot;0&quot;,</span><br><span class="line">			&quot;cf:jiffies&quot;: &quot;4294963336&quot;,</span><br><span class="line">			&quot;cf:epoch&quot;: 2,</span><br><span class="line">			&quot;cf:pathname&quot;: &quot;&#x2F;home&#x2F;supervampire&#x2F;Camflow-test&#x2F;c.txt&quot;,</span><br><span class="line">			&quot;prov:label&quot;: &quot;[path] &#x2F;home&#x2F;supervampire&#x2F;Camflow-test&#x2F;c.txt&quot;</span><br><span class="line">		&#125;,</span><br><span class="line">		&quot;cf:AABAAAAAACRjBXZwWD6wUCgAAACkyYgGAAAAAAAAAAA&#x3D;&quot;: &#123;</span><br><span class="line">			&quot;cf:id&quot;: &quot;5814215668500137315&quot;,</span><br><span class="line">			&quot;prov:type&quot;: &quot;path&quot;,</span><br><span class="line">			&quot;cf:boot_id&quot;: 40,</span><br><span class="line">			&quot;cf:machine_id&quot;: &quot;cf:109627812&quot;,</span><br><span class="line">			&quot;cf:version&quot;: 0,</span><br><span class="line">			&quot;cf:date&quot;: &quot;2021:02:02T07:05:54&quot;,</span><br><span class="line">			&quot;cf:taint&quot;: &quot;0&quot;,</span><br><span class="line">			&quot;cf:jiffies&quot;: &quot;4294963336&quot;,</span><br><span class="line">			&quot;cf:epoch&quot;: 2,</span><br><span class="line">			&quot;cf:pathname&quot;: &quot;&#x2F;home&#x2F;supervampire&#x2F;Camflow-test&#x2F;camflow.py&quot;,</span><br><span class="line">			&quot;prov:label&quot;: &quot;[path] &#x2F;home&#x2F;supervampire&#x2F;Camflow-test&#x2F;camflow.py&quot;</span><br><span class="line">		&#125;,</span><br><span class="line">		&quot;cf:AABAAAAAACQKWd+Om89h2ygAAACkyYgGAAAAAAAAAAA&#x3D;&quot;: &#123;</span><br><span class="line">			&quot;cf:id&quot;: &quot;15808144434071034122&quot;,</span><br><span class="line">			&quot;prov:type&quot;: &quot;path&quot;,</span><br><span class="line">			&quot;cf:boot_id&quot;: 40,</span><br><span class="line">			&quot;cf:machine_id&quot;: &quot;cf:109627812&quot;,</span><br><span class="line">			&quot;cf:version&quot;: 0,</span><br><span class="line">			&quot;cf:date&quot;: &quot;2021:02:02T07:05:54&quot;,</span><br><span class="line">			&quot;cf:taint&quot;: &quot;0&quot;,</span><br><span class="line">			&quot;cf:jiffies&quot;: &quot;4294963336&quot;,</span><br><span class="line">			&quot;cf:epoch&quot;: 2,</span><br><span class="line">			&quot;cf:pathname&quot;: &quot;&#x2F;home&#x2F;supervampire&#x2F;Camflow-test&#x2F;cc.zip&quot;,</span><br><span class="line">			&quot;prov:label&quot;: &quot;[path] &#x2F;home&#x2F;supervampire&#x2F;Camflow-test&#x2F;cc.zip&quot;</span><br><span class="line">		&#125;,</span><br><span class="line">		&quot;cf:AABAAAAAACQijbO7AsObRygAAACkyYgGAAAAAAAAAAA&#x3D;&quot;: &#123;</span><br><span class="line">			&quot;cf:id&quot;: &quot;5159932214589492514&quot;,</span><br><span class="line">			&quot;prov:type&quot;: &quot;path&quot;,</span><br><span class="line">			&quot;cf:boot_id&quot;: 40,</span><br><span class="line">			&quot;cf:machine_id&quot;: &quot;cf:109627812&quot;,</span><br><span class="line">			&quot;cf:version&quot;: 0,</span><br><span class="line">			&quot;cf:date&quot;: &quot;2021:02:02T07:05:54&quot;,</span><br><span class="line">			&quot;cf:taint&quot;: &quot;0&quot;,</span><br><span class="line">			&quot;cf:jiffies&quot;: &quot;4294963336&quot;,</span><br><span class="line">			&quot;cf:epoch&quot;: 2,</span><br><span class="line">			&quot;cf:pathname&quot;: &quot;&#x2F;home&#x2F;supervampire&#x2F;Camflow-test&#x2F;A&#x2F;a.txt&quot;,</span><br><span class="line">			&quot;prov:label&quot;: &quot;[path] &#x2F;home&#x2F;supervampire&#x2F;Camflow-test&#x2F;A&#x2F;a.txt&quot;</span><br><span class="line">		&#125;,</span><br><span class="line">		&quot;cf:AABAAAAAACSjpcW7AsObRygAAACkyYgGAAAAAAAAAAA&#x3D;&quot;: &#123;</span><br><span class="line">			&quot;cf:id&quot;: &quot;5159932214590678435&quot;,</span><br><span class="line">			&quot;prov:type&quot;: &quot;path&quot;,</span><br><span class="line">			&quot;cf:boot_id&quot;: 40,</span><br><span class="line">			&quot;cf:machine_id&quot;: &quot;cf:109627812&quot;,</span><br><span class="line">			&quot;cf:version&quot;: 0,</span><br><span class="line">			&quot;cf:date&quot;: &quot;2021:02:02T07:05:54&quot;,</span><br><span class="line">			&quot;cf:taint&quot;: &quot;0&quot;,</span><br><span class="line">			&quot;cf:jiffies&quot;: &quot;4294963336&quot;,</span><br><span class="line">			&quot;cf:epoch&quot;: 2,</span><br><span class="line">			&quot;cf:pathname&quot;: &quot;&#x2F;home&#x2F;supervampire&#x2F;Camflow-test&#x2F;A&#x2F;b.txt&quot;,</span><br><span class="line">			&quot;prov:label&quot;: &quot;[path] &#x2F;home&#x2F;supervampire&#x2F;Camflow-test&#x2F;A&#x2F;b.txt&quot;</span><br><span class="line">		&#125;,</span><br><span class="line">		&quot;cf:AABAAAAAACSH6fP&#x2F;+sAVIigAAACkyYgGAAAAAAAAAAA&#x3D;&quot;: &#123;</span><br><span class="line">			&quot;cf:id&quot;: &quot;2456081356069005703&quot;,</span><br><span class="line">			&quot;prov:type&quot;: &quot;path&quot;,</span><br><span class="line">			&quot;cf:boot_id&quot;: 40,</span><br><span class="line">			&quot;cf:machine_id&quot;: &quot;cf:109627812&quot;,</span><br><span class="line">			&quot;cf:version&quot;: 0,</span><br><span class="line">			&quot;cf:date&quot;: &quot;2021:02:02T07:05:54&quot;,</span><br><span class="line">			&quot;cf:taint&quot;: &quot;0&quot;,</span><br><span class="line">			&quot;cf:jiffies&quot;: &quot;4294963338&quot;,</span><br><span class="line">			&quot;cf:epoch&quot;: 2,</span><br><span class="line">			&quot;cf:pathname&quot;: &quot;&#x2F;root&#x2F;usr&#x2F;lib64&#x2F;python3.9&#x2F;encodings&#x2F;idna.py&quot;,</span><br><span class="line">			&quot;prov:label&quot;: &quot;[path] &#x2F;root&#x2F;usr&#x2F;lib64&#x2F;python3.9&#x2F;encodings&#x2F;idna.py&quot;</span><br><span class="line">		&#125;,</span><br><span class="line">		&quot;cf:AABAAAAAACRe0ES5WgG5ASgAAACkyYgGAAAAAAAAAAA&#x3D;&quot;: &#123;</span><br><span class="line">			&quot;cf:id&quot;: &quot;124131953896378462&quot;,</span><br><span class="line">			&quot;prov:type&quot;: &quot;path&quot;,</span><br><span class="line">			&quot;cf:boot_id&quot;: 40,</span><br><span class="line">			&quot;cf:machine_id&quot;: &quot;cf:109627812&quot;,</span><br><span class="line">			&quot;cf:version&quot;: 0,</span><br><span class="line">			&quot;cf:date&quot;: &quot;2021:02:02T07:05:54&quot;,</span><br><span class="line">			&quot;cf:taint&quot;: &quot;0&quot;,</span><br><span class="line">			&quot;cf:jiffies&quot;: &quot;4294963338&quot;,</span><br><span class="line">			&quot;cf:epoch&quot;: 2,</span><br><span class="line">			&quot;cf:pathname&quot;: &quot;&#x2F;root&#x2F;usr&#x2F;lib64&#x2F;python3.9&#x2F;encodings&#x2F;__pycache__&#x2F;idna.cpython-39.pyc&quot;,</span><br><span class="line">			&quot;prov:label&quot;: &quot;[path] &#x2F;root&#x2F;usr&#x2F;lib64&#x2F;python3.9&#x2F;encodings&#x2F;__pycache__&#x2F;idna.cpython-39.pyc&quot;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;,</span><br><span class="line">	&quot;used&quot;: &#123;</span><br><span class="line">		&quot;cf:BAAAAAAAIIDsAAAAAAAAACgAAACkyYgGAAAAAAAAAAA&#x3D;&quot;: &#123;</span><br><span class="line">			&quot;cf:id&quot;: &quot;236&quot;,</span><br><span class="line">			&quot;prov:type&quot;: &quot;memory_read&quot;,</span><br><span class="line">			&quot;cf:boot_id&quot;: 40,</span><br><span class="line">			&quot;cf:machine_id&quot;: &quot;cf:109627812&quot;,</span><br><span class="line">			&quot;cf:date&quot;: &quot;2021:02:02T07:05:54&quot;,</span><br><span class="line">			&quot;cf:jiffies&quot;: &quot;4294963341&quot;,</span><br><span class="line">			&quot;cf:epoch&quot;: 2,</span><br><span class="line">			&quot;prov:label&quot;: &quot;memory_read&quot;,</span><br><span class="line">			&quot;cf:allowed&quot;: &quot;true&quot;,</span><br><span class="line">			&quot;prov:entity&quot;: &quot;cf:AAAIAAAAACA8JgIAAAAAACgAAACkyYgGFAAAAAAAAAA&#x3D;&quot;,</span><br><span class="line">			&quot;prov:activity&quot;: &quot;cf:AQAAAAAAAEA7JgIAAAAAACgAAACkyYgGIAAAAAAAAAA&#x3D;&quot;,</span><br><span class="line">			&quot;cf:flags&quot;: &quot;0&quot;,</span><br><span class="line">			&quot;cf:task_id&quot;: &quot;140859&quot;</span><br><span class="line">		&#125;,</span><br><span class="line">		&quot;cf:AgAAAAAAIID1AAAAAAAAACgAAACkyYgGAAAAAAAAAAA&#x3D;&quot;: &#123;</span><br><span class="line">			&quot;cf:id&quot;: &quot;245&quot;,</span><br><span class="line">			&quot;prov:type&quot;: &quot;read_ioctl&quot;,</span><br><span class="line">			&quot;cf:boot_id&quot;: 40,</span><br><span class="line">			&quot;cf:machine_id&quot;: &quot;cf:109627812&quot;,</span><br><span class="line">			&quot;cf:date&quot;: &quot;2021:02:02T07:05:54&quot;,</span><br><span class="line">			&quot;cf:jiffies&quot;: &quot;4294963379&quot;,</span><br><span class="line">			&quot;cf:epoch&quot;: 2,</span><br><span class="line">			&quot;prov:label&quot;: &quot;read_ioctl&quot;,</span><br><span class="line">			&quot;cf:allowed&quot;: &quot;true&quot;,</span><br><span class="line">			&quot;prov:entity&quot;: &quot;cf:ACAAAAAAACCALgIAAAAAACgAAACkyYgGAQAAAAAAAAA&#x3D;&quot;,</span><br><span class="line">			&quot;prov:activity&quot;: &quot;cf:AQAAAAAAAEA7JgIAAAAAACgAAACkyYgGIQAAAAAAAAA&#x3D;&quot;,</span><br><span class="line">			&quot;cf:flags&quot;: &quot;0&quot;,</span><br><span class="line">			&quot;cf:task_id&quot;: &quot;140859&quot;</span><br><span class="line">		&#125;,</span><br><span class="line">		&quot;cf:gAAAAAAAIIAjAQAAAAAAACgAAACkyYgGAAAAAAAAAAA&#x3D;&quot;: &#123;</span><br><span class="line">			&quot;cf:id&quot;: &quot;291&quot;,</span><br><span class="line">			&quot;prov:type&quot;: &quot;open&quot;,</span><br><span class="line">			&quot;cf:boot_id&quot;: 40,</span><br><span class="line">			&quot;cf:machine_id&quot;: &quot;cf:109627812&quot;,</span><br><span class="line">			&quot;cf:date&quot;: &quot;2021:02:02T07:05:54&quot;,</span><br><span class="line">			&quot;cf:jiffies&quot;: &quot;4294963462&quot;,</span><br><span class="line">			&quot;cf:epoch&quot;: 2,</span><br><span class="line">			&quot;prov:label&quot;: &quot;open&quot;,</span><br><span class="line">			&quot;cf:allowed&quot;: &quot;true&quot;,</span><br><span class="line">			&quot;prov:entity&quot;: &quot;cf:AAEAAAAAACBDxgAAAAAAACgAAACkyYgGAAAAAAAAAAA&#x3D;&quot;,</span><br><span class="line">			&quot;prov:activity&quot;: &quot;cf:AQAAAAAAAECDLgIAAAAAACgAAACkyYgGAQAAAAAAAAA&#x3D;&quot;,</span><br><span class="line">			&quot;cf:flags&quot;: &quot;0&quot;,</span><br><span class="line">			&quot;cf:task_id&quot;: &quot;142979&quot;</span><br><span class="line">		&#125;,</span><br><span class="line">		&quot;cf:AAgAAAAAIIAkAQAAAAAAACgAAACkyYgGAAAAAAAAAAA&#x3D;&quot;: &#123;</span><br><span class="line">			&quot;cf:id&quot;: &quot;292&quot;,</span><br><span class="line">			&quot;prov:type&quot;: &quot;getattr&quot;,</span><br><span class="line">			&quot;cf:boot_id&quot;: 40,</span><br><span class="line">			&quot;cf:machine_id&quot;: &quot;cf:109627812&quot;,</span><br><span class="line">			&quot;cf:date&quot;: &quot;2021:02:02T07:05:54&quot;,</span><br><span class="line">			&quot;cf:jiffies&quot;: &quot;4294963462&quot;,</span><br><span class="line">			&quot;cf:epoch&quot;: 2,</span><br><span class="line">			&quot;prov:label&quot;: &quot;getattr&quot;,</span><br><span class="line">			&quot;cf:allowed&quot;: &quot;true&quot;,</span><br><span class="line">			&quot;prov:entity&quot;: &quot;cf:AAEAAAAAACBDxgAAAAAAACgAAACkyYgGAAAAAAAAAAA&#x3D;&quot;,</span><br><span class="line">			&quot;prov:activity&quot;: &quot;cf:AQAAAAAAAECDLgIAAAAAACgAAACkyYgGAQAAAAAAAAA&#x3D;&quot;,</span><br><span class="line">			&quot;cf:flags&quot;: &quot;0&quot;,</span><br><span class="line">			&quot;cf:task_id&quot;: &quot;142979&quot;</span><br><span class="line">		&#125;,</span><br><span class="line">		&quot;cf:AQAAAAAAIIApAQAAAAAAACgAAACkyYgGAAAAAAAAAAA&#x3D;&quot;: &#123;</span><br><span class="line">			&quot;cf:id&quot;: &quot;297&quot;,</span><br><span class="line">			&quot;prov:type&quot;: &quot;read&quot;,</span><br><span class="line">			&quot;cf:boot_id&quot;: 40,</span><br><span class="line">			&quot;cf:machine_id&quot;: &quot;cf:109627812&quot;,</span><br><span class="line">			&quot;cf:date&quot;: &quot;2021:02:02T07:05:54&quot;,</span><br><span class="line">			&quot;cf:jiffies&quot;: &quot;4294963462&quot;,</span><br><span class="line">			&quot;cf:epoch&quot;: 2,</span><br><span class="line">			&quot;prov:label&quot;: &quot;read&quot;,</span><br><span class="line">			&quot;cf:allowed&quot;: &quot;true&quot;,</span><br><span class="line">			&quot;prov:entity&quot;: &quot;cf:AAEAAAAAACBSxgAAAAAAACgAAACkyYgGAAAAAAAAAAA&#x3D;&quot;,</span><br><span class="line">			&quot;prov:activity&quot;: &quot;cf:AQAAAAAAAECDLgIAAAAAACgAAACkyYgGAQAAAAAAAAA&#x3D;&quot;,</span><br><span class="line">			&quot;cf:flags&quot;: &quot;4&quot;,</span><br><span class="line">			&quot;cf:task_id&quot;: &quot;142979&quot;</span><br><span class="line">		&#125;,</span><br><span class="line">	&#125;,</span><br><span class="line">	&quot;wasGeneratedBy&quot;: &#123;</span><br><span class="line">		&quot;cf:BAAAAAAAQIDtAAAAAAAAACgAAACkyYgGAAAAAAAAAAA&#x3D;&quot;: &#123;</span><br><span class="line">			&quot;cf:id&quot;: &quot;237&quot;,</span><br><span class="line">			&quot;prov:type&quot;: &quot;socket_create&quot;,</span><br><span class="line">			&quot;cf:boot_id&quot;: 40,</span><br><span class="line">			&quot;cf:machine_id&quot;: &quot;cf:109627812&quot;,</span><br><span class="line">			&quot;cf:date&quot;: &quot;2021:02:02T07:05:54&quot;,</span><br><span class="line">			&quot;cf:jiffies&quot;: &quot;4294963341&quot;,</span><br><span class="line">			&quot;cf:epoch&quot;: 2,</span><br><span class="line">			&quot;prov:label&quot;: &quot;socket_create&quot;,</span><br><span class="line">			&quot;cf:allowed&quot;: &quot;true&quot;,</span><br><span class="line">			&quot;prov:activity&quot;: &quot;cf:AQAAAAAAAEA7JgIAAAAAACgAAACkyYgGIAAAAAAAAAA&#x3D;&quot;,</span><br><span class="line">			&quot;prov:entity&quot;: &quot;cf:ACAAAAAAACCALgIAAAAAACgAAACkyYgGAAAAAAAAAAA&#x3D;&quot;,</span><br><span class="line">			&quot;cf:flags&quot;: &quot;0&quot;,</span><br><span class="line">			&quot;cf:task_id&quot;: &quot;140859&quot;</span><br><span class="line">		&#125;,</span><br><span class="line">		&quot;cf:AAEAAAAAQIDvAAAAAAAAACgAAACkyYgGAAAAAAAAAAA&#x3D;&quot;: &#123;</span><br><span class="line">			&quot;cf:id&quot;: &quot;239&quot;,</span><br><span class="line">			&quot;prov:type&quot;: &quot;connect&quot;,</span><br><span class="line">			&quot;cf:boot_id&quot;: 40,</span><br><span class="line">			&quot;cf:machine_id&quot;: &quot;cf:109627812&quot;,</span><br><span class="line">			&quot;cf:date&quot;: &quot;2021:02:02T07:05:54&quot;,</span><br><span class="line">			&quot;cf:jiffies&quot;: &quot;4294963341&quot;,</span><br><span class="line">			&quot;cf:epoch&quot;: 2,</span><br><span class="line">			&quot;prov:label&quot;: &quot;connect&quot;,</span><br><span class="line">			&quot;cf:allowed&quot;: &quot;true&quot;,</span><br><span class="line">			&quot;prov:activity&quot;: &quot;cf:AQAAAAAAAEA7JgIAAAAAACgAAACkyYgGIAAAAAAAAAA&#x3D;&quot;,</span><br><span class="line">			&quot;prov:entity&quot;: &quot;cf:ACAAAAAAACCALgIAAAAAACgAAACkyYgGAAAAAAAAAAA&#x3D;&quot;,</span><br><span class="line">			&quot;cf:flags&quot;: &quot;0&quot;,</span><br><span class="line">			&quot;cf:task_id&quot;: &quot;140859&quot;</span><br><span class="line">		&#125;,</span><br><span class="line">		&quot;cf:QAAAAAAAQIDzAAAAAAAAACgAAACkyYgGAAAAAAAAAAA&#x3D;&quot;: &#123;</span><br><span class="line">			&quot;cf:id&quot;: &quot;243&quot;,</span><br><span class="line">			&quot;prov:type&quot;: &quot;write_ioctl&quot;,</span><br><span class="line">			&quot;cf:boot_id&quot;: 40,</span><br><span class="line">			&quot;cf:machine_id&quot;: &quot;cf:109627812&quot;,</span><br><span class="line">			&quot;cf:date&quot;: &quot;2021:02:02T07:05:54&quot;,</span><br><span class="line">			&quot;cf:jiffies&quot;: &quot;4294963379&quot;,</span><br><span class="line">			&quot;cf:epoch&quot;: 2,</span><br><span class="line">			&quot;prov:label&quot;: &quot;write_ioctl&quot;,</span><br><span class="line">			&quot;cf:allowed&quot;: &quot;true&quot;,</span><br><span class="line">			&quot;prov:activity&quot;: &quot;cf:AQAAAAAAAEA7JgIAAAAAACgAAACkyYgGIAAAAAAAAAA&#x3D;&quot;,</span><br><span class="line">			&quot;prov:entity&quot;: &quot;cf:ACAAAAAAACCALgIAAAAAACgAAACkyYgGAQAAAAAAAAA&#x3D;&quot;,</span><br><span class="line">			&quot;cf:flags&quot;: &quot;0&quot;,</span><br><span class="line">			&quot;cf:task_id&quot;: &quot;140859&quot;</span><br><span class="line">		&#125;,</span><br><span class="line">		&quot;cf:gAAAAAAAQID3AAAAAAAAACgAAACkyYgGAAAAAAAAAAA&#x3D;&quot;: &#123;</span><br><span class="line">			&quot;cf:id&quot;: &quot;247&quot;,</span><br><span class="line">			&quot;prov:type&quot;: &quot;memory_write&quot;,</span><br><span class="line">			&quot;cf:boot_id&quot;: 40,</span><br><span class="line">			&quot;cf:machine_id&quot;: &quot;cf:109627812&quot;,</span><br><span class="line">			&quot;cf:date&quot;: &quot;2021:02:02T07:05:54&quot;,</span><br><span class="line">			&quot;cf:jiffies&quot;: &quot;4294963379&quot;,</span><br><span class="line">			&quot;cf:epoch&quot;: 2,</span><br><span class="line">			&quot;prov:label&quot;: &quot;memory_write&quot;,</span><br><span class="line">			&quot;cf:allowed&quot;: &quot;true&quot;,</span><br><span class="line">			&quot;prov:activity&quot;: &quot;cf:AQAAAAAAAEA7JgIAAAAAACgAAACkyYgGIQAAAAAAAAA&#x3D;&quot;,</span><br><span class="line">			&quot;prov:entity&quot;: &quot;cf:AAAIAAAAACA8JgIAAAAAACgAAACkyYgGFQAAAAAAAAA&#x3D;&quot;,</span><br><span class="line">			&quot;cf:flags&quot;: &quot;0&quot;,</span><br><span class="line">			&quot;cf:task_id&quot;: &quot;140859&quot;</span><br><span class="line">		&#125;,</span><br><span class="line">		&quot;cf:ACAAAAAAQIBFAQAAAAAAACgAAACkyYgGAAAAAAAAAAA&#x3D;&quot;: &#123;</span><br><span class="line">			&quot;cf:id&quot;: &quot;325&quot;,</span><br><span class="line">			&quot;prov:type&quot;: &quot;send_msg&quot;,</span><br><span class="line">			&quot;cf:boot_id&quot;: 40,</span><br><span class="line">			&quot;cf:machine_id&quot;: &quot;cf:109627812&quot;,</span><br><span class="line">			&quot;cf:date&quot;: &quot;2021:02:02T07:05:54&quot;,</span><br><span class="line">			&quot;cf:jiffies&quot;: &quot;4294963506&quot;,</span><br><span class="line">			&quot;cf:epoch&quot;: 2,</span><br><span class="line">			&quot;prov:label&quot;: &quot;send_msg&quot;,</span><br><span class="line">			&quot;cf:allowed&quot;: &quot;true&quot;,</span><br><span class="line">			&quot;prov:activity&quot;: &quot;cf:AQAAAAAAAEA7JgIAAAAAACgAAACkyYgGIgAAAAAAAAA&#x3D;&quot;,</span><br><span class="line">			&quot;prov:entity&quot;: &quot;cf:ACAAAAAAACCALgIAAAAAACgAAACkyYgGCgAAAAAAAAA&#x3D;&quot;,</span><br><span class="line">			&quot;cf:flags&quot;: &quot;0&quot;,</span><br><span class="line">			&quot;cf:task_id&quot;: &quot;140859&quot;</span><br><span class="line">		&#125;,</span><br><span class="line">	&#125;,</span><br><span class="line">	&quot;wasDerivedFrom&quot;: &#123;</span><br><span class="line">		&quot;cf:AAABAAAAgIDrAAAAAAAAACgAAACkyYgGAAAAAAAAAAA&#x3D;&quot;: &#123;</span><br><span class="line">			&quot;cf:id&quot;: &quot;235&quot;,</span><br><span class="line">			&quot;prov:type&quot;: &quot;sh_read&quot;,</span><br><span class="line">			&quot;cf:boot_id&quot;: 40,</span><br><span class="line">			&quot;cf:machine_id&quot;: &quot;cf:109627812&quot;,</span><br><span class="line">			&quot;cf:date&quot;: &quot;2021:02:02T07:05:54&quot;,</span><br><span class="line">			&quot;cf:jiffies&quot;: &quot;4294963341&quot;,</span><br><span class="line">			&quot;cf:epoch&quot;: 2,</span><br><span class="line">			&quot;prov:label&quot;: &quot;sh_read&quot;,</span><br><span class="line">			&quot;cf:allowed&quot;: &quot;true&quot;,</span><br><span class="line">			&quot;prov:usedEntity&quot;: &quot;cf:AAEAAAAAACCB0gAAAAAAACgAAACkyYgGAAAAAAAAAAA&#x3D;&quot;,</span><br><span class="line">			&quot;prov:generatedEntity&quot;: &quot;cf:AAAIAAAAACA8JgIAAAAAACgAAACkyYgGFAAAAAAAAAA&#x3D;&quot;,</span><br><span class="line">			&quot;cf:flags&quot;: &quot;80000d1&quot;,</span><br><span class="line">			&quot;cf:task_id&quot;: &quot;140859&quot;</span><br><span class="line">		&#125;,</span><br><span class="line">		&quot;cf:AAAIAAAAgIDuAAAAAAAAACgAAACkyYgGAAAAAAAAAAA&#x3D;&quot;: &#123;</span><br><span class="line">			&quot;cf:id&quot;: &quot;238&quot;,</span><br><span class="line">			&quot;prov:type&quot;: &quot;addressed&quot;,</span><br><span class="line">			&quot;cf:boot_id&quot;: 40,</span><br><span class="line">			&quot;cf:machine_id&quot;: &quot;cf:109627812&quot;,</span><br><span class="line">			&quot;cf:date&quot;: &quot;2021:02:02T07:05:54&quot;,</span><br><span class="line">			&quot;cf:jiffies&quot;: &quot;4294963341&quot;,</span><br><span class="line">			&quot;cf:epoch&quot;: 2,</span><br><span class="line">			&quot;prov:label&quot;: &quot;addressed&quot;,</span><br><span class="line">			&quot;cf:allowed&quot;: &quot;true&quot;,</span><br><span class="line">			&quot;prov:usedEntity&quot;: &quot;cf:AAAgAAAAACSBLgIAAAAAACgAAACkyYgGAAAAAAAAAAA&#x3D;&quot;,</span><br><span class="line">			&quot;prov:generatedEntity&quot;: &quot;cf:ACAAAAAAACCALgIAAAAAACgAAACkyYgGAAAAAAAAAAA&#x3D;&quot;,</span><br><span class="line">			&quot;cf:flags&quot;: &quot;0&quot;,</span><br><span class="line">			&quot;cf:task_id&quot;: &quot;140859&quot;</span><br><span class="line">		&#125;,</span><br><span class="line">		&quot;cf:BAAAAAAAgIDwAAAAAAAAACgAAACkyYgGAAAAAAAAAAA&#x3D;&quot;: &#123;</span><br><span class="line">			&quot;cf:id&quot;: &quot;240&quot;,</span><br><span class="line">			&quot;prov:type&quot;: &quot;send_packet&quot;,</span><br><span class="line">			&quot;cf:boot_id&quot;: 40,</span><br><span class="line">			&quot;cf:machine_id&quot;: &quot;cf:109627812&quot;,</span><br><span class="line">			&quot;cf:date&quot;: &quot;2021:02:02T07:05:54&quot;,</span><br><span class="line">			&quot;cf:jiffies&quot;: &quot;4294963341&quot;,</span><br><span class="line">			&quot;cf:epoch&quot;: 2,</span><br><span class="line">			&quot;prov:label&quot;: &quot;send_packet&quot;,</span><br><span class="line">			&quot;cf:allowed&quot;: &quot;true&quot;,</span><br><span class="line">			&quot;prov:usedEntity&quot;: &quot;cf:ACAAAAAAACCALgIAAAAAACgAAACkyYgGAAAAAAAAAAA&#x3D;&quot;,</span><br><span class="line">			&quot;prov:generatedEntity&quot;: &quot;cf:AAACAAAAACAVIQAAwKi3gi9dKpaxXAAWBgAAAGi29KA&#x3D;&quot;,</span><br><span class="line">			&quot;cf:flags&quot;: &quot;0&quot;,</span><br><span class="line">			&quot;cf:task_id&quot;: &quot;140859&quot;</span><br><span class="line">		&#125;,</span><br><span class="line">		&quot;cf:BAAAAAAAgIBpAQAAAAAAACgAAACkyYgGAAAAAAAAAAA&#x3D;&quot;: &#123;</span><br><span class="line">			&quot;cf:id&quot;: &quot;361&quot;,</span><br><span class="line">			&quot;prov:type&quot;: &quot;send_packet&quot;,</span><br><span class="line">			&quot;cf:boot_id&quot;: 40,</span><br><span class="line">			&quot;cf:machine_id&quot;: &quot;cf:109627812&quot;,</span><br><span class="line">			&quot;cf:date&quot;: &quot;2021:02:02T07:05:54&quot;,</span><br><span class="line">			&quot;cf:jiffies&quot;: &quot;4294963941&quot;,</span><br><span class="line">			&quot;cf:epoch&quot;: 2,</span><br><span class="line">			&quot;prov:label&quot;: &quot;send_packet&quot;,</span><br><span class="line">			&quot;cf:allowed&quot;: &quot;true&quot;,</span><br><span class="line">			&quot;prov:usedEntity&quot;: &quot;cf:ACAAAAAAACCALgIAAAAAACgAAACkyYgGDwAAAAAAAAA&#x3D;&quot;,</span><br><span class="line">			&quot;prov:generatedEntity&quot;: &quot;cf:AAACAAAAACAVMQAAwKi3gi9dKpaxXAAWBgAAAGi2+bk&#x3D;&quot;,</span><br><span class="line">			&quot;cf:flags&quot;: &quot;0&quot;,</span><br><span class="line">			&quot;cf:task_id&quot;: &quot;140859&quot;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+顶点属性包括socket,packet,file,path等，边属性包括open,read,connect,send_msg,send_packet等，可以得出使用python (python3.9)本对目录文件进行遍历操作，并与服务器进行socket通信，可视化结果如下(将cc9.json导入<a target="_blank" rel="noopener" href="https://camflow.org/demo">可视化平台</a>)：</li>
+</ul>
+<p><img src="https://cdn.jsdelivr.net/gh/wxt406611016/cdn/image/20210202164630.png" alt="20210202164630"></p>
+ 
+      <!-- reward -->
+      
+      <div id="reword-out">
+        <div id="reward-btn">
+          Donate
+        </div>
+      </div>
+      
+    </div>
+    
+
+    <!-- copyright -->
+    
+    <div class="declare">
+      <ul class="post-copyright">
+        <li>
+          <i class="ri-copyright-line"></i>
+          <strong>Copyright： </strong>
+          
+          Copyright is owned by the author. For commercial reprints, please contact the author for authorization. For non-commercial reprints, please indicate the source.
+          
+        </li>
+      </ul>
+    </div>
+    
+    <footer class="article-footer">
+       
+<div class="share-btn">
+      <span class="share-sns share-outer">
+        <i class="ri-share-forward-line"></i>
+        分享
+      </span>
+      <div class="share-wrap">
+        <i class="arrow"></i>
+        <div class="share-icons">
+          
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="ri-weibo-fill"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="ri-wechat-fill"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="ri-qq-fill"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="ri-douban-line"></i>
+          </a>
+          <!-- <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a> -->
+          
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="ri-facebook-circle-fill"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="ri-twitter-fill"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="ri-google-fill"></i>
+          </a>
+        </div>
+      </div>
+</div>
+
+<div class="wx-share-modal">
+    <a class="modal-close" href="javascript:;"><i class="ri-close-circle-line"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAN4AAADeCAAAAAB3DOFrAAACvElEQVR42u3ay4ojMRAEQP//T8/CngZm285Uddk7EH0ypl8hgyRn1eMRH19/j5+fn5/5/Zurq57fLbnDDQceHh7e0atfHck5V1dNnvh8WIun4+Hh4a3xksXg+Zn3nvP8+2KZwcPDw/sob7IdzxebZHDx8PDwfiMvXzbyV8TDw8P7Xbx2mk4m/STeTcLfNhzBw8PD2+ZNCmCf+vym+h4eHh5eWYiahLP53fLNev22eHh4eAu8dlt81hqVtwW0AUfUmIWHh4e3wGvjgORVklaqeZNWUa7Dw8PDu5XXXpwMxyRiyAcrWoTw8PDw1nhtkX4jIC5eOr8DHh4e3gIvf/BZjakNLPLmqtvaBfDw8PBK3tkrJgORbLLPtuBFwIGHh4d3K68tL7Ub3DzYnRTSLs/Bw8PDW+Dlsem9gUW7VCQkPDw8vPfw5o1Nk+aAfIo/uwMeHh7eHm8yWbeNVkm+mkz6SQMBHh4e3h4veUwb2p61W7Vb9hcLFR4eHt4Cr90WnzUTnLUs5HFw1FOGh4eHdxMvn3DzhWEeZ+QB8YsiGR4eHt4Cr80/29ChLW6dbcTrghweHh7emJeXmvKAIB+s7YUHDw8Pb4+Xb6wnha7JwOXDh4eHh7fHO2uWyhsI8uHIN+I5FQ8PD2+D125kzzBRg1RZVKt/GDw8PLybeGcvMYkhkkm/XVpe1Pfw8PDw1njtFDwJYfM7TKh4eHh4G7z2j307QT/i46zpqggv8PDw8G7ifZXH2WLQBr7t4F4+BQ8PD2+BN5m481hhck7+GQ8PD++dvGQxaJeNfBTzpqvk97n8r4CHh4e3wGuD13bKbiOPs1DjH1fh4eHhfZSXTMpt6DAvxb0YDjw8PLz/gJdvfOdZSBtAXIYReHh4eAu8Noxo49TJHc5KZXh4eHh7vMkEPYkw8kaEPOw4PPDw8PBS3h9kIKZLcuuv5wAAAABJRU5ErkJggg==" alt="微信分享二维码">
+    </div>
+</div>
+
+<div id="share-mask"></div>  
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%B3%BB%E7%BB%9F%E7%9B%91%E6%8E%A7/" rel="tag">系统监控</a></li></ul>
+
+    </footer>
+  </div>
+
+   
+  <nav class="article-nav">
+    
+      <a href="/2021/02/01/audit+camflow%E4%BD%BF%E7%94%A8%E8%AE%B0%E5%BD%95/" class="article-nav-link">
+        <strong class="article-nav-caption">上一篇</strong>
+        <div class="article-nav-title">
+          
+            audit+camflow使用记录
+          
+        </div>
+      </a>
+    
+    
+      <a href="/2021/01/28/%E5%86%85%E7%BD%91%E5%8F%8D%E5%90%91socks%E4%BB%A3%E7%90%86/" class="article-nav-link">
+        <strong class="article-nav-caption">下一篇</strong>
+        <div class="article-nav-title">配置反向socks5代理实现内网渗透</div>
+      </a>
+    
+  </nav>
+
+   
+<!-- valine评论 -->
+<div id="vcomments-box">
+  <div id="vcomments"></div>
+</div>
+<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/valine@1.4.14/dist/Valine.min.js"></script>
+<script>
+  new Valine({
+    el: "#vcomments",
+    app_id: "ds54farWshFsUraKxWRVVf4G-gzGzoHsz",
+    app_key: "q4rgias5HDeq09ugweytekJQ",
+    path: window.location.pathname,
+    avatar: "monsterid",
+    placeholder: "",
+    recordIP: true,
+  });
+  const infoEle = document.querySelector("#vcomments .info");
+  if (infoEle && infoEle.childNodes && infoEle.childNodes.length > 0) {
+    infoEle.childNodes.forEach(function (item) {
+      item.parentNode.removeChild(item);
+    });
+  }
+</script>
+<style>
+  #vcomments-box {
+    padding: 5px 30px;
+  }
+
+  @media screen and (max-width: 800px) {
+    #vcomments-box {
+      padding: 5px 0px;
+    }
+  }
+
+  #vcomments-box #vcomments {
+    background-color: #fff;
+  }
+
+  .v .vlist .vcard .vh {
+    padding-right: 20px;
+  }
+
+  .v .vlist .vcard {
+    padding-left: 10px;
+  }
+</style>
+
+ 
+   
+     
+</article>
+
+</section>
+      <footer class="footer">
+  <div class="outer">
+    <ul>
+      <li>
+        Copyrights &copy;
+        2018-2023
+        <i class="ri-heart-fill heart_icon"></i> Supervampire
+      </li>
+    </ul>
+    <ul>
+      <li>
+        
+      </li>
+    </ul>
+    <ul>
+      <li>
+        
+        
+        <span>
+  <span><i class="ri-user-3-fill"></i>Visitors:<span id="busuanzi_value_site_uv"></span></s>
+  <span class="division">|</span>
+  <span><i class="ri-eye-fill"></i>Views:<span id="busuanzi_value_page_pv"></span></span>
+</span>
+        
+      </li>
+    </ul>
+    <ul>
+      
+        <li>
+          <a href="https://beian.miit.gov.cn/#/Integrated/recordQuery" target="_black" rel="nofollow">苏ICP备2022035104号-1</a>
+        </li>
+        
+    </ul>
+    <ul>
+      
+    </ul>
+    <ul>
+      <li>
+        <!-- cnzz统计 -->
+        
+      </li>
+    </ul>
+  </div>
+</footer>
+      <div class="float_btns">
+        <div class="totop" id="totop">
+  <i class="ri-arrow-up-line"></i>
+</div>
+
+<div class="todark" id="todark">
+  <i class="ri-moon-line"></i>
+</div>
+
+      </div>
+    </main>
+    <aside class="sidebar on">
+      <button class="navbar-toggle"></button>
+<nav class="navbar">
+  
+  <div class="logo">
+    <a href="/"><img src="https://cdn.jsdelivr.net/gh/wxt406611016/cdn/image/ayer-side.svg" alt="の"></a>
+  </div>
+  
+  <ul class="nav nav-main">
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/">主页</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/archives">归档</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/categories">分类</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" target="_blank" rel="noopener" href="https://wxt123.top/downloads/">云盘</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/friends">友链</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/about">关于</a>
+    </li>
+    
+  </ul>
+</nav>
+<nav class="navbar navbar-bottom">
+  <ul class="nav">
+    <li class="nav-item">
+      
+      <a class="nav-item-link nav-item-search"  title="Search">
+        <i class="ri-search-line"></i>
+      </a>
+      
+      
+      <a class="nav-item-link" target="_blank" href="/atom.xml" title="RSS Feed">
+        <i class="ri-rss-line"></i>
+      </a>
+      
+    </li>
+  </ul>
+</nav>
+<div class="search-form-wrap">
+  <div class="local-search local-search-plugin">
+  <input type="search" id="local-search-input" class="local-search-input" placeholder="Search...">
+  <div id="local-search-result" class="local-search-result"></div>
+</div>
+</div>
+    </aside>
+    <script>
+      if (window.matchMedia("(max-width: 768px)").matches) {
+        document.querySelector('.content').classList.remove('on');
+        document.querySelector('.sidebar').classList.remove('on');
+      }
+    </script>
+    <div id="mask"></div>
+
+<!-- #reward -->
+<div id="reward">
+  <span class="close"><i class="ri-close-line"></i></span>
+  <p class="reward-p"><i class="ri-cup-line"></i>请我喝杯咖啡吧~</p>
+  <div class="reward-box">
+    
+    <div class="reward-item">
+      <img class="reward-img" src="https://cdn.jsdelivr.net/gh/wxt406611016/cdn/image/20210117222926.png">
+      <span class="reward-type">支付宝</span>
+    </div>
+    
+    
+    <div class="reward-item">
+      <img class="reward-img" src="https://cdn.jsdelivr.net/gh/wxt406611016/cdn/image/20210117222736.png">
+      <span class="reward-type">微信</span>
+    </div>
+    
+  </div>
+</div>
+    
+<script src="/js/jquery-2.0.3.min.js"></script>
+
+
+<script src="/js/lazyload.min.js"></script>
+
+<!-- Tocbot -->
+
+
+<script src="/js/tocbot.min.js"></script>
+
+<script>
+  tocbot.init({
+    tocSelector: '.tocbot',
+    contentSelector: '.article-entry',
+    headingSelector: 'h1, h2, h3, h4, h5, h6',
+    hasInnerContainers: true,
+    scrollSmooth: true,
+    scrollContainer: 'main',
+    positionFixedSelector: '.tocbot',
+    positionFixedClass: 'is-position-fixed',
+    fixedSidebarOffset: 'auto'
+  });
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/jquery-modal@0.9.2/jquery.modal.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jquery-modal@0.9.2/jquery.modal.min.css">
+<script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js"></script>
+
+<script src="/dist/main.js"></script>
+
+<!-- ImageViewer -->
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                <!--  Controls are self-explanatory. Order can be changed. -->
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" style="display:none" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css">
+<script src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"></script>
+
+<script>
+    function viewer_init() {
+        let pswpElement = document.querySelectorAll('.pswp')[0];
+        let $imgArr = document.querySelectorAll(('.article-entry img:not(.reward-img)'))
+
+        $imgArr.forEach(($em, i) => {
+            $em.onclick = () => {
+                // slider展开状态
+                // todo: 这样不好，后面改成状态
+                if (document.querySelector('.left-col.show')) return
+                let items = []
+                $imgArr.forEach(($em2, i2) => {
+                    let img = $em2.getAttribute('data-idx', i2)
+                    let src = $em2.getAttribute('data-target') || $em2.getAttribute('src')
+                    let title = $em2.getAttribute('alt')
+                    // 获得原图尺寸
+                    const image = new Image()
+                    image.src = src
+                    items.push({
+                        src: src,
+                        w: image.width || $em2.width,
+                        h: image.height || $em2.height,
+                        title: title
+                    })
+                })
+                var gallery = new PhotoSwipe(pswpElement, PhotoSwipeUI_Default, items, {
+                    index: parseInt(i)
+                });
+                gallery.init()
+            }
+        })
+    }
+    viewer_init()
+</script>
+
+<!-- MathJax -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+      tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+  });
+
+  MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+      for(i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+  });
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.6/unpacked/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script>
+  var ayerConfig = {
+    mathjax: true
+  }
+</script>
+
+<!-- Katex -->
+
+<!-- busuanzi  -->
+
+
+<script src="/js/busuanzi-2.3.pure.min.js"></script>
+
+
+<!-- ClickLove -->
+
+<!-- ClickBoom1 -->
+
+<!-- ClickBoom2 -->
+
+
+<script src="/js/clickBoom2.js"></script>
+
+
+<!-- CodeCopy -->
+
+
+<link rel="stylesheet" href="/css/clipboard.css">
+
+<script src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js"></script>
+<script>
+  function wait(callback, seconds) {
+    var timelag = null;
+    timelag = window.setTimeout(callback, seconds);
+  }
+  !function (e, t, a) {
+    var initCopyCode = function(){
+      var copyHtml = '';
+      copyHtml += '<button class="btn-copy" data-clipboard-snippet="">';
+      copyHtml += '<i class="ri-file-copy-2-line"></i><span>COPY</span>';
+      copyHtml += '</button>';
+      $(".highlight .code pre").before(copyHtml);
+      $(".article pre code").before(copyHtml);
+      var clipboard = new ClipboardJS('.btn-copy', {
+        target: function(trigger) {
+          return trigger.nextElementSibling;
+        }
+      });
+      clipboard.on('success', function(e) {
+        let $btn = $(e.trigger);
+        $btn.addClass('copied');
+        let $icon = $($btn.find('i'));
+        $icon.removeClass('ri-file-copy-2-line');
+        $icon.addClass('ri-checkbox-circle-line');
+        let $span = $($btn.find('span'));
+        $span[0].innerText = 'COPIED';
+        
+        wait(function () { // 等待两秒钟后恢复
+          $icon.removeClass('ri-checkbox-circle-line');
+          $icon.addClass('ri-file-copy-2-line');
+          $span[0].innerText = 'COPY';
+        }, 2000);
+      });
+      clipboard.on('error', function(e) {
+        e.clearSelection();
+        let $btn = $(e.trigger);
+        $btn.addClass('copy-failed');
+        let $icon = $($btn.find('i'));
+        $icon.removeClass('ri-file-copy-2-line');
+        $icon.addClass('ri-time-line');
+        let $span = $($btn.find('span'));
+        $span[0].innerText = 'COPY FAILED';
+        
+        wait(function () { // 等待两秒钟后恢复
+          $icon.removeClass('ri-time-line');
+          $icon.addClass('ri-file-copy-2-line');
+          $span[0].innerText = 'COPY';
+        }, 2000);
+      });
+    }
+    initCopyCode();
+  }(window, document);
+</script>
+
+
+<!-- CanvasBackground -->
+
+
+<script src="/js/dz.js"></script>
+
+
+
+    
+    <div id="music">
+    
+    
+    
+    <iframe frameborder="no" border="1" marginwidth="0" marginheight="0" width="200" height="86"
+        src="//music.163.com/outchain/player?type=2&id=22707008&auto=1&height=66"></iframe>
+</div>
+
+<style>
+    #music {
+        position: fixed;
+        right: 15px;
+        bottom: 0;
+        z-index: 998;
+    }
+</style>
+    
+  </div>
+</body>
+
+</html>

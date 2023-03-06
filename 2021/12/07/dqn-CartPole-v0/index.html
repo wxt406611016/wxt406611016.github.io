@@ -1,0 +1,730 @@
+<!DOCTYPE html>
+
+
+<html lang="en">
+
+
+<head>
+  <meta charset="utf-8" />
+    
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <title>
+    Deep Q Network(DQN)在CartPole-v0上的应用 |  の
+  </title>
+  <meta name="generator" content="hexo-theme-ayer">
+  
+  <link rel="shortcut icon" href="https://cdn.jsdelivr.net/gh/wxt406611016/cdn/image/favicon.ico" />
+  
+  
+<link rel="stylesheet" href="/dist/main.css">
+
+  
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Shen-Yu/cdn/css/remixicon.min.css">
+
+  
+<link rel="stylesheet" href="/css/custom.css">
+
+  
+  
+<script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
+
+  
+  
+
+  
+
+<link rel="alternate" href="/atom.xml" title="の" type="application/atom+xml">
+</head>
+
+</html>
+
+<body>
+  <div id="app">
+    
+      
+      <canvas width="1777" height="841"
+        style="position: fixed; left: 0px; top: 0px; z-index: 99999; pointer-events: none;"></canvas>
+      
+    <main class="content on">
+      <section class="outer">
+  <article
+  id="post-dqn-CartPole-v0"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h1 class="article-title sea-center" style="border-left:0" itemprop="name">
+  Deep Q Network(DQN)在CartPole-v0上的应用
+</h1>
+ 
+
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2021/12/07/dqn-CartPole-v0/" class="article-date">
+  <time datetime="2021-12-06T16:00:00.000Z" itemprop="datePublished">2021-12-07</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/RL/">RL</a>
+  </div>
+  
+<div class="word_count">
+    <span class="post-time">
+        <span class="post-meta-item-icon">
+            <i class="ri-quill-pen-line"></i>
+            <span class="post-meta-item-text"> Word count:</span>
+            <span class="post-count">3.4k</span>
+        </span>
+    </span>
+
+    <span class="post-time">
+        &nbsp; | &nbsp;
+        <span class="post-meta-item-icon">
+            <i class="ri-book-open-line"></i>
+            <span class="post-meta-item-text"> Reading time≈</span>
+            <span class="post-count">14 min</span>
+        </span>
+    </span>
+</div>
+ 
+    </div>
+      
+    <div class="tocbot"></div>
+
+
+
+
+  
+    <div class="article-entry" itemprop="articleBody">
+       
+  <p><strong>如今, 随着机器学习在日常生活中的各种应用, 各种机器学习方法也在融汇, 合并, 升级. 而我们今天所要探讨的强化学习则是这么一种融合了神经网络和 Q learning 的方法, 名字叫做 Deep Q Network. 这种新型结构是为什么被提出来呢? 原来, 传统的表格形式的强化学习有这样一个瓶颈。</strong></p>
+<a id="more"></a>
+<h2 id="QLearning"><a href="#QLearning" class="headerlink" title="QLearning"></a>QLearning</h2><p>QLearning是强化学习算法中value-based的算法，Q即为Q（s,a）就是在某一时刻的 s 状态下(s∈S)，采取 动作a (a∈A)动作能够获得收益的期望，环境会根据agent的动作反馈相应的回报reward r，所以算法的主要思想就是将State与Action构建成一张Q-table来存储Q值，然后根据Q值来选取能够获得最大的收益的动作。</p>
+<table>
+<thead>
+<tr>
+<th align="right">Q-Table</th>
+<th align="right">a1</th>
+<th align="right">a2</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="right">s1</td>
+<td align="right">q(s1,a1)</td>
+<td align="right">q(s1,a2)</td>
+</tr>
+<tr>
+<td align="right">s2</td>
+<td align="right">q(s2,a1)</td>
+<td align="right">q(s2,a2)</td>
+</tr>
+<tr>
+<td align="right">s3</td>
+<td align="right">q(s3,a1)</td>
+<td align="right">q(s3,a2)</td>
+</tr>
+</tbody></table>
+<p>Qlearning的主要优势就是使用了时间差分法TD（融合了蒙特卡洛和动态规划）能够进行离线学习, 使用bellman方程可以对马尔科夫过程求解最优策略。<br>Q(s,a)状态动作值函数</p>
+<p><img src="https://cdn.jsdelivr.net/gh/wxt406611016/cdn/image/20211207150858.png" alt="20211207150858"></p>
+<p>其中Gt是从t时刻开始的总折扣奖励，从这里我们能看出来 γ衰变值对Q函数的影响，γ越接近于1代表它越有远见会着重考虑后续状态的的价值，当γ接近0的时候就会变得近视只考虑当前的利益的影响。所以从0到1，算法就会越来越会考虑后续回报的影响。</p>
+<hr>
+<h2 id="为什么使用神经网络-为什么提出DQN"><a href="#为什么使用神经网络-为什么提出DQN" class="headerlink" title="为什么使用神经网络(为什么提出DQN)"></a>为什么使用神经网络(为什么提出DQN)</h2><p>我们使用表格来存储每一个状态 state, 和在这个 state 每个行为 action 所拥有的 Q 值. 而当今问题是在太复杂, 状态可以多到比天上的星星还多(比如下围棋). 如果全用表格来存储它们, 恐怕我们的计算机有再大的内存都不够, 而且每次在这么大的表格中搜索对应的状态也是一件很耗时的事. 不过, 在机器学习中, 有一种方法对这种事情很在行, 那就是神经网络. 我们可以将状态和动作当成神经网络的输入, 然后经过神经网络分析后得到动作的 Q 值, 这样我们就没必要在表格中记录 Q 值, 而是直接使用神经网络生成 Q 值. 还有一种形式的是这样, 我们也能只输入状态值, 输出所有的动作值, 然后按照 Q learning 的原则, 直接选择拥有最大值的动作当做下一步要做的动作. 我们可以想象, 神经网络接受外部的信息, 相当于眼睛鼻子耳朵收集信息, 然后通过大脑加工输出每种动作的值, 最后通过强化学习的方式选择动作.</p>
+<hr>
+<h2 id="如何更新神经网络"><a href="#如何更新神经网络" class="headerlink" title="如何更新神经网络"></a>如何更新神经网络</h2><p>接下来我们基于第二种神经网络来分析, 我们知道, 神经网络是要被训练才能预测出准确的值. 那在强化学习中, 神经网络是如何被训练的呢? 首先, 我们需要 a1, a2 正确的Q值, 这个 Q 值我们就用之前在 Q learning 中的 Q 现实来代替. 同样我们还需要一个 Q 估计 来实现神经网络的更新. 所以神经网络的的参数就是老的 NN 参数 加学习率 alpha 乘以 Q 现实 和 Q 估计 的差距. 我们整理一下.</p>
+<p><img src="https://cdn.jsdelivr.net/gh/wxt406611016/cdn/image/20211207151445.png" alt="20211207151445"></p>
+<p>我们通过 NN 预测出Q(s2, a1) 和 Q(s2,a2) 的值, 这就是 Q 估计. 然后我们选取 Q 估计中最大值的动作来换取环境中的奖励 reward. 而 Q 现实中也包含从神经网络分析出来的两个 Q 估计值, 不过这个 Q 估计是针对于下一步在 s’ 的估计. 最后再通过刚刚所说的算法更新神经网络中的参数.</p>
+<hr>
+<h2 id="DQN在CartPole-v0上的应用"><a href="#DQN在CartPole-v0上的应用" class="headerlink" title="DQN在CartPole-v0上的应用"></a>DQN在CartPole-v0上的应用</h2><p>首先看模型未训练前效果：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/wxt406611016/cdn@master/vedio/20211208-202305.gif" alt="image"></p>
+<p>对应的奖励如下所示，可以看到毫无policy可言，效果一塌糊涂：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">reward_sum:3.27</span><br><span class="line">reward_sum:3.96</span><br><span class="line">reward_sum:1.72</span><br><span class="line">reward_sum:2.46</span><br><span class="line">reward_sum:2.01</span><br><span class="line">reward_sum:2.98</span><br><span class="line">reward_sum:3.74</span><br><span class="line">reward_sum:3.25</span><br><span class="line">reward_sum:2.85</span><br></pre></td></tr></table></figure>
+<hr>
+<p>为了改善这个情况，接下来需要训练模型。</p>
+<p>训练模型：</p>
+<p>依赖环境：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">torch&#x3D;&#x3D;1.9.0</span><br><span class="line">gym&#x3D;&#x3D;0.21.0</span><br><span class="line">numpy&#x3D;&#x3D;1.19.5</span><br></pre></td></tr></table></figure>
+<p>main.py :（训练网络）</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br></pre></td><td class="code"><pre><span class="line">import torch                                    # 导入torch</span><br><span class="line">import torch.nn as nn                           # 导入torch.nn</span><br><span class="line">import torch.nn.functional as F                 # 导入torch.nn.functional</span><br><span class="line">import numpy as np                              # 导入numpy</span><br><span class="line">import gym                                      # 导入gym</span><br><span class="line"></span><br><span class="line"># 超参数</span><br><span class="line">BATCH_SIZE &#x3D; 32                                 # 样本数量</span><br><span class="line">LR &#x3D; 0.01                                       # 学习率</span><br><span class="line">EPSILON &#x3D; 0.9                                   # greedy policy</span><br><span class="line">GAMMA &#x3D; 0.9                                     # reward discount</span><br><span class="line">TARGET_REPLACE_ITER &#x3D; 100                       # 目标网络更新频率</span><br><span class="line">MEMORY_CAPACITY &#x3D; 2000                          # 记忆库容量</span><br><span class="line">env &#x3D; gym.make(&#39;CartPole-v0&#39;).unwrapped         # 使用gym库中的环境：CartPole，且打开封装(若想了解该环境，请自行百度)</span><br><span class="line">N_ACTIONS &#x3D; env.action_space.n                  # 杆子动作个数 (2个)</span><br><span class="line">N_STATES &#x3D; env.observation_space.shape[0]       # 杆子状态个数 (4个)</span><br><span class="line"></span><br><span class="line">#定义Net类（定义网络）</span><br><span class="line">class Net(nn.Module):</span><br><span class="line">    def __init__(self):                                                         </span><br><span class="line">        # nn.Module的子类函数必须在构造函数中执行父类的构造函数</span><br><span class="line">        super(Net, self).__init__()                                            </span><br><span class="line"></span><br><span class="line">        self.fc1 &#x3D; nn.Linear(N_STATES, 50)                                      </span><br><span class="line">        self.fc1.weight.data.normal_(0, 0.1)</span><br><span class="line">        self.fc2 &#x3D; nn.Linear(50, 50)                                      </span><br><span class="line">        self.fc2.weight.data.normal_(0, 0.1)</span><br><span class="line">        self.out &#x3D; nn.Linear(50, N_ACTIONS)                                     </span><br><span class="line">        self.out.weight.data.normal_(0, 0.1)                                   </span><br><span class="line">    def forward(self, x):                                                       </span><br><span class="line">        x &#x3D; F.relu(self.fc1(x))                                                 </span><br><span class="line">        x &#x3D; F.relu(self.fc2(x))</span><br><span class="line">        return self.out(x)                                                    </span><br><span class="line"></span><br><span class="line"># 定义DQN类 (定义两个网络)</span><br><span class="line">class DQN(object):</span><br><span class="line">    def __init__(self):                                                         # 定义DQN的一系列属性</span><br><span class="line">        self.eval_net, self.target_net &#x3D; Net(), Net()                           # 利用Net创建两个神经网络: 评估网络和目标网络</span><br><span class="line">        self.learn_step_counter &#x3D; 0                                             # for target updating</span><br><span class="line">        self.memory_counter &#x3D; 0                                                 # for storing memory</span><br><span class="line">        self.memory &#x3D; np.zeros((MEMORY_CAPACITY, N_STATES * 2 + 2))             # 初始化记忆库，一行代表一个transition</span><br><span class="line">        self.optimizer &#x3D; torch.optim.Adam(self.eval_net.parameters(), lr&#x3D;LR)    # 使用Adam优化器 (输入为评估网络的参数和学习率)</span><br><span class="line">        self.loss_func &#x3D; nn.MSELoss()                                           # 使用均方损失函数 (loss(xi, yi)&#x3D;(xi-yi)^2)</span><br><span class="line"></span><br><span class="line">    def choose_action(self, x):                                                 # 定义动作选择函数 (x为状态)</span><br><span class="line">        x &#x3D; torch.unsqueeze(torch.FloatTensor(x), 0)                            # 将x转换成32-bit floating point形式，并在dim&#x3D;0增加维数为1的维度</span><br><span class="line">        if np.random.uniform() &lt; EPSILON:                                       # 生成一个在[0, 1)内的随机数，如果小于EPSILON，选择最优动作</span><br><span class="line">            actions_value &#x3D; self.eval_net.forward(x)                            # 通过对评估网络输入状态x，前向传播获得动作值</span><br><span class="line">            action &#x3D; torch.max(actions_value, 1)[1].data.numpy()                # 输出每一行最大值的索引，并转化为numpy ndarray形式</span><br><span class="line">            action &#x3D; action[0]                                                  # 输出action的第一个数</span><br><span class="line">        else:                                                                   # 随机选择动作</span><br><span class="line">            action &#x3D; np.random.randint(0, N_ACTIONS)                            # 这里action随机等于0或1 (N_ACTIONS &#x3D; 2)</span><br><span class="line">        return action                                                           # 返回选择的动作 (0或1)</span><br><span class="line"></span><br><span class="line">    def store_transition(self, s, a, r, s_):                                    # 定义记忆存储函数 (这里输入为一个transition)</span><br><span class="line">        transition &#x3D; np.hstack((s, [a, r], s_))                                 # 在水平方向上拼接数组</span><br><span class="line">        # 如果记忆库满了，便覆盖旧的数据</span><br><span class="line">        index &#x3D; self.memory_counter % MEMORY_CAPACITY                           # 获取transition要置入的行数</span><br><span class="line">        self.memory[index, :] &#x3D; transition                                      # 置入transition</span><br><span class="line">        self.memory_counter +&#x3D; 1                                                # memory_counter自加1</span><br><span class="line"></span><br><span class="line">    def learn(self):                                                            # 定义学习函数(记忆库已满后便开始学习)</span><br><span class="line">        # 目标网络参数更新</span><br><span class="line">        if self.learn_step_counter % TARGET_REPLACE_ITER &#x3D;&#x3D; 0:                  # 一开始触发，然后每100步触发</span><br><span class="line">            self.target_net.load_state_dict(self.eval_net.state_dict())         # 将评估网络的参数赋给目标网络</span><br><span class="line">        self.learn_step_counter +&#x3D; 1                                            # 学习步数自加1</span><br><span class="line"></span><br><span class="line">        # 抽取记忆库中的批数据</span><br><span class="line">        sample_index &#x3D; np.random.choice(MEMORY_CAPACITY, BATCH_SIZE)            # 在[0, 2000)内随机抽取32个数，可能会重复</span><br><span class="line">        b_memory &#x3D; self.memory[sample_index, :]                                 # 抽取32个索引对应的32个transition，存入b_memory</span><br><span class="line">        b_s &#x3D; torch.FloatTensor(b_memory[:, :N_STATES])                         # 将32个s抽出，转为32-bit floating point形式，并存储到b_s中，b_s为32行4列</span><br><span class="line">        b_a &#x3D; torch.LongTensor(b_memory[:, N_STATES:N_STATES+1].astype(int))    # 将32个a抽出，转为64-bit integer (signed)形式，并存储到b_a中 (之所以为LongTensor类型，是为了方便后面torch.gather的使用)，b_a为32行1列</span><br><span class="line">        b_r &#x3D; torch.FloatTensor(b_memory[:, N_STATES+1:N_STATES+2])             # 将32个r抽出，转为32-bit floating point形式，并存储到b_s中，b_r为32行1列</span><br><span class="line">        b_s_ &#x3D; torch.FloatTensor(b_memory[:, -N_STATES:])                       # 将32个s_抽出，转为32-bit floating point形式，并存储到b_s中，b_s_为32行4列</span><br><span class="line"></span><br><span class="line">        # 获取32个transition的评估值和目标值，并利用损失函数和优化器进行评估网络参数更新</span><br><span class="line">        q_eval &#x3D; self.eval_net(b_s).gather(1, b_a)                              # eval_net(b_s)通过评估网络输出32行每个b_s对应的一系列动作值，然后.gather(1, b_a)代表对每行对应索引b_a的Q值提取进行聚合</span><br><span class="line">        q_next &#x3D; self.target_net(b_s_).detach()                                 # q_next不进行反向传递误差，所以detach；q_next表示通过目标网络输出32行每个b_s_对应的一系列动作值</span><br><span class="line">        q_target &#x3D; b_r + GAMMA * q_next.max(1)[0].view(BATCH_SIZE, 1)           # q_next.max(1)[0]表示只返回每一行的最大值，不返回索引(长度为32的一维张量)；.view()表示把前面所得到的一维张量变成(BATCH_SIZE, 1)的形状；最终通过公式得到目标值</span><br><span class="line">        loss &#x3D; self.loss_func(q_eval, q_target)                                 # 输入32个评估值和32个目标值，使用均方损失函数</span><br><span class="line">        self.optimizer.zero_grad()                                              # 清空上一步的残余更新参数值</span><br><span class="line">        loss.backward()                                                         # 误差反向传播, 计算参数更新值</span><br><span class="line">        self.optimizer.step()                                                   # 更新评估网络的所有参数</span><br><span class="line"></span><br><span class="line">dqn &#x3D; DQN()                                                             # 令dqn&#x3D;DQN类</span><br><span class="line">score &#x3D; deque(maxlen&#x3D;50)</span><br><span class="line">for i in range(4000):                                                    # 400个episode循环</span><br><span class="line">    s &#x3D; env.reset()                                                     # 重置环境</span><br><span class="line">    episode_reward_sum &#x3D; 0                                              # 初始化该循环对应的episode的总奖励</span><br><span class="line">    while True:                                                         # 开始一个episode (每一个循环代表一步)</span><br><span class="line">        env.render()                                                    # 显示实验动画</span><br><span class="line">        a &#x3D; dqn.choose_action(s)                                        # 输入该步对应的状态s，选择动作</span><br><span class="line">        s_, r, done, info &#x3D; env.step(a)                                 # 执行动作，获得反馈</span><br><span class="line">        # 修改奖励 (不修改也可以，修改奖励只是为了更快地得到训练好的摆杆)</span><br><span class="line">        x, x_dot, theta, theta_dot &#x3D; s_</span><br><span class="line">        r1 &#x3D; (env.x_threshold - abs(x)) &#x2F; env.x_threshold - 0.8</span><br><span class="line">        r2 &#x3D; (env.theta_threshold_radians - abs(theta)) &#x2F; env.theta_threshold_radians - 0.5</span><br><span class="line">        new_r &#x3D; r1 + r2</span><br><span class="line">        dqn.store_transition(s, a, new_r, s_)                 # 存储样本</span><br><span class="line">        episode_reward_sum +&#x3D; new_r                           # 逐步加上一个episode内每个step的reward</span><br><span class="line">        s &#x3D; s_                                                # 更新状态</span><br><span class="line">        if dqn.memory_counter &gt; MEMORY_CAPACITY:              # 如果累计的transition数量超过了记忆库的固定容量2000，开始学习 (抽取记忆，即32个transition，并对评估网络参数进行更新，并在开始学习后每隔100次将评估网络的参数赋给目标网络)</span><br><span class="line">            dqn.learn()</span><br><span class="line">        if done:       # 如果done为True</span><br><span class="line">            score.append(episode_reward_sum)</span><br><span class="line">            print(f&#39;\r&#x3D;&#x3D;&gt; episode: &#123;i&#125;---reward_mean100: &#123;round(np.mean(score), 2)&#125;&#39;,end&#x3D;&quot;&quot;)</span><br><span class="line">            if i % 100 &#x3D;&#x3D; 0:</span><br><span class="line">                print(f&#39;\r&#x3D;&#x3D;&gt; episode: &#123;i&#125;---reward_mean100: &#123;round(np.mean(score), 2)&#125;&#39;)</span><br><span class="line">            break</span><br><span class="line">    if np.mean(score) &gt; 600 and i &gt; 500:</span><br><span class="line">        torch.save(dqn.eval_net,&#39;dqn_eval_v3.pth&#39;)</span><br><span class="line">        break</span><br><span class="line">print(&#39;------FINISHED------&#39;)</span><br></pre></td></tr></table></figure>
+<p>训练过程中终端输出如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&#x3D;&#x3D;&gt; episode: 0---reward_mean100: 2.87</span><br><span class="line">&#x3D;&#x3D;&gt; episode: 100---reward_mean100: 2.47</span><br><span class="line">&#x3D;&#x3D;&gt; episode: 200---reward_mean100: 2.58</span><br><span class="line">&#x3D;&#x3D;&gt; episode: 300---reward_mean100: 350.95</span><br><span class="line">&#x3D;&#x3D;&gt; episode: 400---reward_mean100: 403.62</span><br><span class="line">&#x3D;&#x3D;&gt; episode: 500---reward_mean100: 524.56</span><br><span class="line">&#x3D;&#x3D;&gt; episode: 518---reward_mean100: 555.81</span><br><span class="line">------FINISHED------</span><br></pre></td></tr></table></figure>
+<p>可以看出在reward_mean大于550时程序停止，同时得到dqn_eval_v3.pth文件，可用于测试训练的效果，测试代码如下所示：</p>
+<p>test.py : （测试模型学习的效果）</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br></pre></td><td class="code"><pre><span class="line">import torch                                    # 导入torch</span><br><span class="line">import torch.nn as nn                           # 导入torch.nn</span><br><span class="line">import torch.nn.functional as F                 # 导入torch.nn.functional</span><br><span class="line">import numpy as np                              # 导入numpy</span><br><span class="line">import gym                                      # 导入gym</span><br><span class="line"></span><br><span class="line"># 超参数</span><br><span class="line">EPSILON &#x3D; 0.9                                   # greedy policy</span><br><span class="line">env &#x3D; gym.make(&#39;CartPole-v0&#39;).unwrapped         # 使用gym库中的环境：CartPole，且打开封装(若想了解该环境，请自行百度)</span><br><span class="line">N_ACTIONS &#x3D; env.action_space.n                  # 杆子动作个数 (2个)</span><br><span class="line">N_STATES &#x3D; env.observation_space.shape[0]       # 杆子状态个数 (4个)</span><br><span class="line"></span><br><span class="line"># 定义Net类 (定义网络)</span><br><span class="line">class Net(nn.Module):</span><br><span class="line">    def __init__(self):                                                         </span><br><span class="line">        # nn.Module的子类函数必须在构造函数中执行父类的构造函数</span><br><span class="line">        super(Net, self).__init__()                                            </span><br><span class="line"></span><br><span class="line">        self.fc1 &#x3D; nn.Linear(N_STATES, 50)                                      </span><br><span class="line">        self.fc1.weight.data.normal_(0, 0.1)</span><br><span class="line">        self.fc2 &#x3D; nn.Linear(50, 50)                                      </span><br><span class="line">        self.fc2.weight.data.normal_(0, 0.1)</span><br><span class="line">        self.out &#x3D; nn.Linear(50, N_ACTIONS)                                     </span><br><span class="line">        self.out.weight.data.normal_(0, 0.1)                                   </span><br><span class="line">    def forward(self, x):                                                       </span><br><span class="line">        x &#x3D; F.relu(self.fc1(x))                                                 </span><br><span class="line">        x &#x3D; F.relu(self.fc2(x))</span><br><span class="line">        return self.out(x)</span><br><span class="line"></span><br><span class="line"># 定义DQN类 (定义两个网络)</span><br><span class="line">class DQN(object):</span><br><span class="line">  def __init__(self):                                                         # 定义DQN的一系列属性</span><br><span class="line">    self.eval_net &#x3D; torch.load(&#39;.&#x2F;dqn_eval_v3.pth&#39;)</span><br><span class="line">    self.eval_net.eval()</span><br><span class="line"></span><br><span class="line">  def choose_action(self, x):                                                 # 定义动作选择函数 (x为状态)</span><br><span class="line">    x &#x3D; torch.unsqueeze(torch.FloatTensor(x), 0)                            # 将x转换成32-bit floating point形式，并在dim&#x3D;0增加维数为1的维度</span><br><span class="line">    if np.random.uniform() &lt; EPSILON:                                       # 生成一个在[0, 1)内的随机数，如果小于EPSILON，选择最优动作</span><br><span class="line">      actions_value &#x3D; self.eval_net.forward(x)                            # 通过对评估网络输入状态x，前向传播获得动作值</span><br><span class="line">      action &#x3D; torch.max(actions_value, 1)[1].data.numpy()                # 输出每一行最大值的索引，并转化为numpy ndarray形式</span><br><span class="line">      action &#x3D; action[0]                                                  # 输出action的第一个数</span><br><span class="line">    else:                                                                   # 随机选择动作</span><br><span class="line">      action &#x3D; np.random.randint(0, N_ACTIONS)                            # 这里action随机等于0或1 (N_ACTIONS &#x3D; 2)</span><br><span class="line">    return action                                                           # 返回选择的动作 (0或1)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">dqn &#x3D; DQN()                                                             # 令dqn&#x3D;DQN类</span><br><span class="line">while True:</span><br><span class="line">  s &#x3D; env.reset()                                                     # 重置环境</span><br><span class="line">  episode_reward_sum &#x3D; 0                                              # 初始化该循环对应的episode的总奖励</span><br><span class="line">  while True:                                                         # 开始一个episode (每一个循环代表一步)</span><br><span class="line">    env.render()                                                    # 显示实验动画</span><br><span class="line">    a &#x3D; dqn.choose_action(s)                                        # 输入该步对应的状态s，选择动作</span><br><span class="line">    s_, r, done, info &#x3D; env.step(a)                                 # 执行动作，获得反馈</span><br><span class="line">    x, x_dot, theta, theta_dot &#x3D; s_</span><br><span class="line">    r1 &#x3D; (env.x_threshold - abs(x)) &#x2F; env.x_threshold - 0.8</span><br><span class="line">    r2 &#x3D; (env.theta_threshold_radians - abs(theta)) &#x2F; env.theta_threshold_radians - 0.5</span><br><span class="line">    new_r &#x3D; r1 + r2</span><br><span class="line">    episode_reward_sum +&#x3D; new_r                           </span><br><span class="line">    s &#x3D; s_                                                </span><br><span class="line">    if done:</span><br><span class="line">      print(f&#39;reward_sum:&#123;round(episode_reward_sum, 2)&#125;&#39;)</span><br><span class="line">      break</span><br></pre></td></tr></table></figure>
+<p>动画效果如下，测试的获得奖励情况在终端中有显示，如下:</p>
+<p><img src="https://cdn.jsdelivr.net/gh/wxt406611016/cdn@master/vedio/20211208-204030.gif" alt="image"></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">reward_sum:237.14</span><br></pre></td></tr></table></figure>
+<p>jupyter代码在github上可以获取，<a target="_blank" rel="noopener" href="https://github.com/wxt406611016/DQN-CartPole-v0">点击传送至Github</a></p>
+ 
+      <!-- reward -->
+      
+      <div id="reword-out">
+        <div id="reward-btn">
+          Donate
+        </div>
+      </div>
+      
+    </div>
+    
+
+    <!-- copyright -->
+    
+    <div class="declare">
+      <ul class="post-copyright">
+        <li>
+          <i class="ri-copyright-line"></i>
+          <strong>Copyright： </strong>
+          
+          Copyright is owned by the author. For commercial reprints, please contact the author for authorization. For non-commercial reprints, please indicate the source.
+          
+        </li>
+      </ul>
+    </div>
+    
+    <footer class="article-footer">
+       
+<div class="share-btn">
+      <span class="share-sns share-outer">
+        <i class="ri-share-forward-line"></i>
+        分享
+      </span>
+      <div class="share-wrap">
+        <i class="arrow"></i>
+        <div class="share-icons">
+          
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="ri-weibo-fill"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="ri-wechat-fill"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="ri-qq-fill"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="ri-douban-line"></i>
+          </a>
+          <!-- <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a> -->
+          
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="ri-facebook-circle-fill"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="ri-twitter-fill"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="ri-google-fill"></i>
+          </a>
+        </div>
+      </div>
+</div>
+
+<div class="wx-share-modal">
+    <a class="modal-close" href="javascript:;"><i class="ri-close-circle-line"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACHUlEQVR42u3aS26DQBAFwNz/0s42i9i81wOWGGpWyCJAZdHq389PfF5/zrl35r+fcDAwMG7LeH087+654vnvrj//LQYGxnMYnwNfTnp3Zx6g310ffDMGBgZGGQRzHgYGBsY3GSsBNwm+GBgYGG0AXW/DJenmJbU4BgbGDRl5y+z715fMNzAwMG7FeJWnbaslIbINsv88EwMDY2tGHuCST2mvV9I+DAyMZzJWytTZkCBvpUXJIgYGxqaMtil/XbNsZTiBgYGxN6O+NSg7z1oOqwcSGBgYD2DkL14pR/PGXALAwMB4AmP2uCQpXB+OFoU0BgbG1ox2uWElBCflbtsWrOcbGBgYt2XMRpJ5Q20Ga8tmDAyMXRmzx7UpZvJLHkyjfiEGBsZGjG+2zNpEcGlnBAMDYzvGekaZN/HbFY18+wsDA+M5jNl4si1uV0aYw0YbBgbGbRlXp25JEduW0wfLFhgYGNsxZi/LwbPVjeHwEgMD4zGM/AX5Kth6KRsVzxgYGA9gtMnZbHlrVmEXARcDA+MxjHydYhZY25AdhWAMDIxNGa/yJKT2/vxzDwaWGBgYmzLa1v9K0Fz5pwx3RjAwMDZinLVOMQvHdSbbdvUwMDA2YrSDgVljbn294yDPxcDAwFgeVbbtvKIAxsDAwChbZvkwoF2qiBZYMTAwNmXMBpCz3l4SXttVWgwMjL0Zs9Jxlvy1ofas0hcDA+O2jF9P7UupMSiwPAAAAABJRU5ErkJggg==" alt="微信分享二维码">
+    </div>
+</div>
+
+<div id="share-mask"></div>  
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Machine-Learning/" rel="tag">Machine Learning</a></li></ul>
+
+    </footer>
+  </div>
+
+   
+  <nav class="article-nav">
+    
+      <a href="/2021/12/08/dqn-LunarLander-v2/" class="article-nav-link">
+        <strong class="article-nav-caption">上一篇</strong>
+        <div class="article-nav-title">
+          
+            Deep Q Network(DQN)在LunarLander-v2上的应用
+          
+        </div>
+      </a>
+    
+    
+      <a href="/2021/10/28/cobaltstrike_dns/" class="article-nav-link">
+        <strong class="article-nav-caption">下一篇</strong>
+        <div class="article-nav-title">CobaltStrike DNS Beacon</div>
+      </a>
+    
+  </nav>
+
+   
+<!-- valine评论 -->
+<div id="vcomments-box">
+  <div id="vcomments"></div>
+</div>
+<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/valine@1.4.14/dist/Valine.min.js"></script>
+<script>
+  new Valine({
+    el: "#vcomments",
+    app_id: "ds54farWshFsUraKxWRVVf4G-gzGzoHsz",
+    app_key: "q4rgias5HDeq09ugweytekJQ",
+    path: window.location.pathname,
+    avatar: "monsterid",
+    placeholder: "",
+    recordIP: true,
+  });
+  const infoEle = document.querySelector("#vcomments .info");
+  if (infoEle && infoEle.childNodes && infoEle.childNodes.length > 0) {
+    infoEle.childNodes.forEach(function (item) {
+      item.parentNode.removeChild(item);
+    });
+  }
+</script>
+<style>
+  #vcomments-box {
+    padding: 5px 30px;
+  }
+
+  @media screen and (max-width: 800px) {
+    #vcomments-box {
+      padding: 5px 0px;
+    }
+  }
+
+  #vcomments-box #vcomments {
+    background-color: #fff;
+  }
+
+  .v .vlist .vcard .vh {
+    padding-right: 20px;
+  }
+
+  .v .vlist .vcard {
+    padding-left: 10px;
+  }
+</style>
+
+ 
+   
+     
+</article>
+
+</section>
+      <footer class="footer">
+  <div class="outer">
+    <ul>
+      <li>
+        Copyrights &copy;
+        2018-2023
+        <i class="ri-heart-fill heart_icon"></i> Supervampire
+      </li>
+    </ul>
+    <ul>
+      <li>
+        
+      </li>
+    </ul>
+    <ul>
+      <li>
+        
+        
+        <span>
+  <span><i class="ri-user-3-fill"></i>Visitors:<span id="busuanzi_value_site_uv"></span></s>
+  <span class="division">|</span>
+  <span><i class="ri-eye-fill"></i>Views:<span id="busuanzi_value_page_pv"></span></span>
+</span>
+        
+      </li>
+    </ul>
+    <ul>
+      
+        <li>
+          <a href="https://beian.miit.gov.cn/#/Integrated/recordQuery" target="_black" rel="nofollow">苏ICP备2022035104号-1</a>
+        </li>
+        
+    </ul>
+    <ul>
+      
+    </ul>
+    <ul>
+      <li>
+        <!-- cnzz统计 -->
+        
+      </li>
+    </ul>
+  </div>
+</footer>
+      <div class="float_btns">
+        <div class="totop" id="totop">
+  <i class="ri-arrow-up-line"></i>
+</div>
+
+<div class="todark" id="todark">
+  <i class="ri-moon-line"></i>
+</div>
+
+      </div>
+    </main>
+    <aside class="sidebar on">
+      <button class="navbar-toggle"></button>
+<nav class="navbar">
+  
+  <div class="logo">
+    <a href="/"><img src="https://cdn.jsdelivr.net/gh/wxt406611016/cdn/image/ayer-side.svg" alt="の"></a>
+  </div>
+  
+  <ul class="nav nav-main">
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/">主页</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/archives">归档</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/categories">分类</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" target="_blank" rel="noopener" href="https://wxt123.top/downloads/">云盘</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/friends">友链</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/about">关于</a>
+    </li>
+    
+  </ul>
+</nav>
+<nav class="navbar navbar-bottom">
+  <ul class="nav">
+    <li class="nav-item">
+      
+      <a class="nav-item-link nav-item-search"  title="Search">
+        <i class="ri-search-line"></i>
+      </a>
+      
+      
+      <a class="nav-item-link" target="_blank" href="/atom.xml" title="RSS Feed">
+        <i class="ri-rss-line"></i>
+      </a>
+      
+    </li>
+  </ul>
+</nav>
+<div class="search-form-wrap">
+  <div class="local-search local-search-plugin">
+  <input type="search" id="local-search-input" class="local-search-input" placeholder="Search...">
+  <div id="local-search-result" class="local-search-result"></div>
+</div>
+</div>
+    </aside>
+    <script>
+      if (window.matchMedia("(max-width: 768px)").matches) {
+        document.querySelector('.content').classList.remove('on');
+        document.querySelector('.sidebar').classList.remove('on');
+      }
+    </script>
+    <div id="mask"></div>
+
+<!-- #reward -->
+<div id="reward">
+  <span class="close"><i class="ri-close-line"></i></span>
+  <p class="reward-p"><i class="ri-cup-line"></i>请我喝杯咖啡吧~</p>
+  <div class="reward-box">
+    
+    <div class="reward-item">
+      <img class="reward-img" src="https://cdn.jsdelivr.net/gh/wxt406611016/cdn/image/20210117222926.png">
+      <span class="reward-type">支付宝</span>
+    </div>
+    
+    
+    <div class="reward-item">
+      <img class="reward-img" src="https://cdn.jsdelivr.net/gh/wxt406611016/cdn/image/20210117222736.png">
+      <span class="reward-type">微信</span>
+    </div>
+    
+  </div>
+</div>
+    
+<script src="/js/jquery-2.0.3.min.js"></script>
+
+
+<script src="/js/lazyload.min.js"></script>
+
+<!-- Tocbot -->
+
+
+<script src="/js/tocbot.min.js"></script>
+
+<script>
+  tocbot.init({
+    tocSelector: '.tocbot',
+    contentSelector: '.article-entry',
+    headingSelector: 'h1, h2, h3, h4, h5, h6',
+    hasInnerContainers: true,
+    scrollSmooth: true,
+    scrollContainer: 'main',
+    positionFixedSelector: '.tocbot',
+    positionFixedClass: 'is-position-fixed',
+    fixedSidebarOffset: 'auto'
+  });
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/jquery-modal@0.9.2/jquery.modal.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jquery-modal@0.9.2/jquery.modal.min.css">
+<script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js"></script>
+
+<script src="/dist/main.js"></script>
+
+<!-- ImageViewer -->
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                <!--  Controls are self-explanatory. Order can be changed. -->
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" style="display:none" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css">
+<script src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"></script>
+
+<script>
+    function viewer_init() {
+        let pswpElement = document.querySelectorAll('.pswp')[0];
+        let $imgArr = document.querySelectorAll(('.article-entry img:not(.reward-img)'))
+
+        $imgArr.forEach(($em, i) => {
+            $em.onclick = () => {
+                // slider展开状态
+                // todo: 这样不好，后面改成状态
+                if (document.querySelector('.left-col.show')) return
+                let items = []
+                $imgArr.forEach(($em2, i2) => {
+                    let img = $em2.getAttribute('data-idx', i2)
+                    let src = $em2.getAttribute('data-target') || $em2.getAttribute('src')
+                    let title = $em2.getAttribute('alt')
+                    // 获得原图尺寸
+                    const image = new Image()
+                    image.src = src
+                    items.push({
+                        src: src,
+                        w: image.width || $em2.width,
+                        h: image.height || $em2.height,
+                        title: title
+                    })
+                })
+                var gallery = new PhotoSwipe(pswpElement, PhotoSwipeUI_Default, items, {
+                    index: parseInt(i)
+                });
+                gallery.init()
+            }
+        })
+    }
+    viewer_init()
+</script>
+
+<!-- MathJax -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+      tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+  });
+
+  MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+      for(i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+  });
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.6/unpacked/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script>
+  var ayerConfig = {
+    mathjax: true
+  }
+</script>
+
+<!-- Katex -->
+
+<!-- busuanzi  -->
+
+
+<script src="/js/busuanzi-2.3.pure.min.js"></script>
+
+
+<!-- ClickLove -->
+
+<!-- ClickBoom1 -->
+
+<!-- ClickBoom2 -->
+
+
+<script src="/js/clickBoom2.js"></script>
+
+
+<!-- CodeCopy -->
+
+
+<link rel="stylesheet" href="/css/clipboard.css">
+
+<script src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js"></script>
+<script>
+  function wait(callback, seconds) {
+    var timelag = null;
+    timelag = window.setTimeout(callback, seconds);
+  }
+  !function (e, t, a) {
+    var initCopyCode = function(){
+      var copyHtml = '';
+      copyHtml += '<button class="btn-copy" data-clipboard-snippet="">';
+      copyHtml += '<i class="ri-file-copy-2-line"></i><span>COPY</span>';
+      copyHtml += '</button>';
+      $(".highlight .code pre").before(copyHtml);
+      $(".article pre code").before(copyHtml);
+      var clipboard = new ClipboardJS('.btn-copy', {
+        target: function(trigger) {
+          return trigger.nextElementSibling;
+        }
+      });
+      clipboard.on('success', function(e) {
+        let $btn = $(e.trigger);
+        $btn.addClass('copied');
+        let $icon = $($btn.find('i'));
+        $icon.removeClass('ri-file-copy-2-line');
+        $icon.addClass('ri-checkbox-circle-line');
+        let $span = $($btn.find('span'));
+        $span[0].innerText = 'COPIED';
+        
+        wait(function () { // 等待两秒钟后恢复
+          $icon.removeClass('ri-checkbox-circle-line');
+          $icon.addClass('ri-file-copy-2-line');
+          $span[0].innerText = 'COPY';
+        }, 2000);
+      });
+      clipboard.on('error', function(e) {
+        e.clearSelection();
+        let $btn = $(e.trigger);
+        $btn.addClass('copy-failed');
+        let $icon = $($btn.find('i'));
+        $icon.removeClass('ri-file-copy-2-line');
+        $icon.addClass('ri-time-line');
+        let $span = $($btn.find('span'));
+        $span[0].innerText = 'COPY FAILED';
+        
+        wait(function () { // 等待两秒钟后恢复
+          $icon.removeClass('ri-time-line');
+          $icon.addClass('ri-file-copy-2-line');
+          $span[0].innerText = 'COPY';
+        }, 2000);
+      });
+    }
+    initCopyCode();
+  }(window, document);
+</script>
+
+
+<!-- CanvasBackground -->
+
+
+<script src="/js/dz.js"></script>
+
+
+
+    
+    <div id="music">
+    
+    
+    
+    <iframe frameborder="no" border="1" marginwidth="0" marginheight="0" width="200" height="86"
+        src="//music.163.com/outchain/player?type=2&id=22707008&auto=1&height=66"></iframe>
+</div>
+
+<style>
+    #music {
+        position: fixed;
+        right: 15px;
+        bottom: 0;
+        z-index: 998;
+    }
+</style>
+    
+  </div>
+</body>
+
+</html>

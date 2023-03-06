@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+
+
+<html lang="en">
+
+
+<head>
+  <meta charset="utf-8" />
+    
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <title>
+    Deep Q Network(DQN)在LunarLander-v2上的应用 |  の
+  </title>
+  <meta name="generator" content="hexo-theme-ayer">
+  
+  <link rel="shortcut icon" href="https://cdn.jsdelivr.net/gh/wxt406611016/cdn/image/favicon.ico" />
+  
+  
+<link rel="stylesheet" href="/dist/main.css">
+
+  
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Shen-Yu/cdn/css/remixicon.min.css">
+
+  
+<link rel="stylesheet" href="/css/custom.css">
+
+  
+  
+<script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
+
+  
+  
+
+  
+
+<link rel="alternate" href="/atom.xml" title="の" type="application/atom+xml">
+</head>
+
+</html>
+
+<body>
+  <div id="app">
+    
+      
+      <canvas width="1777" height="841"
+        style="position: fixed; left: 0px; top: 0px; z-index: 99999; pointer-events: none;"></canvas>
+      
+    <main class="content on">
+      <section class="outer">
+  <article
+  id="post-dqn-LunarLander-v2"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h1 class="article-title sea-center" style="border-left:0" itemprop="name">
+  Deep Q Network(DQN)在LunarLander-v2上的应用
+</h1>
+ 
+
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2021/12/08/dqn-LunarLander-v2/" class="article-date">
+  <time datetime="2021-12-07T16:00:00.000Z" itemprop="datePublished">2021-12-08</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/RL/">RL</a>
+  </div>
+  
+<div class="word_count">
+    <span class="post-time">
+        <span class="post-meta-item-icon">
+            <i class="ri-quill-pen-line"></i>
+            <span class="post-meta-item-text"> Word count:</span>
+            <span class="post-count">1.8k</span>
+        </span>
+    </span>
+
+    <span class="post-time">
+        &nbsp; | &nbsp;
+        <span class="post-meta-item-icon">
+            <i class="ri-book-open-line"></i>
+            <span class="post-meta-item-text"> Reading time≈</span>
+            <span class="post-count">10 min</span>
+        </span>
+    </span>
+</div>
+ 
+    </div>
+      
+    <div class="tocbot"></div>
+
+
+
+
+  
+    <div class="article-entry" itemprop="articleBody">
+       
+  <p><strong>关于QLearning、为什么使用神经网络来决定智能体的动作选择以及如何更新神经网络在上一篇文章《Deep Q Network(DQN)在CartPole-v0上的应用》中已经解释过，不得不说，神经网络作为Q函数的确发挥了重要的作用，这一篇趁热打铁，我们玩另一款游戏在月球登陆，下面将给出DQN在LunarLander-v2上的应用的代码。</strong></p>
+<a id="more"></a>
+
+<hr>
+<h2 id="DQN在LunarLander-v2-gym-上的应用"><a href="#DQN在LunarLander-v2-gym-上的应用" class="headerlink" title="DQN在LunarLander-v2(gym)上的应用"></a>DQN在LunarLander-v2(gym)上的应用</h2><p>首先看模型未训练前效果：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/wxt406611016/cdn@master/vedio/20211209-103248.gif" alt="image"></p>
+<p>对应的奖励如下所示，可以看到毫无policy可言，效果一塌糊涂：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">reward_sum:-153.79</span><br><span class="line">reward_sum:-119.95</span><br><span class="line">reward_sum:-126.0</span><br><span class="line">reward_sum:-137.3</span><br></pre></td></tr></table></figure>
+<hr>
+<p>为了改善这个情况，接下来需要训练模型。</p>
+<p>训练模型：</p>
+<p>依赖环境：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">torch&#x3D;&#x3D;1.9.0</span><br><span class="line">gym&#x3D;&#x3D;0.21.0</span><br><span class="line">swig（通过conda安装）</span><br><span class="line">box2d-py&#x3D;&#x3D;2.3.8</span><br><span class="line">##如果不安装swig和box2d-py会报错无法加载LunarLander-v2</span><br></pre></td></tr></table></figure>
+<p>main.py :（训练网络）</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br><span class="line">228</span><br><span class="line">229</span><br><span class="line">230</span><br><span class="line">231</span><br><span class="line">232</span><br><span class="line">233</span><br><span class="line">234</span><br><span class="line">235</span><br><span class="line">236</span><br><span class="line">237</span><br><span class="line">238</span><br><span class="line">239</span><br><span class="line">240</span><br><span class="line">241</span><br><span class="line">242</span><br><span class="line">243</span><br></pre></td><td class="code"><pre><span class="line">import gym</span><br><span class="line">import random</span><br><span class="line">import torch</span><br><span class="line">import numpy as np</span><br><span class="line">from collections import namedtuple, deque</span><br><span class="line">import matplotlib.pyplot as plt</span><br><span class="line">%matplotlib inline</span><br><span class="line"></span><br><span class="line"># pytorch imports</span><br><span class="line">import torch</span><br><span class="line">import torch.nn as nn</span><br><span class="line">import torch.nn.functional as F</span><br><span class="line">import torch.optim as optim</span><br><span class="line"></span><br><span class="line">env &#x3D; gym.make(&#39;LunarLander-v2&#39;)</span><br><span class="line">env.seed(0)</span><br><span class="line">print(&#39;State shape: &#39;, env.observation_space.shape)</span><br><span class="line">print(&#39;Number of Actions: &#39;, env.action_space.n)</span><br><span class="line"></span><br><span class="line">class QNetwork(nn.Module):</span><br><span class="line">    &quot;&quot;&quot;Actor (Policy) Model.&quot;&quot;&quot;</span><br><span class="line"></span><br><span class="line">    def __init__(self, state_size, action_size, seed, fc1_units&#x3D;64, fc2_units&#x3D;64):</span><br><span class="line">        &quot;&quot;&quot;Initialize parameters and build model.</span><br><span class="line">        Params</span><br><span class="line">        &#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;</span><br><span class="line">            state_size (int): Dimension of each state</span><br><span class="line">            action_size (int): Dimension of each action</span><br><span class="line">            seed (int): Random seed</span><br><span class="line">            fc1_units (int): Number of nodes in first hidden layer</span><br><span class="line">            fc2_units (int): Number of nodes in second hidden layer</span><br><span class="line">        &quot;&quot;&quot;</span><br><span class="line">        super(QNetwork, self).__init__()</span><br><span class="line">        self.seed &#x3D; torch.manual_seed(seed)</span><br><span class="line">        self.fc1 &#x3D; nn.Linear(state_size, fc1_units)</span><br><span class="line">        self.fc2 &#x3D; nn.Linear(fc1_units, fc2_units)</span><br><span class="line">        self.fc3 &#x3D; nn.Linear(fc2_units, action_size)</span><br><span class="line"></span><br><span class="line">    def forward(self, state):</span><br><span class="line">        &quot;&quot;&quot;Build a network that maps state -&gt; action values.&quot;&quot;&quot;</span><br><span class="line">        x &#x3D; F.relu(self.fc1(state))</span><br><span class="line">        x &#x3D; F.relu(self.fc2(x))</span><br><span class="line">        return self.fc3(x)</span><br><span class="line">    </span><br><span class="line"># Define the DQN hyperparameters</span><br><span class="line"></span><br><span class="line">BUFFER_SIZE &#x3D; int(1e5)  # replay buffer size</span><br><span class="line">BATCH_SIZE &#x3D; 64         # minibatch size</span><br><span class="line">GAMMA &#x3D; 0.99            # discount factor</span><br><span class="line">TAU &#x3D; 1e-3              # for soft update of target parameters</span><br><span class="line">LR &#x3D; 5e-4               # learning rate </span><br><span class="line">UPDATE_EVERY &#x3D; 4        # how often to update the network</span><br><span class="line"></span><br><span class="line"># Use GPU is possible else use CPU</span><br><span class="line">device &#x3D; torch.device(&quot;cuda:0&quot; if torch.cuda.is_available() else &quot;cpu&quot;)</span><br><span class="line"></span><br><span class="line">class Agent():</span><br><span class="line">    &quot;&quot;&quot;Interacts with and learns from the environment.&quot;&quot;&quot;</span><br><span class="line"></span><br><span class="line">    def __init__(self, state_size, action_size, seed):</span><br><span class="line">        &quot;&quot;&quot;Initialize an Agent object.</span><br><span class="line">        </span><br><span class="line">        Params</span><br><span class="line">        &#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;</span><br><span class="line">            state_size (int): dimension of each state</span><br><span class="line">            action_size (int): dimension of each action</span><br><span class="line">            seed (int): random seed</span><br><span class="line">        &quot;&quot;&quot;</span><br><span class="line">        self.state_size &#x3D; state_size</span><br><span class="line">        self.action_size &#x3D; action_size</span><br><span class="line">        self.seed &#x3D; random.seed(seed)</span><br><span class="line"></span><br><span class="line">        # Q-Network</span><br><span class="line">        self.qnetwork_local &#x3D; QNetwork(state_size, action_size, seed).to(device)</span><br><span class="line">        self.qnetwork_target &#x3D; QNetwork(state_size, action_size, seed).to(device)</span><br><span class="line">        self.optimizer &#x3D; optim.Adam(self.qnetwork_local.parameters(), lr&#x3D;LR)</span><br><span class="line"></span><br><span class="line">        # Replay memory</span><br><span class="line">        self.memory &#x3D; ReplayBuffer(action_size, BUFFER_SIZE, BATCH_SIZE, seed)</span><br><span class="line">        # Initialize time step (for updating every UPDATE_EVERY steps)</span><br><span class="line">        self.t_step &#x3D; 0</span><br><span class="line">    </span><br><span class="line">    def step(self, state, action, reward, next_state, done):</span><br><span class="line">        # Save experience in replay memory</span><br><span class="line">        self.memory.add(state, action, reward, next_state, done)</span><br><span class="line">        </span><br><span class="line">        # Learn every UPDATE_EVERY time steps.</span><br><span class="line">        self.t_step &#x3D; (self.t_step + 1) % UPDATE_EVERY</span><br><span class="line">        if self.t_step &#x3D;&#x3D; 0:</span><br><span class="line">            # If enough samples are available in memory, get random subset and learn</span><br><span class="line">            if len(self.memory) &gt; BATCH_SIZE:</span><br><span class="line">                experiences &#x3D; self.memory.sample()</span><br><span class="line">                self.learn(experiences, GAMMA)</span><br><span class="line"></span><br><span class="line">    def act(self, state, eps&#x3D;0.):</span><br><span class="line">        &quot;&quot;&quot;Returns actions for given state as per current policy.</span><br><span class="line">        </span><br><span class="line">        Params</span><br><span class="line">        &#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;</span><br><span class="line">            state (array_like): current state</span><br><span class="line">            eps (float): epsilon, for epsilon-greedy action selection</span><br><span class="line">        &quot;&quot;&quot;</span><br><span class="line">        state &#x3D; torch.from_numpy(state).float().unsqueeze(0).to(device)</span><br><span class="line">        self.qnetwork_local.eval()</span><br><span class="line">        with torch.no_grad():</span><br><span class="line">            action_values &#x3D; self.qnetwork_local(state)</span><br><span class="line">        self.qnetwork_local.train()</span><br><span class="line"></span><br><span class="line">        # Epsilon-greedy action selection</span><br><span class="line">        if random.random() &gt; eps:</span><br><span class="line">            return np.argmax(action_values.cpu().data.numpy())</span><br><span class="line">        else:</span><br><span class="line">            return random.choice(np.arange(self.action_size))</span><br><span class="line"></span><br><span class="line">    def learn(self, experiences, gamma):</span><br><span class="line">        &quot;&quot;&quot;Update value parameters using given batch of experience tuples.</span><br><span class="line"></span><br><span class="line">        Params</span><br><span class="line">        &#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;</span><br><span class="line">            experiences (Tuple[torch.Tensor]): tuple of (s, a, r, s&#39;, done) tuples </span><br><span class="line">            gamma (float): discount factor</span><br><span class="line">        &quot;&quot;&quot;</span><br><span class="line">        states, actions, rewards, next_states, dones &#x3D; experiences</span><br><span class="line"></span><br><span class="line">        # Get max predicted Q values (for next states) from target model</span><br><span class="line">        Q_targets_next &#x3D; self.qnetwork_target(next_states).detach().max(1)[0].unsqueeze(1)</span><br><span class="line">        # Compute Q targets for current states </span><br><span class="line">        Q_targets &#x3D; rewards + (gamma * Q_targets_next * (1 - dones))</span><br><span class="line"></span><br><span class="line">        # Get expected Q values from local model</span><br><span class="line">        Q_expected &#x3D; self.qnetwork_local(states).gather(1, actions)</span><br><span class="line"></span><br><span class="line">        # Compute loss</span><br><span class="line">        loss &#x3D; F.mse_loss(Q_expected, Q_targets)</span><br><span class="line">        # Minimize the loss</span><br><span class="line">        self.optimizer.zero_grad()</span><br><span class="line">        loss.backward()</span><br><span class="line">        self.optimizer.step()</span><br><span class="line"></span><br><span class="line">        # ------------------- update target network ------------------- #</span><br><span class="line">        self.soft_update(self.qnetwork_local, self.qnetwork_target, TAU)                     </span><br><span class="line"></span><br><span class="line">    def soft_update(self, local_model, target_model, tau):</span><br><span class="line">        &quot;&quot;&quot;Soft update model parameters.</span><br><span class="line">        θ_target &#x3D; τ*θ_local + (1 - τ)*θ_target</span><br><span class="line"></span><br><span class="line">        Params</span><br><span class="line">        &#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;</span><br><span class="line">            local_model (PyTorch model): weights will be copied from</span><br><span class="line">            target_model (PyTorch model): weights will be copied to</span><br><span class="line">            tau (float): interpolation parameter </span><br><span class="line">        &quot;&quot;&quot;</span><br><span class="line">        for target_param, local_param in zip(target_model.parameters(), local_model.parameters()):</span><br><span class="line">            target_param.data.copy_(tau*local_param.data + (1.0-tau)*target_param.data)</span><br><span class="line"></span><br><span class="line">class ReplayBuffer:</span><br><span class="line">    &quot;&quot;&quot;Fixed-size buffer to store experience tuples.&quot;&quot;&quot;</span><br><span class="line"></span><br><span class="line">    def __init__(self, action_size, buffer_size, batch_size, seed):</span><br><span class="line">        &quot;&quot;&quot;Initialize a ReplayBuffer object.</span><br><span class="line"></span><br><span class="line">        Params</span><br><span class="line">        &#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;</span><br><span class="line">            action_size (int): dimension of each action</span><br><span class="line">            buffer_size (int): maximum size of buffer</span><br><span class="line">            batch_size (int): size of each training batch</span><br><span class="line">            seed (int): random seed</span><br><span class="line">        &quot;&quot;&quot;</span><br><span class="line">        self.action_size &#x3D; action_size</span><br><span class="line">        self.memory &#x3D; deque(maxlen&#x3D;buffer_size)  </span><br><span class="line">        self.batch_size &#x3D; batch_size</span><br><span class="line">        self.experience &#x3D; namedtuple(&quot;Experience&quot;, field_names&#x3D;[&quot;state&quot;, &quot;action&quot;, &quot;reward&quot;, &quot;next_state&quot;, &quot;done&quot;])</span><br><span class="line">        self.seed &#x3D; random.seed(seed)</span><br><span class="line">    </span><br><span class="line">    def add(self, state, action, reward, next_state, done):</span><br><span class="line">        &quot;&quot;&quot;Add a new experience to memory.&quot;&quot;&quot;</span><br><span class="line">        e &#x3D; self.experience(state, action, reward, next_state, done)</span><br><span class="line">        self.memory.append(e)</span><br><span class="line">    </span><br><span class="line">    def sample(self):</span><br><span class="line">        &quot;&quot;&quot;Randomly sample a batch of experiences from memory.&quot;&quot;&quot;</span><br><span class="line">        experiences &#x3D; random.sample(self.memory, k&#x3D;self.batch_size)</span><br><span class="line"></span><br><span class="line">        states &#x3D; torch.from_numpy(np.vstack([e.state for e in experiences if e is not None])).float().to(device)</span><br><span class="line">        actions &#x3D; torch.from_numpy(np.vstack([e.action for e in experiences if e is not None])).long().to(device)</span><br><span class="line">        rewards &#x3D; torch.from_numpy(np.vstack([e.reward for e in experiences if e is not None])).float().to(device)</span><br><span class="line">        next_states &#x3D; torch.from_numpy(np.vstack([e.next_state for e in experiences if e is not None])).float().to(device)</span><br><span class="line">        dones &#x3D; torch.from_numpy(np.vstack([e.done for e in experiences if e is not None]).astype(np.uint8)).float().to(device)</span><br><span class="line">  </span><br><span class="line">        return (states, actions, rewards, next_states, dones)</span><br><span class="line"></span><br><span class="line">    def __len__(self):</span><br><span class="line">        &quot;&quot;&quot;Return the current size of internal memory.&quot;&quot;&quot;</span><br><span class="line">        return len(self.memory)</span><br><span class="line">    </span><br><span class="line">agent &#x3D; Agent(state_size&#x3D;8, action_size&#x3D;4, seed&#x3D;0)</span><br><span class="line"></span><br><span class="line">def dqn(n_episodes&#x3D;4000, max_t&#x3D;1000, eps_start&#x3D;1.0, eps_end&#x3D;0.01, eps_decay&#x3D;0.995):</span><br><span class="line">    &quot;&quot;&quot;Deep Q-Learning.</span><br><span class="line">    </span><br><span class="line">    Params</span><br><span class="line">    &#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;</span><br><span class="line">        n_episodes (int): maximum number of training episodes</span><br><span class="line">        max_t (int): maximum number of timesteps per episode</span><br><span class="line">        eps_start (float): starting value of epsilon, for epsilon-greedy action selection</span><br><span class="line">        eps_end (float): minimum value of epsilon</span><br><span class="line">        eps_decay (float): multiplicative factor (per episode) for decreasing epsilon</span><br><span class="line">    &quot;&quot;&quot;</span><br><span class="line">    scores &#x3D; []                        # list containing scores from each episode</span><br><span class="line">    scores_window &#x3D; deque(maxlen&#x3D;100)  # last 100 scores</span><br><span class="line">    eps &#x3D; eps_start                    # initialize epsilon</span><br><span class="line">    for i_episode in range(1, n_episodes+1):</span><br><span class="line">        state &#x3D; env.reset()</span><br><span class="line">        score &#x3D; 0</span><br><span class="line">        for t in range(max_t):</span><br><span class="line">            action &#x3D; agent.act(state, eps)</span><br><span class="line">            next_state, reward, done, _ &#x3D; env.step(action)</span><br><span class="line">            agent.step(state, action, reward, next_state, done)</span><br><span class="line">            state &#x3D; next_state</span><br><span class="line">            score +&#x3D; reward</span><br><span class="line">            if done:</span><br><span class="line">                break </span><br><span class="line">        scores_window.append(score)       # save most recent score</span><br><span class="line">        scores.append(score)              # save most recent score</span><br><span class="line">        eps &#x3D; max(eps_end, eps_decay*eps) # decrease epsilon</span><br><span class="line">        print(&#39;\rEpisode &#123;&#125;\tAverage Score: &#123;:.2f&#125;&#39;.format(i_episode, np.mean(scores_window)), end&#x3D;&quot;&quot;)</span><br><span class="line">        if i_episode % 100 &#x3D;&#x3D; 0:</span><br><span class="line">            print(&#39;\rEpisode &#123;&#125;\tAverage Score: &#123;:.2f&#125;&#39;.format(i_episode, np.mean(scores_window)))</span><br><span class="line">        if np.mean(scores_window)&gt;&#x3D;250.0:</span><br><span class="line">            print(&#39;\nEnvironment solved in &#123;:d&#125; episodes!\tAverage Score: &#123;:.2f&#125;&#39;.format(i_episode-100, np.mean(scores_window)))</span><br><span class="line">            torch.save(agent.qnetwork_local.state_dict(), &#39;checkpoint_v2.pth&#39;)</span><br><span class="line">            break</span><br><span class="line">    return scores</span><br><span class="line"></span><br><span class="line">scores &#x3D; dqn()</span><br><span class="line"></span><br><span class="line"># plot the scores</span><br><span class="line">fig &#x3D; plt.figure()</span><br><span class="line">ax &#x3D; fig.add_subplot(111)</span><br><span class="line">plt.plot(np.arange(len(scores)), scores)</span><br><span class="line">plt.ylabel(&#39;Score&#39;)</span><br><span class="line">plt.xlabel(&#39;Episode #&#39;)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+<p>训练过程中终端输出如下：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/wxt406611016/cdn/image/20211209110316.png" alt="20211209110316"></p>
+<p>可以看出在reward_mean大于250时程序停止，同时得到checkpoint_v2.pth文件，可用于测试训练的效果，测试代码如下所示：</p>
+<p>test.py : （测试模型学习的效果）</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">from dqn_agent import Agent</span><br><span class="line">import torch</span><br><span class="line">import gym</span><br><span class="line"></span><br><span class="line">env &#x3D; gym.make(&#39;LunarLander-v2&#39;)</span><br><span class="line">env.seed(0)</span><br><span class="line">agent &#x3D; Agent(state_size&#x3D;8, action_size&#x3D;4, seed&#x3D;0)</span><br><span class="line">agent.qnetwork_local.load_state_dict(torch.load(&#39;.&#x2F;checkpoint_v2.pth&#39;))</span><br><span class="line"></span><br><span class="line">while True:</span><br><span class="line">  state &#x3D; env.reset()</span><br><span class="line">  episode_reward_sum &#x3D; 0</span><br><span class="line">  while True:</span><br><span class="line">    env.render()</span><br><span class="line">    action &#x3D; agent.act(state)</span><br><span class="line">    state, reward, done, _ &#x3D; env.step(action)</span><br><span class="line">    episode_reward_sum +&#x3D; reward </span><br><span class="line">    if done:</span><br><span class="line">      print(f&#39;reward_sum:&#123;round(episode_reward_sum, 2)&#125;&#39;)</span><br><span class="line">      break</span><br><span class="line"></span><br><span class="line">env.close()</span><br></pre></td></tr></table></figure>
+<p>动画效果如下，测试的获得奖励情况在终端中有显示，如下:</p>
+<p><img src="https://cdn.jsdelivr.net/gh/wxt406611016/cdn@master/vedio/20211209-104435.gif" alt="image"></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">reward_sum:253.87</span><br><span class="line">reward_sum:232.45</span><br><span class="line">reward_sum:277.11</span><br><span class="line">reward_sum:291.65</span><br></pre></td></tr></table></figure>
+<p>jupyter代码在github上可以获取，<a target="_blank" rel="noopener" href="https://github.com/wxt406611016/DQN-LunarLander-v2">点击传送至Github</a></p>
+ 
+      <!-- reward -->
+      
+      <div id="reword-out">
+        <div id="reward-btn">
+          Donate
+        </div>
+      </div>
+      
+    </div>
+    
+
+    <!-- copyright -->
+    
+    <div class="declare">
+      <ul class="post-copyright">
+        <li>
+          <i class="ri-copyright-line"></i>
+          <strong>Copyright： </strong>
+          
+          Copyright is owned by the author. For commercial reprints, please contact the author for authorization. For non-commercial reprints, please indicate the source.
+          
+        </li>
+      </ul>
+    </div>
+    
+    <footer class="article-footer">
+       
+<div class="share-btn">
+      <span class="share-sns share-outer">
+        <i class="ri-share-forward-line"></i>
+        分享
+      </span>
+      <div class="share-wrap">
+        <i class="arrow"></i>
+        <div class="share-icons">
+          
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="ri-weibo-fill"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="ri-wechat-fill"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="ri-qq-fill"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="ri-douban-line"></i>
+          </a>
+          <!-- <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a> -->
+          
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="ri-facebook-circle-fill"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="ri-twitter-fill"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="ri-google-fill"></i>
+          </a>
+        </div>
+      </div>
+</div>
+
+<div class="wx-share-modal">
+    <a class="modal-close" href="javascript:;"><i class="ri-close-circle-line"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACJklEQVR42u3aQW7DMAwEwP7/0ynQU4HWzpJUC1ganQInVjw+EBTJj494vb7W/ZXv179/e//L/PqChYGB8VjG63YlW//85RU72edqt6tnw8DAOIdRfbj7Ta9ewf3nUbDGwMDAaD3Kql9iYGBgVAPuJGXEwMDAmDCSred/nyedf3gWx8DAeCCj2hj4z89/2N/AwMB4CONVXHkR/77x2Qvrl/diYGBszZgMUlTZSYOzmjgumAfBwMB4CCPPuKrjEflQRe+1YmBgnMOoBsFeUK7uWQ3ZGBgY5zCqwa53KK22RaMXgYGBsTWjF2R73ybFuzwZxcDAOIEx2S4/js4bD28CLgYGxtaM+ZE1/+Ok9F9NHzEwME5g9Ir+SUtgwii3HzAwMA5grBrqqgbQvJz35iViYGAcxihU5oop4ySIvzk2Y2BgHM/IB8iqDc6cuiDgYmBgPJYxKcTnDxQdRIs7YGBgnMOYl8yqjclqOyF6ZRgYGFszqiX4pLVZLahVU8xoTwwMjI0YSRE/P3BWm5HzoIyBgXEOo3xbECjzRuayQywGBsamjN4IxSSZm7cfooMrBgbGRoxXcfXGI+6DcnXU45e7MDAwtmbkq5pE5uG7x8PAwDiNMQ+yq4bDekdoDAyMcxh5A6B3fmxG+ji5xMDAwFg1zdEr+kfBHQMDA6MVKKvtgd54BwYGxjmM3nhEXg7Lm5fNbzEwMLZmVA+Qeeq2djhjAQYDA+N5jE8eivAuwcZyqgAAAABJRU5ErkJggg==" alt="微信分享二维码">
+    </div>
+</div>
+
+<div id="share-mask"></div>  
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Machine-Learning/" rel="tag">Machine Learning</a></li></ul>
+
+    </footer>
+  </div>
+
+   
+  <nav class="article-nav">
+    
+      <a href="/2022/01/13/Explanation-Guided%20Backdoor%20Poisoning%20Attacks%20Against%20Malware%20Classifiers/" class="article-nav-link">
+        <strong class="article-nav-caption">上一篇</strong>
+        <div class="article-nav-title">
+          
+            论文分析：《Explanation-Guided Backdoor Poisoning Attacks Against Malware Classifiers》
+          
+        </div>
+      </a>
+    
+    
+      <a href="/2021/12/07/dqn-CartPole-v0/" class="article-nav-link">
+        <strong class="article-nav-caption">下一篇</strong>
+        <div class="article-nav-title">Deep Q Network(DQN)在CartPole-v0上的应用</div>
+      </a>
+    
+  </nav>
+
+   
+<!-- valine评论 -->
+<div id="vcomments-box">
+  <div id="vcomments"></div>
+</div>
+<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/valine@1.4.14/dist/Valine.min.js"></script>
+<script>
+  new Valine({
+    el: "#vcomments",
+    app_id: "ds54farWshFsUraKxWRVVf4G-gzGzoHsz",
+    app_key: "q4rgias5HDeq09ugweytekJQ",
+    path: window.location.pathname,
+    avatar: "monsterid",
+    placeholder: "",
+    recordIP: true,
+  });
+  const infoEle = document.querySelector("#vcomments .info");
+  if (infoEle && infoEle.childNodes && infoEle.childNodes.length > 0) {
+    infoEle.childNodes.forEach(function (item) {
+      item.parentNode.removeChild(item);
+    });
+  }
+</script>
+<style>
+  #vcomments-box {
+    padding: 5px 30px;
+  }
+
+  @media screen and (max-width: 800px) {
+    #vcomments-box {
+      padding: 5px 0px;
+    }
+  }
+
+  #vcomments-box #vcomments {
+    background-color: #fff;
+  }
+
+  .v .vlist .vcard .vh {
+    padding-right: 20px;
+  }
+
+  .v .vlist .vcard {
+    padding-left: 10px;
+  }
+</style>
+
+ 
+   
+     
+</article>
+
+</section>
+      <footer class="footer">
+  <div class="outer">
+    <ul>
+      <li>
+        Copyrights &copy;
+        2018-2023
+        <i class="ri-heart-fill heart_icon"></i> Supervampire
+      </li>
+    </ul>
+    <ul>
+      <li>
+        
+      </li>
+    </ul>
+    <ul>
+      <li>
+        
+        
+        <span>
+  <span><i class="ri-user-3-fill"></i>Visitors:<span id="busuanzi_value_site_uv"></span></s>
+  <span class="division">|</span>
+  <span><i class="ri-eye-fill"></i>Views:<span id="busuanzi_value_page_pv"></span></span>
+</span>
+        
+      </li>
+    </ul>
+    <ul>
+      
+        <li>
+          <a href="https://beian.miit.gov.cn/#/Integrated/recordQuery" target="_black" rel="nofollow">苏ICP备2022035104号-1</a>
+        </li>
+        
+    </ul>
+    <ul>
+      
+    </ul>
+    <ul>
+      <li>
+        <!-- cnzz统计 -->
+        
+      </li>
+    </ul>
+  </div>
+</footer>
+      <div class="float_btns">
+        <div class="totop" id="totop">
+  <i class="ri-arrow-up-line"></i>
+</div>
+
+<div class="todark" id="todark">
+  <i class="ri-moon-line"></i>
+</div>
+
+      </div>
+    </main>
+    <aside class="sidebar on">
+      <button class="navbar-toggle"></button>
+<nav class="navbar">
+  
+  <div class="logo">
+    <a href="/"><img src="https://cdn.jsdelivr.net/gh/wxt406611016/cdn/image/ayer-side.svg" alt="の"></a>
+  </div>
+  
+  <ul class="nav nav-main">
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/">主页</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/archives">归档</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/categories">分类</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" target="_blank" rel="noopener" href="https://wxt123.top/downloads/">云盘</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/friends">友链</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/about">关于</a>
+    </li>
+    
+  </ul>
+</nav>
+<nav class="navbar navbar-bottom">
+  <ul class="nav">
+    <li class="nav-item">
+      
+      <a class="nav-item-link nav-item-search"  title="Search">
+        <i class="ri-search-line"></i>
+      </a>
+      
+      
+      <a class="nav-item-link" target="_blank" href="/atom.xml" title="RSS Feed">
+        <i class="ri-rss-line"></i>
+      </a>
+      
+    </li>
+  </ul>
+</nav>
+<div class="search-form-wrap">
+  <div class="local-search local-search-plugin">
+  <input type="search" id="local-search-input" class="local-search-input" placeholder="Search...">
+  <div id="local-search-result" class="local-search-result"></div>
+</div>
+</div>
+    </aside>
+    <script>
+      if (window.matchMedia("(max-width: 768px)").matches) {
+        document.querySelector('.content').classList.remove('on');
+        document.querySelector('.sidebar').classList.remove('on');
+      }
+    </script>
+    <div id="mask"></div>
+
+<!-- #reward -->
+<div id="reward">
+  <span class="close"><i class="ri-close-line"></i></span>
+  <p class="reward-p"><i class="ri-cup-line"></i>请我喝杯咖啡吧~</p>
+  <div class="reward-box">
+    
+    <div class="reward-item">
+      <img class="reward-img" src="https://cdn.jsdelivr.net/gh/wxt406611016/cdn/image/20210117222926.png">
+      <span class="reward-type">支付宝</span>
+    </div>
+    
+    
+    <div class="reward-item">
+      <img class="reward-img" src="https://cdn.jsdelivr.net/gh/wxt406611016/cdn/image/20210117222736.png">
+      <span class="reward-type">微信</span>
+    </div>
+    
+  </div>
+</div>
+    
+<script src="/js/jquery-2.0.3.min.js"></script>
+
+
+<script src="/js/lazyload.min.js"></script>
+
+<!-- Tocbot -->
+
+
+<script src="/js/tocbot.min.js"></script>
+
+<script>
+  tocbot.init({
+    tocSelector: '.tocbot',
+    contentSelector: '.article-entry',
+    headingSelector: 'h1, h2, h3, h4, h5, h6',
+    hasInnerContainers: true,
+    scrollSmooth: true,
+    scrollContainer: 'main',
+    positionFixedSelector: '.tocbot',
+    positionFixedClass: 'is-position-fixed',
+    fixedSidebarOffset: 'auto'
+  });
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/jquery-modal@0.9.2/jquery.modal.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jquery-modal@0.9.2/jquery.modal.min.css">
+<script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js"></script>
+
+<script src="/dist/main.js"></script>
+
+<!-- ImageViewer -->
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                <!--  Controls are self-explanatory. Order can be changed. -->
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" style="display:none" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css">
+<script src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"></script>
+
+<script>
+    function viewer_init() {
+        let pswpElement = document.querySelectorAll('.pswp')[0];
+        let $imgArr = document.querySelectorAll(('.article-entry img:not(.reward-img)'))
+
+        $imgArr.forEach(($em, i) => {
+            $em.onclick = () => {
+                // slider展开状态
+                // todo: 这样不好，后面改成状态
+                if (document.querySelector('.left-col.show')) return
+                let items = []
+                $imgArr.forEach(($em2, i2) => {
+                    let img = $em2.getAttribute('data-idx', i2)
+                    let src = $em2.getAttribute('data-target') || $em2.getAttribute('src')
+                    let title = $em2.getAttribute('alt')
+                    // 获得原图尺寸
+                    const image = new Image()
+                    image.src = src
+                    items.push({
+                        src: src,
+                        w: image.width || $em2.width,
+                        h: image.height || $em2.height,
+                        title: title
+                    })
+                })
+                var gallery = new PhotoSwipe(pswpElement, PhotoSwipeUI_Default, items, {
+                    index: parseInt(i)
+                });
+                gallery.init()
+            }
+        })
+    }
+    viewer_init()
+</script>
+
+<!-- MathJax -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+      tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+  });
+
+  MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+      for(i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+  });
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.6/unpacked/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script>
+  var ayerConfig = {
+    mathjax: true
+  }
+</script>
+
+<!-- Katex -->
+
+<!-- busuanzi  -->
+
+
+<script src="/js/busuanzi-2.3.pure.min.js"></script>
+
+
+<!-- ClickLove -->
+
+<!-- ClickBoom1 -->
+
+<!-- ClickBoom2 -->
+
+
+<script src="/js/clickBoom2.js"></script>
+
+
+<!-- CodeCopy -->
+
+
+<link rel="stylesheet" href="/css/clipboard.css">
+
+<script src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js"></script>
+<script>
+  function wait(callback, seconds) {
+    var timelag = null;
+    timelag = window.setTimeout(callback, seconds);
+  }
+  !function (e, t, a) {
+    var initCopyCode = function(){
+      var copyHtml = '';
+      copyHtml += '<button class="btn-copy" data-clipboard-snippet="">';
+      copyHtml += '<i class="ri-file-copy-2-line"></i><span>COPY</span>';
+      copyHtml += '</button>';
+      $(".highlight .code pre").before(copyHtml);
+      $(".article pre code").before(copyHtml);
+      var clipboard = new ClipboardJS('.btn-copy', {
+        target: function(trigger) {
+          return trigger.nextElementSibling;
+        }
+      });
+      clipboard.on('success', function(e) {
+        let $btn = $(e.trigger);
+        $btn.addClass('copied');
+        let $icon = $($btn.find('i'));
+        $icon.removeClass('ri-file-copy-2-line');
+        $icon.addClass('ri-checkbox-circle-line');
+        let $span = $($btn.find('span'));
+        $span[0].innerText = 'COPIED';
+        
+        wait(function () { // 等待两秒钟后恢复
+          $icon.removeClass('ri-checkbox-circle-line');
+          $icon.addClass('ri-file-copy-2-line');
+          $span[0].innerText = 'COPY';
+        }, 2000);
+      });
+      clipboard.on('error', function(e) {
+        e.clearSelection();
+        let $btn = $(e.trigger);
+        $btn.addClass('copy-failed');
+        let $icon = $($btn.find('i'));
+        $icon.removeClass('ri-file-copy-2-line');
+        $icon.addClass('ri-time-line');
+        let $span = $($btn.find('span'));
+        $span[0].innerText = 'COPY FAILED';
+        
+        wait(function () { // 等待两秒钟后恢复
+          $icon.removeClass('ri-time-line');
+          $icon.addClass('ri-file-copy-2-line');
+          $span[0].innerText = 'COPY';
+        }, 2000);
+      });
+    }
+    initCopyCode();
+  }(window, document);
+</script>
+
+
+<!-- CanvasBackground -->
+
+
+<script src="/js/dz.js"></script>
+
+
+
+    
+    <div id="music">
+    
+    
+    
+    <iframe frameborder="no" border="1" marginwidth="0" marginheight="0" width="200" height="86"
+        src="//music.163.com/outchain/player?type=2&id=22707008&auto=1&height=66"></iframe>
+</div>
+
+<style>
+    #music {
+        position: fixed;
+        right: 15px;
+        bottom: 0;
+        z-index: 998;
+    }
+</style>
+    
+  </div>
+</body>
+
+</html>
