@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://wxt406611016.github.io/about/index.html</loc>
+    
+    <lastmod>2023-03-06</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://wxt406611016.github.io/2023/03/05/jupyterlab/</loc>
     
     <lastmod>2023-03-05</lastmod>
@@ -229,13 +236,6 @@
     <loc>https://wxt406611016.github.io/2020/03/02/%E5%8F%8D%E7%88%AC%E8%99%AB%E7%AD%96%E7%95%A5%E4%B9%8Bfont-face/</loc>
     
     <lastmod>2021-01-28</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://wxt406611016.github.io/about/index.html</loc>
-    
-    <lastmod>2021-01-21</lastmod>
     
   </url>
   
